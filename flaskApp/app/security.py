@@ -16,20 +16,20 @@ while(do == True):
 # ENCRYPT LOCATION
 # -------------------------
 
+# this is the string that we will be encrypting
 coordinate = "38.94200875265407, -92.32646834504295"
+publicKey, privateKey = rsa.newkeys(512)
 
 def separateCoordinates(coordinate):
     longitude = 0
     latitude = 0
     coordinates = x = coordinate.split(", ")
     if len(coordinates) == 2:
-        longitude = (coordinates[0])
-        latitude = (coordinates[1])
+        latitude = (coordinates[0])
+        longitude = (coordinates[1])
     return latitude, longitude
 
-# this is the string that we will be encrypting
-latitude = separateCoordinates(coordinate)[0]
-longitude = separateCoordinates(coordinate)[1]
+latitude, longitude = separateCoordinates(coordinate)
 print(latitude)
 print(longitude)
 
@@ -45,6 +45,7 @@ def encryptData(data):
     return encMessage
 
 encryptData(latitude)
+print(latitude)
     
 
     
