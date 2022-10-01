@@ -2,11 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
-</head>
-<body>
-    {% block content %} {% endblock %}
-</body>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ScavyApp</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <nav class="navbar bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="/Users/kennabogue/Documents/MIZZOU/22_FALL/INFOTC_4970_Capstone/CapstoneProject/flaskApp/app/static/images/scavyLogo.png" alt="Bootstrap" width="30" height="24">   
+            </a>
+        </div>
+    </nav>
+    </head>
+    <body>   
+        <img src="/Users/kennabogue/Documents/MIZZOU/22_FALL/INFOTC_4970_Capstone/CapstoneProject/flaskApp/app/static/images/scavyLogo.png" alt="Bootstrap" width="30" height="24">   
+        {% block content %} 
+        {% endblock %}
+    </body>
 </html>
