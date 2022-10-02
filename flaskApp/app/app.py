@@ -32,6 +32,10 @@ def create_account():
 def privacy():
     return render_template("privacy.html")
 
+@app.route('/play')
+def noGame():
+    return render_template("play.html", clue_id=-2)
+
 @app.route('/play/<game>/<int:id>')
 def play(game, id):
     clue = getClue(scavenger_hunts, game, id)
@@ -44,6 +48,13 @@ def search():
 @app.route('/create_game')
 def create_game():
     return render_template("create_game.html")
+
+# https://www.geeksforgeeks.org/python-404-error-handling-in-flask/#:~:text=A%20404%20Error%20is%20showed,the%20default%20Ugly%20Error%20page.
+@app.errorhandler(404)
+# inbuilt function which takes error as parameter
+def not_found(e):
+# defining function
+  return render_template("404.html")
 
 if __name__ == "__main__":
     # debug means that if there are errors it will display on the webserver
