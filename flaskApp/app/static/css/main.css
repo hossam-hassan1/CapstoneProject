@@ -1,11 +1,29 @@
 body{
-    margin: 0;   
+    font-size: 17px; 
+    font-family: Arial, Helvetica, sans-serif;
+}
+.h1{
+    /* Primary Header: SF Pro Text or similar  */
+    font-size: 29px; 
+    font-family: Arial, Helvetica, sans-serif;
+}
+.h3{
+    font-size: 23px; 
+    font-family: Arial, Helvetica, sans-serif;  
 }
 .center{
     justify-content: center;
 }
-.navbar-brand {
-    transform: translateX(-50%);
-    left: 50%;
-    position: absolute;
+
+/* https://www.geeksforgeeks.org/how-to-change-the-thickness-of-hr-tag-using-css/ */
+hr {
+    border: none;
+    border-radius: 4px 4px 4px 4px;
+    height: 8px;
+    background: #db9a03
+}
+
+.btn-primary {
+    background-color: #e76d36;
+    border: none;
 }
