@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for
+from helper import scavenger_hunts
 
 app = Flask(__name__)
 
 # url string of class(route)
+@app.route('/home')
 @app.route('/')
 # function for that route
 def index():
@@ -27,8 +29,20 @@ def create_account():
     return render_template("create_account.html")
 
 @app.route('/privacy')
-def private():
+def privacy():
     return render_template("privacy.html")
+
+@app.route('/play')
+def play():
+    return render_template("play.html")
+
+@app.route('/search')
+def search():
+    return render_template("search.html", games=games)
+
+@app.route('/create_game')
+def create_game():
+    return render_template("create_game.html")
 
 if __name__ == "__main__":
     # debug means that if there are errors it will display on the webserver

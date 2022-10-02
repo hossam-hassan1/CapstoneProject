@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1> Find Games Here </h1>
+
+<ul>
+    <!-- Implement a for loop to iterate through 
+    `template_games`-->
+    {% for game in games %}
+    <li>{{ game }}</li>
+    {% endfor %}
+  </ul>
+
+
+{% endblock %}
+
