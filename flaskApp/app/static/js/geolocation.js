@@ -1,3 +1,5 @@
+// put internally in play page
+
 var x = document.getElementById("demo");
 
 function getLocation() {
