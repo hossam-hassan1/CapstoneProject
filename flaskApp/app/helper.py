@@ -1,8 +1,4 @@
 # from app import app
-
-from click import prompt
-
-
 scavenger_hunts = {
     'MizzouQuest': [
         {
@@ -69,28 +65,23 @@ scavenger_hunts = {
 }
 
 
-    
-    
-game = scavenger_hunts["MizzouQuest"]
-print(game)
+def getClue(scavenger_hunts, game, id):
+    clues = scavenger_hunts[game]
+    total = len(clues)
+    if id < total:
+        clue = clues[id] 
+        clue_id = clue['clue']
+        prompt = clue['prompt']
+        coordinates = clue['coordinates']
+        answer = clue['answer']
+    else:
+        clue_id = -1
+        prompt = f"Congrats! You have completed {game}."
+        coordinates = ""
+        answer = ""
+    return clue_id, prompt, coordinates, answer
 
-clues = len(game)
+# clue = getClue(scavenger_hunts, "MizzouQuest", 0)
+# print(clue[0])
 
-clue = game[0]
-
-print(clue)
-
-count = 0 
-    
-clue_id = clue['clue']
-prompt = clue['prompt']
-coordinates = clue['coordinates']
-answer = clue['answer']
-
-print(f'''Clue #: {clue_id}
-        Prompt: {prompt}
-        Coordinates: {coordinates}
-        Answer: {answer}''')
-
-print(clues)
 

@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from app.helper import scavenger_hunts
+from app.helper import scavenger_hunts, getClue
 
 app = Flask(__name__)
 
@@ -34,9 +34,8 @@ def privacy():
 
 @app.route('/play/<game>/<int:id>')
 def play(game, id):
-    clues = scavenger_hunts[game]
-    clue = clues[id]
-    return render_template("play.html", game=game, id=id, total = len(clues), clue_id = clue['clue'], prompt = clue['prompt'], coordinates = clue['coordinates'], answer = clue['answer'])
+    clue = getClue(scavenger_hunts, game, id)
+    return render_template("play.html", game=game, id=id, clue_id=clue[0], prompt=clue[1], coordinates=clue[2], answer=clue[3])
 
 @app.route('/search')
 def search():
