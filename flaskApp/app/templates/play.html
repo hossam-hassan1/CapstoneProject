@@ -34,8 +34,29 @@
             </div>
         </div>
         <div class="m-2">
-            <p>Coordinates: {{ coordinates }}</p>
             <p>Answer: {{ answer }}</p>
+            <p>Coordinates: {{ coordinates }}</p>
+            <div class="card">
+                {# https://www.w3schools.com/html/tryit.asp?filename=tryhtml5_geolocation #}
+                <p id="demo"></p>
+                <button onclick="getLocation()" class="btn btn-primary">Check your coordinates</button>
+                <script>
+                    var x = document.getElementById("demo");
+
+                    function getLocation() {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(showPosition);
+                    } else { 
+                        x.innerHTML = "Geolocation is not supported by this browser.";
+                    }
+                    }
+
+                    function showPosition(position) {
+                    x.innerHTML = "Latitude: " + position.coords.latitude + 
+                    "<br>Longitude: " + position.coords.longitude;
+                    }
+                </script>
+            </div>
         </div>
         <div class="m-2">
             <a href="/play/{{game}}/{{id+1}}" class="btn btn-primary btn-lg" role="button" aria-pressed="true">Next Clue</a>
