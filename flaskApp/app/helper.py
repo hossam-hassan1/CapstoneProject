@@ -1,5 +1,10 @@
+# from app import app
+
+from click import prompt
+
+
 scavenger_hunts = {
-    'Mizzou': [
+    'MizzouQuest': [
         {
             'clue': 1,
             'prompt': 'Your MU Tigers work out here and you can too!\nFind this place.',
@@ -30,7 +35,7 @@ scavenger_hunts = {
             'coordinates': '38.948637004293545, -92.32788402343294',
             'answer': 'Shakespeares Pizza',
         }],
-    'Hannibal': [
+    'HannibalHunt': [
         {
             'clue': 1,
             'prompt': 'Does a boy get a chance to whitewash a fence every day? Enter the last word on the sign located here.',
@@ -62,3 +67,30 @@ scavenger_hunts = {
             'answer': '244',
         }]
 }
+
+
+    
+    
+game = scavenger_hunts["MizzouQuest"]
+print(game)
+
+clues = len(game)
+
+clue = game[0]
+
+print(clue)
+
+count = 0 
+    
+clue_id = clue['clue']
+prompt = clue['prompt']
+coordinates = clue['coordinates']
+answer = clue['answer']
+
+print(f'''Clue #: {clue_id}
+        Prompt: {prompt}
+        Coordinates: {coordinates}
+        Answer: {answer}''')
+
+print(clues)
+

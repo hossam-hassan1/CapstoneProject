@@ -6,10 +6,10 @@
 <ul>
     <!-- Implement a for loop to iterate through 
     `template_games`-->
-    {% for game in games %}
-    <li>{{ game }}</li>
+    {% for game in scavenger_hunts %}
+    <li><a href= "/play/{{ game }}/0">{{ game }}</a></li>
     {% endfor %}
-  </ul>
+ </ul>
 
 
 {% endblock %}

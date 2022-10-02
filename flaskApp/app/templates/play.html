@@ -1,9 +1,48 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h1> Play Game Here </h1>
+{% if id < total %}
+    <p>id: {{id}}</p>
+    <p>total: {{total}}</p>
+    <div class="container-fluid mx-auto p-3">
+        <div class="m-3"> 
+            <h1>Let the hunt begin!</h1>
+            <h3>Game: {{game}}</h3>
+        </div>
+        <div class="row align-items-start">
+            <div class="col-6"><hr></div>
+            <div class="col-4"><hr></div>
+            <div class="col"><hr></div>
+        </div>
+        
+        <div class="card mx-auto m-3">
+            <div class="card-body mx-auto m-5">
+                <h3 class="card-subtitle mb-2 text-muted">Clue #: {{ clue_id }}</h3>
+                <h3 class="card-title">{{ prompt }}</h3>
+            </div>
+        </div>
+        <div class="m-2">
+            <p>Coordinates: {{ coordinates }}</p>
+            <p>Answer: {{ answer }}</p>
+        </div>
+        <div class="m-2">
+            <a href="/play/{{game}}/{{id+1}}" class="btn btn-primary btn-lg" role="button" aria-pressed="true">Next Clue</a>
+        </div> 
+    </div>
+{% else %}
+    <div class="container-fluid mx-auto p-3">
+        <div class="card mx-auto m-3" style="width: 18rem;">
+            <div class="card-body mx-auto m-5">
+                <h1 class="card-subtitle mb-2 text-muted">Congrats!!!</h1>
+                <h3 class="card-title">You have completed {{ name }}</h3>
+            </div>
+        </div>
+        <div class="m-2">
+            <a href="/play/{{game}}/{{id+1}}" class="btn btn-primary btn-lg" role="button" aria-pressed="true">Next Clue</a>
+        </div> 
+    </div>
+{% endif %}
+
 
 {% endblock %}
-
-
 
