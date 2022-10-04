@@ -20,9 +20,9 @@ def login():
     else:
         return render_template("login.html")
 
-@app.route("/<user>")
-def user(user):
-    return f"<h1>Hello {user}</h1>"
+# @app.route("/<user>")
+# def user(user):
+#     return f"<h1>Hello {user}</h1>"
 
 @app.route('/create_account')
 def create_account():
