@@ -49,6 +49,10 @@ def search():
 def create_game():
     return render_template("create_game.html")
 
+@app.route('/geolocation')
+def geolocation():
+    return render_template("geolocation.html")
+
 # https://www.geeksforgeeks.org/python-404-error-handling-in-flask/#:~:text=A%20404%20Error%20is%20showed,the%20default%20Ugly%20Error%20page.
 @app.errorhandler(404)
 # inbuilt function which takes error as parameter
