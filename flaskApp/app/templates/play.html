@@ -62,7 +62,12 @@
             </div>
         </div>
         <div class="m-2">
-            <a href="/play/{{game}}/{{id+1}}" class="btn btn-primary btn-lg" role="button" aria-pressed="true">Next Clue</a>
+            <!-- <a href="/play/{{game}}/{{id+1}}" class="btn btn-primary btn-lg" role="button" aria-pressed="true">Next Clue</a> -->
+            <form class="form-inline" action="" method="post">
+                <div class="form-group mx-sm-3 mb-2">
+                    <button type="submit" name="nextClue" class="btn btn-primary btn-lg">Next Clue</button>
+                </div>
+            </form>
         </div> 
         {% else %}
         <div class="card mx-auto m-3">
@@ -71,6 +76,9 @@
                 <h3 class="card-title">You have completed {{game}}.</h3>
             </div>
         </div>
+        <form action="" method="post">
+            <input type="" name="reset">
+        </form>
         <div class="m-2">
             <a href="/search" class="btn btn-primary btn-lg" role="button" aria-pressed="true">Find a new game</a>
         </div> 
