@@ -1,7 +1,10 @@
+from crypt import methods
 from flask import Flask, render_template, request, redirect, url_for
 from app.helper import scavenger_hunts, getClue
 
 app = Flask(__name__)
+
+game_session = {'id':0}
 
 # url string of class(route)
 @app.route('/home')
@@ -36,10 +39,20 @@ def privacy():
 def noGame():
     return render_template("play.html", clue_id=-2)
 
-@app.route('/play/<game>/<int:id>')
-def play(game, id):
-    clue = getClue(scavenger_hunts, game, id)
-    return render_template("play.html", game=game, id=id, clue_id=clue[0], prompt=clue[1], coordinates=clue[2], answer=clue[3])
+# https://pythonbasics.org/flask-sessions/
+@app.route('/play/<game>', methods=["POST", "GET"])
+def play(game):
+    if 'id' in game_session:
+        # if request.method == 'POST':
+        if "nextClue" in request.form:
+            game_session['id'] += 1
+        elif "reset" in request.form:
+            game_session['id'] = -1
+        else:    
+            game_session['id'] = 0
+        id = game_session['id']
+        clue = getClue(scavenger_hunts, game, id)
+        return render_template("play.html", game=game, id=id, clue_id=clue[0], prompt=clue[1], coordinates=clue[2], answer=clue[3])
 
 @app.route('/search')
 def search():
