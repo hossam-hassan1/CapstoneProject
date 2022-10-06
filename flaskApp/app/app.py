@@ -4,6 +4,7 @@ from app.helper import scavenger_hunts, getClue
 
 app = Flask(__name__)
 
+# sets session variable for game to track current clue
 game_session = {'id':0}
 
 # url string of class(route)
@@ -31,27 +32,38 @@ def login():
 def create_account():
     return render_template("create_account.html")
 
+# renders privacy policy
 @app.route('/privacy')
 def privacy():
     return render_template("privacy.html")
 
+# renders the play page with no game loaded
+#  clue_id = -2  -> no game
 @app.route('/play')
 def noGame():
     return render_template("play.html", clue_id=-2)
 
+# renders a game with clues
 # https://pythonbasics.org/flask-sessions/
 @app.route('/play/<game>', methods=["POST", "GET"])
 def play(game):
+    # if there is an id in the game session continue
     if 'id' in game_session:
-        # if request.method == 'POST':
+        # checks name = nextClue of input to next clue in play.html
         if "nextClue" in request.form:
             game_session['id'] += 1
+        # when next is out of range (past final clue)
+        # reset input in game complete automatically runs in play.html
         elif "reset" in request.form:
             game_session['id'] = -1
+        # otherwise game loads at the beginning
         else:    
             game_session['id'] = 0
+        # after the is is set in session set it in game
         id = game_session['id']
+        #  get clue from helper.py
         clue = getClue(scavenger_hunts, game, id)
+        # renders template with info needed to play game
         return render_template("play.html", game=game, id=id, clue_id=clue[0], prompt=clue[1], coordinates=clue[2], answer=clue[3])
 
 @app.route('/search')
