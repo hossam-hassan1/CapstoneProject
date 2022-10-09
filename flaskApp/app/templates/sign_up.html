@@ -1,0 +1,42 @@
+<!-- SIGN UP PAGE -->
+
+<!-- BASE TEMPLATE -->
+{% extends "base.html" %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+
+<head>
+    <link rel="stylesheet" href="/static/css/sign_up.css">
+</head>
+
+<body>
+
+    <!-- DIV 1 -->
+    <div>
+        <h1 id="header">Let's get started!</h1>
+        <p>Begin creating custom scavenger hunts today. Already signed up? <a href="/log-in">Login</a></p>
+    </div>
+
+    <!-- DIV 2 -->
+    <div>
+    <form action="#" method="post">
+            <div class="credentials">
+                <p>Email</p>
+                <p><input type="text" name = "email"/></p>
+                <p>Create a Username:</p>
+                <p><input type="text" name = "userName"/></p>
+                <p>Create a Password:</p>
+                <p><input type="password" name = "password"/></p>
+                <p>Confirm Password:</p>
+                <p><input type="password" name = "password"/></p>
+                <p><input type="submit" value="Sign up"></p>
+            </div>
+     </form>
+    <p>By signing up you accept our <a href="/privacy-policy">Privacy Policy</a></p>
+    
+    
+    </div>
+
+{% endblock %}
