@@ -1,19 +1,40 @@
+<!-- SEARCH PAGE -->
+
+<!-- BASE TEMPLATE -->
 {% extends "base.html" %}
 
 {% block title %}Search Games{% endblock %}
 
 {% block content %}
 
-<h1> Find Games Here </h1>
+<head>
+    <link rel="stylesheet" href="/static/css/search.css">
+</head>
 
-<ul>
-    <!-- Implement a for loop to iterate through 
-    `template_games`-->
-    {% for game in scavenger_hunts %}
-    <li><a href= "/play/{{ game }}">{{ game }}</a></li>
-    {% endfor %}
- </ul>
+<!-- DIV 1 -->
+<div>
+<h1 id="header">Play a Game!</h1>
+</div>
 
+<!-- DIV 2 -->
+<div>
+<p>Already have a game code?</p>
+<p><input type="text" name="game_code"/></p>
+
+<p>Searching for a new game to play?</p>
+<p><input type="text" name="game_filter"/></p>
+</div>
+
+<!-- DIV 3 -->
+<div>
+    <ul>
+        <!-- Implement a for loop to iterate through 
+        `template_games`-->
+        {% for game in scavenger_hunts %}
+        <li><a href= "/play/{{ game }}">{{ game }}</a></li>
+        {% endfor %}
+        </ul>
+</div>
 
 {% endblock %}
 
