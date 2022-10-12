@@ -4,10 +4,12 @@
     color: white;
     /* all font including headers */ 
     color: black;
-    /* div background > play.html */ 
+    /* footer */ 
+    /* active page */ 
     /* active clue bubble > play.html */ 
     color: #f1b675;
     color: #dd4229;
+    /* div background > play.html */ 
     color: #e99040;
     /* buttons */    
     color: #e76d36;
@@ -51,6 +53,21 @@ hr {
     background-color: #e76d36;
     border: none;
 }
+
+/* Footer Style */
+ #page-container {
+    position: relative;
+    min-height: 90vh;
+  }
+  #content-wrap {
+    padding-bottom: 2.5rem;    /* Footer height */
+  }
+  #footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 2.5rem;            /* Footer height */
+  }
 
 
 
