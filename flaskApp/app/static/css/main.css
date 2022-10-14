@@ -39,8 +39,7 @@ body{
     font-family: Arial, Helvetica, sans-serif;
 }
 
-/* DIV Style
-https://www.geeksforgeeks.org/how-to-change-the-thickness-of-hr-tag-using-css/ */
+/* DIV Style https://www.geeksforgeeks.org/how-to-change-the-thickness-of-hr-tag-using-css/ */
 hr {
     border: none;
     border-radius: 4px 4px 4px 4px;
@@ -69,5 +68,8 @@ hr {
     height: 2.5rem;            /* Footer height */
   }
 
-
+/* Nav Style */
+#nav {
+    color: black;
+}
 
