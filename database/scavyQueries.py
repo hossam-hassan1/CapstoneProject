@@ -116,7 +116,8 @@ def get_game_location(game_description, privacy_level):
     for game in result:
         print(game)
     return result
-# Are we meaning this function to search any words in the description?
+# Are we meaning this function to search any words in the description? 
+# We could do a split by space into a list of the words searched to check if any word is in the list.
 
 
 #     -- get_most_played_games() - a get query to list the most played games from Games Tables (not sure if we are still doing this)
@@ -125,3 +126,8 @@ def get_game_location(game_description, privacy_level):
 # -- play.html/GAME
 
 #     -- get_game_details() - a get query to retrieve all game details based on game code from Games, Clues, and Locations Tables.
+def get_game_details():
+    pass
+
+def get_clue_details():
+    pass
