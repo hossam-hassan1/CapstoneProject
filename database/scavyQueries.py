@@ -62,10 +62,11 @@ def get_user(username, password):
         result = search_query(select_games)
         print(f"{username}'s Games:")
         print(result)
+        return result
     else:
         print("user does not exit")
 
-get_user('test', 'test')
+# get_user('test', 'test')
 
 
 # create_game.html
@@ -88,11 +89,35 @@ def create_game(user_id, game_title, game_description, privacy_level, gps_requir
 
 #     -- get_game() - a get query to find game by game code from Games Tables
 
+
+
 #     -- get_game_list() - a get query to list all games from Games Tables
+def get_game_list(privacy_level):
+    list_all_games = f"SELECT game_title FROM Games WHERE privacy_level = '{privacy_level}';"
+    result = search_query(list_all_games)
+    for game in result:
+        print(game)
+    return result
+
+get_game_list('public')
 
 #     -- get_game_by_title() - a get query to list a game by game title from Games Table
+def  get_game_by_title(game_title, privacy_level):
+    games_by_title = f"SELECT game_title FROM GAMES where game_title = '{game_title}' AND privacy_level = '{privacy_level}';"
+    result = search_query(games_by_title)
+    for game in result:
+        print(game)
+    return result
 
 #     -- get_game_by_descr() - a get query to list a game by game description from Games Table
+def get_game_location(game_description, privacy_level):
+    games_by_description = f"SELECT game_title FROM GAMES where game_description = '{game_description}' AND privacy_level = '{privacy_level}';"
+    result = search_query(games_by_description)
+    for game in result:
+        print(game)
+    return result
+# Are we meaning this function to search any words in the description?
+
 
 #     -- get_most_played_games() - a get query to list the most played games from Games Tables (not sure if we are still doing this)
 
