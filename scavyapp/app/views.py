@@ -3,16 +3,16 @@ from flask import Flask, render_template, request, redirect, url_for
 from app.helper import scavenger_hunts, getClue
 from app import app
 
-app = Flask(__name__)
+# app = Flask(__name__)
 
-game_session = {'id':0}
+# game_session = {'id':0}
 
 # url string of class(route)
 @app.route('/home')
-@app.route('/')
+@app.route("/")
 # function for that route
 def index():
-    return render_template('index.html')
+    return render_template("index.html")
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
@@ -70,6 +70,6 @@ def not_found(e):
 # defining function
   return render_template("404.html")
 
-if __name__ == "__main__":
-    # debug means that if there are errors it will display on the webserver
-    app.run(debug=True)
+# if __name__ == "__main__":
+#     # debug means that if there are errors it will display on the webserver
+#     app.run(debug=True)
