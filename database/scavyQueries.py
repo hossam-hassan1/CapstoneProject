@@ -3,6 +3,14 @@
 from unittest import result
 import mysql.connector
 
+# create_game(1, "test title", "test description", "public", "true", "false")
+
+
+# -- play/search.html
+
+
+#     -- get_game() - a get query to find game by game code from Games Tables
+
 # -- sign_up.html
 def create_query(query, success):
     try:
@@ -72,7 +80,6 @@ def get_user(username, password):
 # create_game.html
 
 #  create_game() - an insert query into Games, Clues, and Locations Tables
-
 def create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required):
     insert = f"""
     INSERT INTO Games (user_id, game_title, game_description, privacy_level, gps_required, camera_required)
@@ -80,16 +87,6 @@ def create_game(user_id, game_title, game_description, privacy_level, gps_requir
     """
     success = "Game created!"
     create_query(insert, success)
-
-# create_game(1, "test title", "test description", "public", "true", "false")
-
-
-# -- play/search.html
-
-
-#     -- get_game() - a get query to find game by game code from Games Tables
-
-
 
 #     -- get_game_list() - a get query to list all games from Games Tables
 def get_game_list(privacy_level):
