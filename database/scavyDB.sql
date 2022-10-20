@@ -26,7 +26,8 @@ CREATE TABLE Games (
 CREATE TABLE Locations (
     location_id int NOT NULL AUTO_INCREMENT,
     game_id int NOT NULL,
-    geo_location char(255) NOT NULL,
+    geo_location char(255) NOT NULL,  
+        -- need to identify how user checks this location
     PRIMARY KEY (location_id),
     FOREIGN KEY (game_id) REFERENCES Games(game_id)
 );
@@ -36,6 +37,7 @@ CREATE TABLE Clues (
     game_id int NOT NULL,
     prompt_text text(1000) NOT NULL,
     answer_type ENUM('coordinates', 'text') NOT NULL,
+    -- error checking to make sure clues are near game location
     answer text(1000) NOT NULL,
     PRIMARY KEY (clue_id),
     FOREIGN KEY (game_id) REFERENCES Games(game_id)
