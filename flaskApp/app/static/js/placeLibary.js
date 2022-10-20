@@ -1,7 +1,7 @@
 function initAutocomplete() {
     var mapStartingLocation = {lat:38.85637240807301,lng: -90.31152627553638};
     var options = {
-      zoom:8,
+      zoom:10,
       center: mapStartingLocation
   }
   // Create map
@@ -16,7 +16,7 @@ function initAutocomplete() {
     map.addListener('bounds_changed', function() {
       searchBox.setBounds(map.getBounds());
     });
-    var markers = [];
+    
     // Listen for the event fired when the user selects a prediction and retrieve
     // more details for that place.
     searchBox.addListener('places_changed', function() {
@@ -24,7 +24,7 @@ function initAutocomplete() {
       if (places.length == 0) {
         return;
       }
-      markers = [];
+      
       
       // For each place, get the icon, name and location.
       var bounds = new google.maps.LatLngBounds();
@@ -50,27 +50,42 @@ function initAutocomplete() {
       });
       map.fitBounds(bounds);
     });
-  
+    
+    // Allow only one marker
+    g = 0
     google.maps.event.addListener(map, 'click', function( event ){
+      for(g;g<1;g++){
+        userSelectedMarker = {coords:{lat:event.latLng.lat(), lng:event.latLng.lng()}};
+        markersArray.push(userSelectedMarker);
+        
+      }
+      // Add multiple markers to the Array
+      // for(var i = 0;i<markersArray.length;i++)
+      // {
+      //   addMarker(markersArray[i]);
+      // }
       
-      userSelectedMarker = {coords:{lat:event.latLng.lat(), lng:event.latLng.lng()}};
-      markersArray.push(userSelectedMarker);
       
-      
-      // Add markers to the Array
       console.log(markersArray);
-      for(var i = 0;i<markersArray.length;i++)
+      // Add one marker to the Array
+      i = 0
+      for(i;i<1;i++)
       {
         addMarker(markersArray[i]);
       }
-      
     });
+    
     var markersArray = [];
-      // empty array
-      document.addEventListener("contextmenu", () => {
-        markersArray =[];
-        
-      });
+
+      // Reload map (remove markers)
+      clearButton.addEventListener('click', () => {
+        reload()
+      })
+      // google.maps.event.addListener(map, 'e', function( event ){
+      //   reload()
+      // });
+      
+      
       // Add marker functions
       function addMarker(props)
       {
@@ -80,12 +95,8 @@ function initAutocomplete() {
               // Add markers to this map
               map: map
           });
-          
       }
-      for(var i = 0;i<markersArray.length;i++)
-      {
-        addMarker(markersArray[i]);
-      }
+  
       // Geolocation
       infoWindow = new google.maps.InfoWindow();
       
@@ -119,7 +130,6 @@ function initAutocomplete() {
           handleLocationError(false, infoWindow, map.getCenter());
           }
       });
-      
   }
   // This function promps the user that location is disabled
   function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -132,3 +142,18 @@ function initAutocomplete() {
     )
   infoWindow.open(map);
   }
+  // Function that reloads the map (removes marker)
+  // const url = 'http://127.0.0.1:5000/geolocation';
+  function reload(){
+  //   dynamicMap.innerHTML = await (await fetch(url)).text();
+    location.reload()
+    
+   //this line is to watch the result in console , you can remove it later	
+    console.log("Refreshed"); 
+}
+const clearButton = document.createElement("button")
+      clearButton.innerHTML = "Clear Map"
+      
+      document.body.appendChild(clearButton)
+
+  
