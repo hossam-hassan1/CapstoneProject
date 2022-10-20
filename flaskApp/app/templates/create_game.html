@@ -1,9 +1,78 @@
+<!-- CREATE GAME PAGE -->
+
+<!-- BASE TEMPLATE -->
 {% extends "base.html" %}
 
-{% block title %}Create Game{% endblock %}
+{% block title %}Create a Game{% endblock %}
 
 {% block content %}
 
-<h1> Create Game Here </h1>
+<head>
+    <link rel="stylesheet" href="/static/css/create_game.css">
+</head>
+
+<!-- DIV 1 -->
+<div>
+<h1 id="header">Create a Game!</h1>
+</div>
+
+<!-- DIV 2 -->
+<div>
+    <form action="#" method="post">
+            <div>
+                <p>Game Title:</p>
+                <p><input type="text" name="game_title"/></p>
+
+                <p>Game Description:</p>
+                <p><textarea id="game_description" name="game_description" rows="4" cols="50"></textarea></p>
+
+                <p>Privacy Level:</p>
+                <input type="radio" id="public" name="privacy_level" value="public">
+                <label for="public">Public</label><br>
+                <input type="radio" id="private" name="privacy_level" value="private">
+                <label for="private">Private</label><br> 
+
+                <p>Location Verification:</p>
+                <input type="radio" id="geo_location" name="location_verification" value="geo location">
+                <label for="geo_location">Geo Location</label><br>
+                <input type="radio" id="qr_code" name="location_verification" value="gr code">
+                <label for="qr_code">QR Code</label><br> 
+
+            </div>
+        </form>
+</div>
+
+<!-- DIV 3 -->
+<div>
+    <form action="#" method="post">
+            <div>
+                <p>Clue #1</p>
+
+                <p>Clue Description:</p>
+                <p><textarea id="clue_description" name="clue_description" rows="4" cols="50"></textarea></p>
+
+                <p>Set Location:</p>
+                <!-- id="set_location" -->
+
+                <p>Upload Image:</p>
+                <!-- id="clue_image" -->
+
+                <p>Add Media Link:</p>
+                <p><textarea id="clue_link" name="clue_link" rows="1" cols="50"></textarea></p>
+
+                <p>Clue Answer:</p>
+                <!-- <p><input type="radio" id="public" name="privacy_level" value="public"></p> -->
+                
+
+                <p><input type="submit" value="Add another clue"></p>
+            </div>
+        </form>
+</div>
+
+
+<!-- DIV 4 -->
+<div>
+<p><input type="submit" value="Create Game"></p>
+</div>
 
 {% endblock %}
