@@ -6,7 +6,7 @@ CREATE TABLE Users (
     user_id int NOT NULL AUTO_INCREMENT,
     email char(255) NOT NULL UNIQUE,
     username char(100) NOT NULL UNIQUE,
-    password char(20) NOT NULL,
+    password char(255) NOT NULL,
     PRIMARY KEY (user_id)
 );
 
@@ -19,6 +19,7 @@ CREATE TABLE Games (
     gps_required ENUM('true', 'false') NOT NULL,
     camera_required ENUM('true', 'false') NOT NULL,
     created_on DATE,
+    play_count int DEFAULT 0,
     PRIMARY KEY (game_id),
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
@@ -26,7 +27,8 @@ CREATE TABLE Games (
 CREATE TABLE Locations (
     location_id int NOT NULL AUTO_INCREMENT,
     game_id int NOT NULL,
-    geo_location char(255) NOT NULL,
+    geo_location char(255) NOT NULL,  
+        -- need to identify how user checks this location
     PRIMARY KEY (location_id),
     FOREIGN KEY (game_id) REFERENCES Games(game_id)
 );
@@ -35,7 +37,10 @@ CREATE TABLE Clues (
     clue_id int NOT NULL AUTO_INCREMENT,
     game_id int NOT NULL,
     prompt_text text(1000) NOT NULL,
+    prompt_link text (1000),
+    prompt_image mediumblob,
     answer_type ENUM('coordinates', 'text') NOT NULL,
+    -- error checking to make sure clues are near game location
     answer text(1000) NOT NULL,
     PRIMARY KEY (clue_id),
     FOREIGN KEY (game_id) REFERENCES Games(game_id)

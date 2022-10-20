@@ -26,6 +26,7 @@ CREATE TABLE Games (
     gps_required ENUM('true', 'false') NOT NULL,
     camera_required ENUM('true', 'false') NOT NULL,
     created_on DATE,
+    play_count int DEFAULT 0,
     PRIMARY KEY (game_id),
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
@@ -46,6 +47,8 @@ CREATE TABLE Clues (
     clue_id int NOT NULL AUTO_INCREMENT,
     game_id int NOT NULL,
     prompt_text text(1000) NOT NULL,
+    prompt_link text (1000),
+    prompt_image mediumblob,
     answer_type ENUM('coordinates', 'text') NOT NULL,
     answer text(1000) NOT NULL,
     PRIMARY KEY (clue_id),
