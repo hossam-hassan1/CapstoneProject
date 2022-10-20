@@ -3,15 +3,15 @@ import rsa
 # HASH PASSWORDS
 # -------------------------
 
-do = True
-while(do == True):
-    help = hash(input())
-    hello = hash(input())
-    if help == hello:
-        print("Hashes Match!")
-        do = False
-    else:
-        print("Try Again.")
+# do = True
+# while(do == True):
+#     help = hash(input())
+#     hello = hash(input())
+#     if help == hello:
+#         print("Hashes Match!")
+#         do = False
+#     else:
+#         print("Try Again.")
     
 # ENCRYPT LOCATION
 # -------------------------
@@ -47,5 +47,41 @@ def encryptData(data):
 encryptData(latitude)
 print(latitude)
     
+ 
+def validatePassword(password):
+    upper = False
+    lower = False
+    number = False
+    special = False
+    length = False
+    check = False
+    error = []
+    if len(password) > 7:
+        length = True
+        error.append("Password length is not 8 or more characters.")
+    for letter in password:
+        if letter.isupper() == True:
+            upper = True
+        elif letter.islower() == True:
+            lower = True
+        elif letter in ["0","1","2","3","4","5","6","7","8","9"]:
+            number = True
+        elif letter in ["!", "$", "#", "@", "%", "&"]:
+            special = True
+    if upper == lower == number == length == special == True:
+        check = True
+    print(f"""special, /{special}.  
+    upper, /{upper}. 
+    lower, /{lower}. 
+    length, /{length}. 
+    number, /{number}. 
+    """)
+    return check     
 
-    
+print(validatePassword("Passw0r!df"))
+
+# print(validatePassword("passwor"))
+
+
+
+

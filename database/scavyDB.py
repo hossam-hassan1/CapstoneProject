@@ -47,6 +47,8 @@ CREATE TABLE Clues (
     clue_id int NOT NULL AUTO_INCREMENT,
     game_id int NOT NULL,
     prompt_text text(1000) NOT NULL,
+    prompt_link text (1000),
+    prompt_image mediumblob,
     answer_type ENUM('coordinates', 'text') NOT NULL,
     answer text(1000) NOT NULL,
     PRIMARY KEY (clue_id),

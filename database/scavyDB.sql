@@ -6,7 +6,7 @@ CREATE TABLE Users (
     user_id int NOT NULL AUTO_INCREMENT,
     email char(255) NOT NULL UNIQUE,
     username char(100) NOT NULL UNIQUE,
-    password char(20) NOT NULL,
+    password char(255) NOT NULL,
     PRIMARY KEY (user_id)
 );
 
@@ -37,6 +37,8 @@ CREATE TABLE Clues (
     clue_id int NOT NULL AUTO_INCREMENT,
     game_id int NOT NULL,
     prompt_text text(1000) NOT NULL,
+    prompt_link text (1000),
+    prompt_image mediumblob,
     answer_type ENUM('coordinates', 'text') NOT NULL,
     -- error checking to make sure clues are near game location
     answer text(1000) NOT NULL,
