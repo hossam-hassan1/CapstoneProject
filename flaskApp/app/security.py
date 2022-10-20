@@ -76,9 +76,9 @@ def validatePassword(password):
     length, /{length}. 
     number, /{number}. 
     """)
-    return check     
+    return check
 
-print(validatePassword("Passw0r!df"))
+print(validatePassword("Passw0rdf"))
 
 # print(validatePassword("passwor"))
 
