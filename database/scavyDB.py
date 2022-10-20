@@ -26,6 +26,7 @@ CREATE TABLE Games (
     gps_required ENUM('true', 'false') NOT NULL,
     camera_required ENUM('true', 'false') NOT NULL,
     created_on DATE,
+    play_count int DEFAULT 0,
     PRIMARY KEY (game_id),
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
