@@ -58,8 +58,6 @@ def validatePassword(password):
     error = []
     if len(password) > 7:
         length = True
-    else:
-        error.append("Must contain 8 or more characters.")
     for letter in password:
         if letter.isupper() == True:
             upper = True
@@ -74,6 +72,8 @@ def validatePassword(password):
     if upper == lower == number == length == special == True:
         check = True
     else:
+        if len(password) < 8:
+            error.append("Must contain 8 or more characters.")
         if upper == False:
             error.append("Missing an upper case letter.")
         if lower == False:
