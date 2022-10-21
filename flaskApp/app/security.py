@@ -58,7 +58,6 @@ def validatePassword(password):
     error = []
     if len(password) > 7:
         length = True
-        error.append("Password length is not 8 or more characters.")
     for letter in password:
         if letter.isupper() == True:
             upper = True
@@ -68,20 +67,42 @@ def validatePassword(password):
             number = True
         elif letter in ["!", "$", "#", "@", "%", "&"]:
             special = True
+        else:
+            error.append(f"'{letter}' is an invalid character.")
     if upper == lower == number == length == special == True:
         check = True
-    print(f"""special, /{special}.  
-    upper, /{upper}. 
-    lower, /{lower}. 
-    length, /{length}. 
-    number, /{number}. 
-    """)
-    return check
+    else:
+        if len(password) < 8:
+            error.append("Must contain 8 or more characters.")
+        if upper == False:
+            error.append("Missing an upper case letter.")
+        if lower == False:
+            error.append("Missing a lower case letter.")
+        if number == False:
+            error.append("Missing a number.")
+        if special == False:
+            error.append("Missing a special character")
+    message = [line for line in error]
+    return check, message     
 
-print(validatePassword("Passw0rdf"))
-
-# print(validatePassword("passwor"))
 
 
+def passwordMessage(password):
+    # password = input("Enter a password: ")
+    validation = validatePassword(password)
+    if validation[0] == True:
+        print("\nThe password is valid")
+    else:
+        print("\nPlease try again. Fix these errors:")
+        for line in validation[1]:
+            print(line)
 
+
+passwordMessage("Passw0r!df")
+
+passwordMessage("Passw0rdf")
+
+passwordMessage("Passwrdf")
+
+passwordMessage("Passw-f")
 
