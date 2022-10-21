@@ -3,15 +3,15 @@ import rsa
 # HASH PASSWORDS
 # -------------------------
 
-do = True
-while(do == True):
-    help = hash(input())
-    hello = hash(input())
-    if help == hello:
-        print("Hashes Match!")
-        do = False
-    else:
-        print("Try Again.")
+# do = True
+# while(do == True):
+#     help = hash(input())
+#     hello = hash(input())
+#     if help == hello:
+#         print("Hashes Match!")
+#         do = False
+#     else:
+#         print("Try Again.")
     
 # ENCRYPT LOCATION
 # -------------------------
@@ -47,5 +47,63 @@ def encryptData(data):
 encryptData(latitude)
 print(latitude)
     
+ 
+def validatePassword(password):
+    upper = False
+    lower = False
+    number = False
+    special = False
+    length = False
+    check = False
+    error = []
+    if len(password) > 7:
+        length = True
+    for letter in password:
+        if letter.isupper() == True:
+            upper = True
+        elif letter.islower() == True:
+            lower = True
+        elif letter in ["0","1","2","3","4","5","6","7","8","9"]:
+            number = True
+        elif letter in ["!", "$", "#", "@", "%", "&"]:
+            special = True
+        else:
+            error.append(f"'{letter}' is an invalid character.")
+    if upper == lower == number == length == special == True:
+        check = True
+    else:
+        if len(password) < 8:
+            error.append("Must contain 8 or more characters.")
+        if upper == False:
+            error.append("Missing an upper case letter.")
+        if lower == False:
+            error.append("Missing a lower case letter.")
+        if number == False:
+            error.append("Missing a number.")
+        if special == False:
+            error.append("Missing a special character")
+    message = [line for line in error]
+    return check, message     
 
-    
+
+
+def passwordMessage(password):
+    # password = input("Enter a password: ")
+    validation = validatePassword(password)
+    if validation[0] == True:
+        print("\nThe password is valid")
+    else:
+        print("\nPlease try again. Fix these errors:")
+        for line in validation[1]:
+            print(line)
+
+
+passwordMessage("Passw0r!df")
+
+passwordMessage("Passw0rdf")
+
+passwordMessage("Passwrdf")
+
+
+passwordMessage("Passw-f")
+

@@ -1,9 +1,27 @@
-body{
-    font-size: 17px; 
-    font-family: Arial, Helvetica, sans-serif;
+/* CSS Pallete */
+.pallete{
+    /* default background */   
+    color: white;
+    /* all font including headers */ 
+    color: black;
+    /* footer */ 
+    /* active page */ 
+    /* active clue bubble > play.html */ 
+    color: #f1b675;
+    color: #dd4229;
+    /* div background > play.html */ 
+    color: #e99040;
+    /* buttons */    
+    color: #e76d36;
+    color: #a2311f;
+    color: #0f151b;
+    /* clue bubbles > play.html */  
+    color: #f4cb6d;
+    color: #e6e0db; 
 }
+
+/* Header Style */
 .h1{
-    /* Primary Header: SF Pro Text or similar  */
     font-size: 29px; 
     font-family: Arial, Helvetica, sans-serif;
 }
@@ -15,7 +33,13 @@ body{
     justify-content: center;
 }
 
-/* https://www.geeksforgeeks.org/how-to-change-the-thickness-of-hr-tag-using-css/ */
+/* Body Style */
+body{
+    font-size: 17px; 
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* DIV Style https://www.geeksforgeeks.org/how-to-change-the-thickness-of-hr-tag-using-css/ */
 hr {
     border: none;
     border-radius: 4px 4px 4px 4px;
@@ -23,7 +47,31 @@ hr {
     background: #db9a03
 }
 
+/* Button Style */
 .btn-primary {
     background-color: #e76d36;
     border: none;
 }
+
+/* Footer Style */
+ #page-container {
+    position: relative;
+    min-height: 90vh;
+  }
+  #content-wrap {
+    padding-bottom: 2.5rem;    /* Footer height */
+  }
+  #footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 2.5rem;            /* Footer height */
+  }
+
+/* Nav Style */
+#nav {
+    color: black;
+}
+
+
+
