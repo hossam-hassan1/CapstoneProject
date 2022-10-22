@@ -14,28 +14,28 @@ game_session = {'id':0}
 def index():
     return render_template('index.html')
 
-@app.route("/login", methods=["POST", "GET"])
+@app.route("/log-in", methods=["GET"])
 def login():
     # requires the user to enter data
-    if request.method == "POST":
+    # if request.method == "POST":
     # gives us the "userName" data from the HTML page
-        user = request.form["userName"]
-        return redirect(url_for("user", user=user))
-    else:
-        return render_template("login.html")
+    #     user = request.form["userName"]
+    #     return redirect(url_for("user", user=user))
+    # else:
+    return render_template("login.html")
 
 # @app.route("/<user>")
 # def user(user):
 #     return f"<h1>Hello {user}</h1>"
 
-@app.route('/create_account')
+@app.route('/sign-up')
 def create_account():
-    return render_template("create_account.html")
+    return render_template("sign_up.html")
 
 # renders privacy policy
-@app.route('/privacy')
+@app.route('/privacy-policy')
 def privacy():
-    return render_template("privacy.html")
+    return render_template("privacy_policy.html")
 
 # renders the play page with no game loaded
 #  clue_id = -2  -> no game
@@ -66,11 +66,11 @@ def play(game):
         # renders template with info needed to play game
         return render_template("play.html", game=game, id=id, clue_id=clue[0], prompt=clue[1], coordinates=clue[2], answer=clue[3])
 
-@app.route('/search')
+@app.route('/search-games')
 def search():
   return render_template("search.html", scavenger_hunts=scavenger_hunts)
 
-@app.route('/create_game')
+@app.route('/create-game')
 def create_game():
     return render_template("create_game.html")
 
