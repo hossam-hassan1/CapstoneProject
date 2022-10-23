@@ -57,12 +57,16 @@
 
             <!-- Display answer information while testing -->
             <p>Answer: {{ answer }}</p>
+
+            <!-- Display if the user did not get the correct answer -->
+            {% if message != ""%}
+                <h3>{{ message }}</h3>
+            {% endif %}
         </div>
             
             {% if answer_type == 'text' %}
             <!-- FORM Input - triggers play route to load next clue -->
             <div class="m-2">
-                <p>Text Answer Type: {{ answer_type }}</p>
                 <form class="form-inline" action="" method="post">
                     <div class="form-group mx-sm-3 mb-2">
                         <input type="text" name="answer_input"> 
@@ -72,7 +76,6 @@
             </div> 
             {% elif answer_type == 'coordinates' %}
             <div class="m-2">
-                <p>Coordinates Answer Type: {{ answer_type }}</p>
                 <form class="form-inline" action="" method="post">
                     <div class="form-group mx-sm-3 mb-2">
                         <button type="submit" name="nextClue" class="btn btn-primary btn-lg">Next Clue</button>

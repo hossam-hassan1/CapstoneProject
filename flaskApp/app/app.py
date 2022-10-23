@@ -50,6 +50,7 @@ def noGame():
 def play(game):
     game_id = request.args.get("game_id")
     game = game.replace("_", " ")
+    message = ""
     # if there is an id in the game session continue
     if 'id' in game_session:
         # checks input name='nextClue' to go to next clue in play.html
@@ -65,7 +66,7 @@ def play(game):
                 game_session['id'] += 1
             else:
                 id = game_session['id']
-                print("Sorry, try again!")
+                message = "Sorry, try again!"
         # when nextClue is out of range (past final clue)
         # reset input in game complete automatically runs in play.html
         elif "reset" in request.form:
@@ -80,7 +81,7 @@ def play(game):
     # get the clue the page is currently on
     clue = getClue(clues, id)
     # renders template with info needed to play game
-    return render_template("play.html", game=game, id=id, clue_id=clue[0], prompt=clue[1], answer_type=clue[2], answer=clue[3])
+    return render_template("play.html", game=game, id=id, clue_id=clue[0], prompt=clue[1], answer_type=clue[2], answer=clue[3], message=message)
 
 @app.route('/search-games', methods=["POST", "GET"])
 def search():
