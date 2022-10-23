@@ -12,7 +12,7 @@
             <h1>Let the hunt begin!</h1>
         </div>
         <div class="m-2">
-            <a href="/search" class="btn btn-primary btn-lg" role="button" aria-pressed="true">Find a Game</a>
+            <a href="/search-games" class="btn btn-primary btn-lg" role="button" aria-pressed="true">Find a Game</a>
         </div> 
     </div>
 
@@ -52,45 +52,34 @@
         </div>
 
         <!-- ANSWER AREA -->
+            
         <div class="m-2">
 
             <!-- Display answer information while testing -->
             <p>Answer: {{ answer }}</p>
-            <p>Coordinates: {{ coordinates }}</p>
-
-            <!-- NEED TO: check for answer type GPS or Text -->
-            <div class="card">
-                <!-- REPLACE WITH ZACKS SOLUTION FOR GPS -->
-                {# https://www.w3schools.com/html/tryit.asp?filename=tryhtml5_geolocation #}
-                <p id="demo"></p>
-                <button onclick="getLocation()" class="btn btn-primary">Check your coordinates</button>
-                <script>
-                    var x = document.getElementById("demo");
-
-                    function getLocation() {
-                    if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(showPosition);
-                    } else { 
-                        x.innerHTML = "Geolocation is not supported by this browser.";
-                    }
-                    }
-
-                    function showPosition(position) {
-                    x.innerHTML = "Latitude: " + position.coords.latitude + 
-                    "<br>Longitude: " + position.coords.longitude;
-                    }
-                </script>
-            </div>
         </div>
-
-        <!-- FORM Input - triggers play route to load next clue -->
-        <div class="m-2">
-            <form class="form-inline" action="" method="post">
-                <div class="form-group mx-sm-3 mb-2">
-                    <button type="submit" name="nextClue" class="btn btn-primary btn-lg">Next Clue</button>
-                </div>
-            </form>
-        </div> 
+            
+            {% if answer_type == 'text' %}
+            <!-- FORM Input - triggers play route to load next clue -->
+            <div class="m-2">
+                <p>Text Answer Type: {{ answer_type }}</p>
+                <form class="form-inline" action="" method="post">
+                    <div class="form-group mx-sm-3 mb-2">
+                        <input type="text"> 
+                        <button type="submit" name="nextClue" class="btn btn-primary btn-lg">Next Clue</button>
+                    </div>
+                </form>
+            </div> 
+            {% elif answer_type == 'coordinates' %}
+            <div class="m-2">
+                <p>Coordinates Answer Type: {{ answer_type }}</p>
+                <form class="form-inline" action="" method="post">
+                    <div class="form-group mx-sm-3 mb-2">
+                        <button type="submit" name="nextClue" class="btn btn-primary btn-lg">Next Clue</button>
+                    </div>
+                </form>
+            </div> 
+            {% endif %}
 
         <!-- IF mission is complete -->
         {% else %}
@@ -103,10 +92,10 @@
 
         <!-- INPUT automatically triggers and sets game to complete -->
         <form action="" method="post">
-            <input type="" name="reset">
+            <input type="hidden" name="reset">
         </form>
         <div class="m-2">
-            <a href="/search" class="btn btn-primary btn-lg" role="button" aria-pressed="true">Find a new game</a>
+            <a href="/search-games" class="btn btn-primary btn-lg" role="button" aria-pressed="true">Find a new game</a>
         </div> 
         {% endif %}
     </div>

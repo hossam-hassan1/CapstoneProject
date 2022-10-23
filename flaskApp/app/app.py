@@ -1,6 +1,7 @@
 from crypt import methods
 from flask import Flask, render_template, request, redirect, url_for
-from app.helper import scavenger_hunts, getClue
+# from app.helper import getClue, scavenger_hunts
+from app.database.scavyQueries import get_game_list, get_clues, getClue
 
 app = Flask(__name__)
 
@@ -47,6 +48,8 @@ def noGame():
 # https://pythonbasics.org/flask-sessions/
 @app.route('/play/<game>', methods=["POST", "GET"])
 def play(game):
+    game_id = request.args.get("game_id")
+    game = game.replace("_", " ")
     # if there is an id in the game session continue
     if 'id' in game_session:
         # checks name = nextClue of input to next clue in play.html
@@ -61,14 +64,22 @@ def play(game):
             game_session['id'] = 0
         # after the is is set in session set it in game
         id = game_session['id']
-        #  get clue from helper.py
-        clue = getClue(scavenger_hunts, game, id)
-        # renders template with info needed to play game
-        return render_template("play.html", game=game, id=id, clue_id=clue[0], prompt=clue[1], coordinates=clue[2], answer=clue[3])
+        #  get clues from database
+        clues = get_clues(game_id)
 
-@app.route('/search-games')
+        clue = getClue(clues, id)
+        # renders template with info needed to play game
+        return render_template("play.html", game=game, id=id, clue_id=clue[0], prompt=clue[1], answer_type=clue[2], answer=clue[3])
+
+@app.route('/search-games', methods=["POST", "GET"])
 def search():
-  return render_template("search.html", scavenger_hunts=scavenger_hunts)
+    if "load_game" in request.form:
+        game = request.form.get("load_game")
+        game_id = request.form.get("game_id")
+        game = game.replace(" ", "_")
+        return redirect(url_for("play", game=game, game_id=game_id))
+    scavenger_hunts = get_game_list("public")
+    return render_template("search.html", scavenger_hunts=scavenger_hunts)
 
 @app.route('/create-game')
 def create_game():
