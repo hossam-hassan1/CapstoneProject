@@ -41,9 +41,15 @@
         </div>
 
         <!-- IF clue is not set to mission complete -->
+
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress }}%"></div>
+        </div>
+
         {% if clue_id != -1 %}
 
         <!-- DISPLAY CLUE -->
+
         <div class="card mx-auto m-3">
             <div class="card-body mx-auto m-5">
                 <h3 class="card-subtitle mb-2 text-muted">Clue #: {{ clue_id }}</h3>

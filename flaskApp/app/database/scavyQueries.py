@@ -144,7 +144,7 @@ def get_clues(game_id):
         clues.append(record)
     return clues
 
-# clues = get_clues(1)
+clues = get_clues(1)
 
 # clue = clues[0]
 
@@ -175,3 +175,11 @@ def checkAnswer(clue, input):
     elif answer_type == 'coordinates':
         correct = True
     return correct
+
+def checkProgress(clues, id):
+    total = len(clues)
+    completion = (id/total) * 100
+    return completion
+
+# completion = checkProgress(clues, 1)
+# print(completion)

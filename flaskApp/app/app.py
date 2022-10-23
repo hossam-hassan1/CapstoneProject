@@ -1,7 +1,8 @@
 from crypt import methods
+from click import progressbar
 from flask import Flask, render_template, request, redirect, url_for
 # from app.helper import getClue, scavenger_hunts
-from app.database.scavyQueries import get_game_list, get_clues, getClue, checkAnswer
+from app.database.scavyQueries import get_game_list, get_clues, getClue, checkAnswer, checkProgress
 
 app = Flask(__name__)
 
@@ -73,7 +74,7 @@ def play(game):
             game_session['id'] = -1
         # otherwise game loads at the beginning
         else:    
-            game_session['id'] = 0
+            game_session['id'] = 0 
     # after the id is set in session set it in game
     id = game_session['id']
     #  get clues from database
@@ -81,7 +82,8 @@ def play(game):
     # get the clue the page is currently on
     clue = getClue(clues, id)
     # renders template with info needed to play game
-    return render_template("play.html", game=game, id=id, clue_id=clue[0], prompt=clue[1], answer_type=clue[2], answer=clue[3], message=message)
+    progress = checkProgress(clues, id)
+    return render_template("play.html", game=game, id=id, clue_id=clue[0], prompt=clue[1], answer_type=clue[2], answer=clue[3], message=message, progress=progress)
 
 @app.route('/search-games', methods=["POST", "GET"])
 def search():
