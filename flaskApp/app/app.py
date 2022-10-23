@@ -1,7 +1,7 @@
 from crypt import methods
 from flask import Flask, render_template, request, redirect, url_for
 # from app.helper import getClue, scavenger_hunts
-from app.database.scavyQueries import get_game_list, get_clues, getClue
+from app.database.scavyQueries import get_game_list, get_clues, getClue, checkAnswer
 
 app = Flask(__name__)
 
@@ -52,24 +52,35 @@ def play(game):
     game = game.replace("_", " ")
     # if there is an id in the game session continue
     if 'id' in game_session:
-        # checks name = nextClue of input to next clue in play.html
+        # checks input name='nextClue' to go to next clue in play.html
         if "nextClue" in request.form:
-            game_session['id'] += 1
-        # when next is out of range (past final clue)
+            id = game_session['id']
+            #  get clues from database
+            clues = get_clues(game_id)
+            # get the clue the page is currently on
+            clue = getClue(clues, id)
+            input = request.form.get("answer_input")
+            verify = checkAnswer(clue, input)
+            if verify == True:
+                game_session['id'] += 1
+            else:
+                id = game_session['id']
+                print("Sorry, try again!")
+        # when nextClue is out of range (past final clue)
         # reset input in game complete automatically runs in play.html
         elif "reset" in request.form:
             game_session['id'] = -1
         # otherwise game loads at the beginning
         else:    
             game_session['id'] = 0
-        # after the is is set in session set it in game
-        id = game_session['id']
-        #  get clues from database
-        clues = get_clues(game_id)
-
-        clue = getClue(clues, id)
-        # renders template with info needed to play game
-        return render_template("play.html", game=game, id=id, clue_id=clue[0], prompt=clue[1], answer_type=clue[2], answer=clue[3])
+    # after the id is set in session set it in game
+    id = game_session['id']
+    #  get clues from database
+    clues = get_clues(game_id)
+    # get the clue the page is currently on
+    clue = getClue(clues, id)
+    # renders template with info needed to play game
+    return render_template("play.html", game=game, id=id, clue_id=clue[0], prompt=clue[1], answer_type=clue[2], answer=clue[3])
 
 @app.route('/search-games', methods=["POST", "GET"])
 def search():

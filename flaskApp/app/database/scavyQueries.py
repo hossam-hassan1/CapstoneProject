@@ -164,3 +164,14 @@ def getClue(clues, id):
         answer_type = ""
         answer = ""
     return clue_id, prompt, answer_type, answer
+
+def checkAnswer(clue, input):
+    answer_type = clue[2]
+    answer = clue[3]
+    correct = False
+    if answer_type == 'text':
+        if answer.lower() == input.lower():
+            correct = True
+    elif answer_type == 'coordinates':
+        correct = True
+    return correct
