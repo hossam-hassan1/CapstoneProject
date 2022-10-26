@@ -55,9 +55,10 @@ function initAutocomplete() {
     g = 0
     google.maps.event.addListener(map, 'click', function( event ){
       for(g;g<1;g++){
+        // userSelectedMarker = {coords:{lat:event.latLng.lat(), lng:event.latLng.lng()}};
         userSelectedMarker = {coords:{lat:event.latLng.lat(), lng:event.latLng.lng()}};
         markersArray.push(userSelectedMarker);
-        
+        //stringMarkersArray = str(markersArray)
       }
       // Add multiple markers to the Array
       // for(var i = 0;i<markersArray.length;i++)
@@ -66,7 +67,7 @@ function initAutocomplete() {
       // }
       
       
-      console.log(markersArray);
+      console.log(str(markersArray));
       // Add one marker to the Array
       i = 0
       for(i;i<1;i++)
