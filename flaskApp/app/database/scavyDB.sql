@@ -1,3 +1,5 @@
+DROP DATABASE scavyDB;
+
 CREATE DATABASE scavyDB;
 
 USE scavyDB;
@@ -15,13 +17,13 @@ CREATE TABLE Games (
     user_id int NOT NULL,
     game_title char(100) NOT NULL,
     game_description text(500) NOT NULL,
+    geo_location char(255) DEFAULT NULL,
     privacy_level ENUM('public', 'private') NOT NULL,
     gps_required ENUM('true', 'false') NOT NULL,
     camera_required ENUM('true', 'false') NOT NULL,
     created_on DATE,
     play_count int DEFAULT 0,
-    PRIMARY KEY (game_id),
-    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+    PRIMARY KEY (game_id)
 );
 
 CREATE TABLE Locations (
@@ -53,10 +55,10 @@ CREATE TABLE Clues (
     VALUES ('test@gmail.com', 'test', 'test');
 
 -- Test Games
-    INSERT INTO Games (user_id, game_title, game_description, privacy_level, gps_required, camera_required)
+    INSERT INTO Games (user_id, game_title, game_description, geo_location, privacy_level, gps_required, camera_required)
     VALUES 
-    (1, "Mizzou Quest", "New to the University of Missouri? Try MizzouQuest to discover some favorite spots on campus.", "public", "true", "false"),
-    (1, "Hannibal Hunt", "Discover these cool Hannibal Landmarks with this fun scavenger hunt!", "public", "true", "false");
+    (1, "Mizzou Quest", "New to the University of Missouri? Try MizzouQuest to discover some favorite spots on campus.", "Columbia, MO", "public", "true", "false"),
+    (1, "Hannibal Hunt", "Discover these cool Hannibal Landmarks with this fun scavenger hunt!", "Hannibal, MO", "public", "true", "false");
 
 -- Test Clues
 

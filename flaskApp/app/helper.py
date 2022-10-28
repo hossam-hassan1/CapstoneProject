@@ -1,6 +1,6 @@
 # from app import app
 scavenger_hunts = {
-    'MizzouQuest': [
+    'Mizzou_Quest': [
         {
             'clue': 1,
             'prompt': 'Your MU Tigers work out here and you can too!\nFind this place.',
@@ -31,7 +31,7 @@ scavenger_hunts = {
             'coordinates': '38.948637004293545, -92.32788402343294',
             'answer': 'Shakespeares Pizza',
         }],
-    'HannibalHunt': [
+    'Hannibal_Hunt': [
         {
             'clue': 1,
             'prompt': 'Does a boy get a chance to whitewash a fence every day? Enter the last word on the sign located here.',
@@ -80,6 +80,8 @@ def getClue(scavenger_hunts, game, id):
         coordinates = ""
         answer = ""
     return clue_id, prompt, coordinates, answer
+
+
 
 # clue = getClue(scavenger_hunts, "MizzouQuest", 0)
 # print(clue[0])
