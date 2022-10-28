@@ -51,9 +51,11 @@ def create_user(email, username, password):
         INSERT INTO Users (email, username, password)
         VALUES ("{email}", "{username}", SHA2("{password}",256));"""
     message = "User added!"
+    created = False
     try:
         create_query(insert)
         message = "User added!"
+        created = True
     except:
         check_username = f'SELECT user_id FROM Users WHERE username = "{username}";'
         user_exists = search_query(check_username)
@@ -67,7 +69,7 @@ def create_user(email, username, password):
             message = 'Email already exists.'
     # else:
     #     message = 'Unknown Error Occurred.'
-    return message
+    return created, message
 
 # user = create_user('guest@guest.com', 'guest', 'Guest!23')
 # print(user)

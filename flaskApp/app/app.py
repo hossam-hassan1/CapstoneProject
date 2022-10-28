@@ -44,19 +44,27 @@ def logout():
 @app.route('/sign-up', methods=["POST", "GET"])
 def create_account():
     message = ''
+    validate = ''
+    check = True
     if request.method == 'POST':
-        print('We here!')
         email = request.form['email']
         user = request.form["user"]
         password = request.form["password"]
         confirm_password = request.form["password"]
         validate = validatePassword(password, confirm_password)
-        print(validate)
+        check = validate[0]
         if validate[0] == True:
-            message = create_user(email, user, password)
+            create = create_user(email, user, password)
+            if create[0] == True:
+                message = create[1]
+                logged_in = user_login(user, password)
+                if logged_in[0] == True:
+                    session['login'] = True
+                    session['username'] = user
+                    session['user_id'] = logged_in[0]
         else:
             validate = validate[1]
-    return render_template("sign_up.html", validate=validate, message=message)
+    return render_template("sign_up.html", check=check, validate=validate, message=message)
 
 # renders privacy policy
 @app.route('/privacy-policy')

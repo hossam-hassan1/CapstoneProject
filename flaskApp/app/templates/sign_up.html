@@ -32,8 +32,8 @@
                 <p>Confirm Password:</p>
                 <p><input type="password" name ="confirm_password"/></p>
                 <p>{{message}}</p>
-                {% if validate[0] == False %}
-                {% for line in validate[1] %}
+                {% if check == False %}
+                {% for line in validate %}
                 <p>{{line}}</p>
                 {% endfor %}
                 {% endif %}
