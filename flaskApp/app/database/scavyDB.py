@@ -28,6 +28,7 @@ CREATE TABLE Games (
     camera_required ENUM('true', 'false') NOT NULL,
     created_on DATE,
     play_count int DEFAULT 0,
+    game_code char(255) UNIQUE NOT NULL,
     PRIMARY KEY (game_id)
 );
 """
@@ -59,10 +60,10 @@ CREATE TABLE Clues (
 testUser = """INSERT INTO Users (email, username, password)
     VALUES ('test@gmail.com', 'test', SHA2('test', 256));"""
 
-testGames = """INSERT INTO Games (user_id, game_title, game_description, geo_location, privacy_level, gps_required, camera_required)
+testGames = """INSERT INTO Games (user_id, game_title, game_description, geo_location, privacy_level, gps_required, camera_required, game_code)
     VALUES 
-    (1, "Mizzou Quest", "New to the University of Missouri? Try MizzouQuest to discover some favorite spots on campus.", "Columbia, MO", "public", "true", "false"),
-    (1, "Hannibal Hunt", "Discover these cool Hannibal Landmarks with this fun scavenger hunt!", "Hannibal, MO", "public", "true", "false");
+    (1, "Mizzou Quest", "New to the University of Missouri? Try MizzouQuest to discover some favorite spots on campus.", "Columbia, MO", "public", "true", "false", SHA2('1776', 256)),
+    (1, "Hannibal Hunt", "Discover these cool Hannibal Landmarks with this fun scavenger hunt!", "Hannibal, MO", "public", "true", "false", SHA2('1942', 256));
 """
 
 testClues = """INSERT INTO Clues (game_id, prompt_text, answer_type, answer)

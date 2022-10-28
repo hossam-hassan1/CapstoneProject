@@ -3,7 +3,7 @@ from click import progressbar
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_session import Session
 # from app.helper import getClue, scavenger_hunts
-from app.database.scavyQueries import get_game_list, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user
+from app.database.scavyQueries import get_game_list, get_game_details, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user
 from app.security import validatePassword
 
 app = Flask(__name__)
@@ -73,8 +73,15 @@ def privacy():
 
 # renders the play page with no game loaded
 #  clue_id = -2  -> no game
-@app.route('/play')
+@app.route('/play', methods=["POST", "GET"])
 def noGame():
+    if request.method == 'POST':
+        game_code = request.form["game_code"]
+        game = get_game_details(game_code)
+        game_id = game[0][0]
+        name = game[0][2]
+        name = name.replace(" ", "_")
+        return redirect(url_for("play", game=name, game_id=game_id))
     return render_template("play.html", clue_id=-2)
 
 # renders a game with clues
@@ -125,6 +132,13 @@ def play(game):
 
 @app.route('/search-games', methods=["POST", "GET"])
 def search():
+    if request.method == 'POST':
+        game_code = request.form["game_code"]
+        game = get_game_details(game_code)
+        game_id = game[0][0]
+        name = game[0][2]
+        name = name.replace(" ", "_")
+        return redirect(url_for("play", game=name, game_id=game_id))
     if "load_game" in request.form:
         game = request.form.get("load_game")
         game_id = request.form.get("game_id")
@@ -135,6 +149,7 @@ def search():
 
 @app.route('/create-game')
 def create_game():
+
     return render_template("create_game.html")
 
 # https://www.geeksforgeeks.org/python-404-error-handling-in-flask/#:~:text=A%20404%20Error%20is%20showed,the%20default%20Ugly%20Error%20page.

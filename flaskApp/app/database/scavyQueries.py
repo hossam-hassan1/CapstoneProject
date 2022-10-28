@@ -147,7 +147,7 @@ for game in games:
 
 #     -- get_game_by_title() - a get query to list a game by game title from Games Table
 def get_game_by_title(game_title, privacy_level):
-    games_by_title = f"SELECT game_title FROM GAMES where game_title = '{game_title}' AND privacy_level = '{privacy_level}';"
+    games_by_title = f"SELECT game_title FROM GAMES where game_tiƒtle = '{game_title}' AND privacy_level = '{privacy_level}';"
     result = search_query(games_by_title)
     return result
 
@@ -169,12 +169,15 @@ def get_game_location(game_description, privacy_level):
 
 #     -- get_game_details() - a get query to retrieve all game details based on game code from Games, Clues, and Locations Tables.
 def get_game_details(game):
-    game_details = f"SELECT * FROM Games WHERE game_id = '{game}';"
+    game_details = f"SELECT * FROM Games WHERE game_code = SHA2('{game}', 256);"
     result = search_query(game_details)
     game = []
     for record in result:
         game.append(record)
     return game
+
+game = get_game_details(1776)
+print(game[0][0])
 
 def get_clues(game_id):
     clues_list = f"SELECT * FROM Clues WHERE game_id = '{ game_id }';"
