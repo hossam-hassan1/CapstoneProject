@@ -3,7 +3,7 @@ from click import progressbar
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_session import Session
 # from app.helper import getClue, scavenger_hunts
-from app.database.scavyQueries import get_game_list, get_game_details, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user
+from app.database.scavyQueries import get_game_list, get_game_from_code, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game
 from app.security import validatePassword
 
 app = Flask(__name__)
@@ -28,7 +28,7 @@ def login():
         if logged_in[0] == True:
             session['login'] = True
             session['username'] = user
-            session['user_id'] = logged_in[0]
+            session['user_id'] = logged_in[2]
         else:
             error = logged_in[1]
     return render_template("login.html", error=error)
@@ -61,7 +61,7 @@ def create_account():
                 if logged_in[0] == True:
                     session['login'] = True
                     session['username'] = user
-                    session['user_id'] = logged_in[0]
+                    session['user_id'] = logged_in[2]
         else:
             validate = validate[1]
     return render_template("sign_up.html", check=check, validate=validate, message=message)
@@ -77,7 +77,7 @@ def privacy():
 def noGame():
     if request.method == 'POST':
         game_code = request.form["game_code"]
-        game = get_game_details(game_code)
+        game = get_game_from_code(game_code)
         game_id = game[0][0]
         name = game[0][2]
         name = name.replace(" ", "_")
@@ -134,7 +134,7 @@ def play(game):
 def search():
     if request.method == 'POST':
         game_code = request.form["game_code"]
-        game = get_game_details(game_code)
+        game = get_game_from_code(game_code)
         game_id = game[0][0]
         name = game[0][2]
         name = name.replace(" ", "_")
@@ -147,10 +147,32 @@ def search():
     scavenger_hunts = get_game_list("public")
     return render_template("search.html", scavenger_hunts=scavenger_hunts)
 
-@app.route('/create-game')
-def create_game():
+# create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required)
+@app.route('/create-game', methods=["POST", "GET"])
+def game_create():
+    message = ''
+    if request.method == 'POST':
+        user_id = session['user_id']
+        game_title = request.form["game_title"]
+        game_description = request.form["game_description"]
+        privacy_level = request.form["privacy_level"]
+        try:
+            camera_required = request.form["camera_required"]
+        except:
+            camera_required = 'false'
+        try:
+            gps_required = request.form["gps_required"]
+        except:
+            gps_required = 'false'
+        # print(f'{user_id, game_title, game_description, privacy_level, gps_required, camera_required}')
+        message = create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required)
+        return redirect(url_for("clues", username='test', game='game'))
+    return render_template("create_game.html", message=message)
 
-    return render_template("create_game.html")
+@app.route('/<username>/games/<game>', methods=["POST", "GET"])
+def clues(username, game):
+    
+    return render_template("add_clues.html")
 
 # https://www.geeksforgeeks.org/python-404-error-handling-in-flask/#:~:text=A%20404%20Error%20is%20showed,the%20default%20Ugly%20Error%20page.
 @app.errorhandler(404)
