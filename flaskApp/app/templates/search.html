@@ -32,17 +32,33 @@
 
 <!-- DIV 3 -->
 <div class="container-fluid mx-auto p-3"> 
-    <p>Searching for a new game to play?</p>
-
 
     <div class="row p-3 container">
+        <!-- https://getbootstrap.com/docs/4.0/components/dropdowns/ -->
+        <div class="dropdown">
+            <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Searching for a new game to play?
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <option type="button" class="dropdown-item" onclick='allGames()'>All Games</option>
+              <a class="dropdown-item" href="#">Most Played</a>
+              <!-- query DB keyword from games game_title and game_description -->
+              <a class="dropdown-item" href="#">Keyword</a>
+              <a class="dropdown-item" href="#">Location</a>
+              <a class="dropdown-item" href="#">GPS Required</a>
+              <a class="dropdown-item" href="#">Camera Required</a>
+            </div>
+          </div>
+
+
         <div class="col-sm">
             <input type="text" class="form-control" placeholder="Location">
         </div>
         <div class="col-sm">
             <input type="text" class="form-control" placeholder="Keywords">
         </div>
-        <div class="col form-check form-check-inline">
+
+        <!-- <div class="col form-check form-check-inline">
             <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="GPS">
             <label class="form-check-label" for="inlineCheckbox1">GPS Required</label>
         </div>
@@ -52,11 +68,11 @@
         </div>
         <div class="col">
             <button type="submit" class="btn btn-primary btn-sm">Filter</button>
-        </div>
+        </div> -->
 
 
     <div id="accordion">
-        <table class="table">
+        <table class="table" id="table" style="display:none">
             <thead>
                 <tr>
                   <th scope="col">GAMES</th>
@@ -103,4 +119,13 @@
 </div>
 
 {% endblock %}
+
+<script>
+var select = document.getElementById('dropdown-menu');
+
+function allGames(){
+    document.getElementById("table").style.display = "block";
+}
+    
+</script>
 
