@@ -1,10 +1,14 @@
 from crypt import methods
 from click import progressbar
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
+from flask_session import Session
 # from app.helper import getClue, scavenger_hunts
-from app.database.scavyQueries import get_game_list, get_clues, getClue, checkAnswer, checkProgress
+from app.database.scavyQueries import get_game_list, get_clues, getClue, checkAnswer, checkProgress, user_login
 
 app = Flask(__name__)
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 # sets session variable for game to track current clue
 game_session = {'id':0}
@@ -16,19 +20,30 @@ game_session = {'id':0}
 def index():
     return render_template('index.html')
 
-@app.route("/log-in", methods=["GET"])
+@app.route("/log-in", methods=["GET", "POST"])
 def login():
     # requires the user to enter data
-    # if request.method == "POST":
+    error = ''
+    if request.method == 'POST' and 'user' in request.form and 'password' in request.form:
     # gives us the "userName" data from the HTML page
-    #     user = request.form["userName"]
-    #     return redirect(url_for("user", user=user))
-    # else:
-    return render_template("login.html")
+        user = request.form["user"]
+        password = request.form["password"]
+        logged_in = user_login(user, password)
+        if logged_in[0] == True:
+            session['login'] = True
+            session['username'] = user
+            session['user_id'] = logged_in[0]
+        else:
+            error = logged_in[1]
+    return render_template("login.html", error=error)
 
-# @app.route("/<user>")
-# def user(user):
-#     return f"<h1>Hello {user}</h1>"
+@app.route('/logout')
+def logout():
+    session['login'] = False
+    session.pop('username', None)
+    session.pop('user_id', None)
+    return redirect(url_for('login'))
+
 
 @app.route('/sign-up')
 def create_account():

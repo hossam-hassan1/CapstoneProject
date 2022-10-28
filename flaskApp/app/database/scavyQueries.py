@@ -1,5 +1,7 @@
 # -- Python function per page:
 
+from distutils.log import error
+from email import message
 from unittest import result
 import mysql.connector
 
@@ -75,7 +77,28 @@ def get_user(username, password):
     else:
         print("user does not exit")
 
-# get_user('test', 'test')
+def user_login(username, password):
+    select_user = f"""
+    SELECT user_id FROM Users WHERE username = "{username}" AND password = SHA2("{password}",256);
+    """
+    result = search_query(select_user)
+    logged_in = False
+    error = ''
+    if len(result) == 1:
+        logged_in = True
+    else:
+        check_username = f'SELECT user_id FROM Users WHERE username = "{username}";'
+        result = search_query(check_username)
+        if len(result) == 1:
+            error = 'Password is invalid.'
+        else:
+            error = 'Username does not match any records.'
+    return logged_in, error
+
+
+# logged_in = user_login('test', 'testdfsd')
+# print(logged_in[0])
+# print(logged_in[1])
 
 
 # create_game.html

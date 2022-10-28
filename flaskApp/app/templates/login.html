@@ -21,15 +21,20 @@
 
     <!-- DIV 2 -->
     <div>
-        <form action="#" method="GET">
+        <form action="" method="POST">
         <div class="credentials">
             <p>Username:</p>
-            <p><input type="text" name = "user_name"/></p>
+            <p><input type="text" name = "user"/></p>
             <p>Password:</p>
             <p><input type="password" name = "password"/></p>
-            <button href="/login" type="submit" class="btn btn-primary btn-lg">Log in</button>
+            <p>{{error}}</p>
+            <button href="/login" type="submit" name = "login" class="btn btn-primary btn-lg">Log in</button>
         </div>
         </form>
+        {% if session['login'] == True %}
+        <br>
+        <p>{{session['user']}}</p>
+        {% endif %}
     </div>
 
     <!-- DIV 3 -->
