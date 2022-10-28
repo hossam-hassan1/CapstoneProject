@@ -3,15 +3,13 @@ from click import progressbar
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_session import Session
 # from app.helper import getClue, scavenger_hunts
-from app.database.scavyQueries import get_game_list, get_clues, getClue, checkAnswer, checkProgress, user_login
+from app.database.scavyQueries import get_game_list, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user
+from app.security import validatePassword
 
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
-
-# sets session variable for game to track current clue
-game_session = {'id':0}
 
 # url string of class(route)
 @app.route('/home')
@@ -22,10 +20,8 @@ def index():
 
 @app.route("/log-in", methods=["GET", "POST"])
 def login():
-    # requires the user to enter data
     error = ''
     if request.method == 'POST' and 'user' in request.form and 'password' in request.form:
-    # gives us the "userName" data from the HTML page
         user = request.form["user"]
         password = request.form["password"]
         logged_in = user_login(user, password)
@@ -45,9 +41,22 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/sign-up')
+@app.route('/sign-up', methods=["POST", "GET"])
 def create_account():
-    return render_template("sign_up.html")
+    message = ''
+    if request.method == 'POST':
+        print('We here!')
+        email = request.form['email']
+        user = request.form["user"]
+        password = request.form["password"]
+        confirm_password = request.form["password"]
+        validate = validatePassword(password, confirm_password)
+        print(validate)
+        if validate[0] == True:
+            message = create_user(email, user, password)
+        else:
+            validate = validate[1]
+    return render_template("sign_up.html", validate=validate, message=message)
 
 # renders privacy policy
 @app.route('/privacy-policy')
@@ -66,32 +75,38 @@ def noGame():
 def play(game):
     game_id = request.args.get("game_id")
     game = game.replace("_", " ")
+    print(session)
     message = ""
+    game_session = f'GAME + {game_id}'
     # if there is an id in the game session continue
-    if 'id' in game_session:
-        # checks input name='nextClue' to go to next clue in play.html
+    # checks input name='nextClue' to go to next clue in play.html
+    if game_session in session:
+        print(True)
         if "nextClue" in request.form:
-            id = game_session['id']
+            id = session[game_session]
             #  get clues from database
             clues = get_clues(game_id)
             # get the clue the page is currently on
             clue = getClue(clues, id)
             input = request.form.get("answer_input")
             verify = checkAnswer(clue, input)
+            print(verify)
             if verify == True:
-                game_session['id'] += 1
+                session[game_session] += 1
             else:
-                id = game_session['id']
                 message = "Sorry, try again!"
         # when nextClue is out of range (past final clue)
         # reset input in game complete automatically runs in play.html
         elif "reset" in request.form:
-            game_session['id'] = -1
-        # otherwise game loads at the beginning
-        else:    
-            game_session['id'] = 0 
+            session[game_session] = -1
+        elif "restart" in request.form:
+            session[game_session] = 0
+    # otherwise game loads at the beginning
+    else:
+        print(False)
+        session[game_session] = 0 
     # after the id is set in session set it in game
-    id = game_session['id']
+    id = session[game_session]
     #  get clues from database
     clues = get_clues(game_id)
     # get the clue the page is currently on

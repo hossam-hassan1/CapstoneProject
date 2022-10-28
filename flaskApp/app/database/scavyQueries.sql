@@ -6,6 +6,9 @@
     INSERT INTO Users (email, username, password)
     VALUES ('email', 'username', 'password');
 
+    INSERT INTO Users (email, username, password) 
+    VALUES ('guest', 'guest', SHA2('Guest!23', 256));
+
 
 -- login.html (Users Table)
 

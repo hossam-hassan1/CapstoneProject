@@ -1,8 +1,6 @@
 # -- Python function per page:
 
-from distutils.log import error
-from email import message
-from unittest import result
+
 import mysql.connector
 
 # create_game(1, "test title", "test description", "public", "true", "false")
@@ -15,7 +13,7 @@ import mysql.connector
 
 
 # -- sign_up.html
-def create_query(query, success):
+def create_query(query):
     try:
         mydb = mysql.connector.connect(
             host="localhost",
@@ -26,9 +24,8 @@ def create_query(query, success):
         mycursor = mydb.cursor()
         mycursor.execute(query)
         mydb.commit()
-        print(f"{success}")
     except Exception as err:
-        print(f"Error Occured: {err}\nExiting program...")
+        # print(f"Error Occured: {err}\nExiting program...")
         quit()
 
 def search_query(query):
@@ -52,10 +49,28 @@ def search_query(query):
 def create_user(email, username, password):
     insert = f"""
         INSERT INTO Users (email, username, password)
-        VALUES ("{email}", "{username}", "{password}");"""
-    success = "User added!"
-    create_query(insert, success)
-    
+        VALUES ("{email}", "{username}", SHA2("{password}",256));"""
+    message = "User added!"
+    try:
+        create_query(insert)
+        message = "User added!"
+    except:
+        check_username = f'SELECT user_id FROM Users WHERE username = "{username}";'
+        user_exists = search_query(check_username)
+        check_email = f'SELECT user_id FROM Users WHERE email = "{email}";'
+        email_exists = search_query(check_email)
+        if len(user_exists) == 1 and len(email_exists) == 1:
+            message = 'Username and email already exists.'
+        elif len(user_exists) == 1:
+            message = 'Username already exists.'
+        else:
+            message = 'Email already exists.'
+    # else:
+    #     message = 'Unknown Error Occurred.'
+    return message
+
+# user = create_user('guest@guest.com', 'guest', 'Guest!23')
+# print(user)
 
 # -- login.html (Users Table)
 
