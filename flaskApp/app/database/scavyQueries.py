@@ -2,6 +2,7 @@
 
 
 import mysql.connector
+import random
 
 # create_game(1, "test title", "test description", "public", "true", "false")
 
@@ -25,7 +26,7 @@ def create_query(query):
         mycursor.execute(query)
         mydb.commit()
     except Exception as err:
-        # print(f"Error Occured: {err}\nExiting program...")
+        print(f"Error Occured: {err}\nExiting program...")
         quit()
 
 def search_query(query):
@@ -98,11 +99,15 @@ def user_login(username, password):
     select_user = f"""
     SELECT user_id FROM Users WHERE username = "{username}" AND password = SHA2("{password}",256);
     """
-    result = search_query(select_user)
+    user = search_query(select_user)
+    user_id = 0
     logged_in = False
     error = ''
-    if len(result) == 1:
+    if len(user) == 1:
         logged_in = True
+        for record in user:
+            for id in record:
+                user_id = id
     else:
         check_username = f'SELECT user_id FROM Users WHERE username = "{username}";'
         result = search_query(check_username)
@@ -110,7 +115,7 @@ def user_login(username, password):
             error = 'Password is invalid.'
         else:
             error = 'Username does not match any records.'
-    return logged_in, error
+    return logged_in, error, user_id
 
 
 # logged_in = user_login('test', 'testdfsd')
@@ -120,14 +125,36 @@ def user_login(username, password):
 
 # create_game.html
 
+def generate_game_code(game_title):
+    generate = True
+    while(generate):
+        first = game_title[:6]
+        code = ''
+        for i in range(4):
+            i = random.randint(0,9)
+            code += str(i)
+        check_code = f'SELECT game_code FROM Games WHERE game_code = SHA2("{first + code}", 256);'
+        code_exists = search_query(check_code)
+        if len(code_exists) == 0:
+            generate = False
+    return first + code
+code = generate_game_code("Miz")
+print(code)
+
 #  create_game() - an insert query into Games, Clues, and Locations Tables
 def create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required):
+    game_code = generate_game_code(game_title)
     insert = f"""
-    INSERT INTO Games (user_id, game_title, game_description, privacy_level, gps_required, camera_required)
-    VALUES ({user_id}, "{game_title}", "{game_description}", "{privacy_level}", "{gps_required}", "{camera_required}");
+    INSERT INTO Games (user_id, game_title, game_description, privacy_level, gps_required, camera_required, game_code)
+    VALUES ({user_id}, "{game_title}", "{game_description}", "{privacy_level}", "{gps_required}", "{camera_required}", SHA2("{game_code}", 256));
     """
-    success = "Game created!"
-    create_query(insert, success)
+    message = ''
+    # try:
+    create_query(insert)
+    message = f"Game: '{game_title}' has been created!"
+    # except:
+    #     message = 'Game could not be created.'
+    return message
 
 #     -- get_game_list() - a get query to list all games from Games Tables
 def get_game_list(privacy_level):
@@ -168,7 +195,7 @@ def get_game_location(game_description, privacy_level):
 # -- play.html/GAME
 
 #     -- get_game_details() - a get query to retrieve all game details based on game code from Games, Clues, and Locations Tables.
-def get_game_details(game):
+def get_game_from_code(game):
     game_details = f"SELECT * FROM Games WHERE game_code = SHA2('{game}', 256);"
     result = search_query(game_details)
     game = []
@@ -176,8 +203,8 @@ def get_game_details(game):
         game.append(record)
     return game
 
-game = get_game_details(1776)
-print(game[0][0])
+# game = get_game_from_code(1776)
+# print(game[0][0])
 
 def get_clues(game_id):
     clues_list = f"SELECT * FROM Clues WHERE game_id = '{ game_id }';"

@@ -166,12 +166,12 @@ def game_create():
             gps_required = 'false'
         # print(f'{user_id, game_title, game_description, privacy_level, gps_required, camera_required}')
         message = create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required)
-        return redirect(url_for("clues", username='test', game='game'))
+        # return redirect(url_for("clues", username='test', game='game'))
     return render_template("create_game.html", message=message)
 
 @app.route('/<username>/games/<game>', methods=["POST", "GET"])
 def clues(username, game):
-    
+
     return render_template("add_clues.html")
 
 # https://www.geeksforgeeks.org/python-404-error-handling-in-flask/#:~:text=A%20404%20Error%20is%20showed,the%20default%20Ugly%20Error%20page.
