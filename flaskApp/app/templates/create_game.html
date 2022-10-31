@@ -16,34 +16,73 @@
 <h1 id="header">Create a Game!</h1>
 </div>
 
-<!-- DIV 2 -->
-<div>
-    <form action="#" method="post">
-            <div>
-                <p>Game Title:</p>
-                <p><input type="text" name="game_title"/></p>
-
-                <p>Game Description:</p>
-                <p><textarea id="game_description" name="game_description" rows="4" cols="50"></textarea></p>
-
-                <p>Privacy Level:</p>
-                <input type="radio" id="public" name="privacy_level" value="public">
-                <label for="public">Public</label><br>
-                <input type="radio" id="private" name="privacy_level" value="private">
-                <label for="private">Private</label><br> 
-
-                <p>Location Verification:</p>
-                <input type="radio" id="geo_location" name="location_verification" value="geo location">
-                <label for="geo_location">Geo Location</label><br>
-                <input type="radio" id="qr_code" name="location_verification" value="gr code">
-                <label for="qr_code">QR Code</label><br> 
-
-            </div>
-        </form>
+{% if session['login'] == False %}
+<div class="container-fluid mx-auto p-3">
+    <div class="card mx-auto m-3">
+        <div class="card-body mx-auto m-5">
+            <h3 class="card-subtitle mb-2 text-muted">Would you like to make Scavenger Hunts?</h3>
+            <p class="card-title">You need to login or create an account to get started.</p>
+            <div class="m-2">
+                <a href="/log-in" class="btn btn-primary btn-lg" role="button" aria-pressed="true">Get Started</a>
+            </div> 
+        </div>
+    </div>
 </div>
+{% else %}
+<!-- DIV 2 -->
 
+<div class="container-fluid mx-auto p-3">
+    <div class="card mx-auto m-3">
+        <form class="row m-2 mx-auto" action="" method="post">
+
+            <div class="form-group m-2">
+                <label for="game_title">Game Title:</label>
+                <input type="text" class="form-control" id="game_title "name="game_title">
+            </div>
+
+            <div class="form-group m-2">
+                <label for="game_description">Game Description:</label>
+                <textarea class="form-control" id="game_description" name="game_description" rows="4"></textarea>
+            </div>
+
+            <div class="form-group m-2">
+                <label>Privacy Level:</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" id="public" name="privacy_level" value="public">
+                    <label class="form-check-label" for="public">Public</label><br> 
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" id="private" name="privacy_level" value="private" checked>
+                    <label class="form-check-label" for="private">Private</label><br> 
+                </div>  
+            </div>
+                
+            <div class="form-group m-2">
+                <label>Device Requirements:</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="gps_required" name="gps_required" value="true">
+                    <label class="form-check-label" for="gps_required">GPS Access</label><br>
+                </div>
+                <!-- DISPLAY only if gps_required is checked -->
+                    <!-- <div class="form-group m-2">
+                        <label for="game_code">Game Location</label>
+                        <input type>
+                    </div> -->
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="camera_required" name="camera_required" value="true">
+                <label class="form-check-label" for="camera_required">Camera Access</label><br> 
+                </div>
+            </div>
+            
+            <p>{{message}}</p>
+            <p><input type="submit" value="Create Game"></p>
+        
+        </form>
+    </div>
+</div>
+{% endif %}
 <!-- DIV 3 -->
-<div>
+<!-- <div>
     <form action="#" method="post">
             <div>
                 <p>Clue #1</p>
@@ -51,28 +90,23 @@
                 <p>Clue Description:</p>
                 <p><textarea id="clue_description" name="clue_description" rows="4" cols="50"></textarea></p>
 
-                <p>Set Location:</p>
+                <p>Set Location:</p> -->
                 <!-- id="set_location" -->
 
-                <p>Upload Image:</p>
+                <!-- <p>Upload Image:</p> -->
                 <!-- id="clue_image" -->
 
-                <p>Add Media Link:</p>
+                <!-- <p>Add Media Link:</p>
                 <p><textarea id="clue_link" name="clue_link" rows="1" cols="50"></textarea></p>
 
-                <p>Clue Answer:</p>
+                <p>Clue Answer:</p> -->
                 <!-- <p><input type="radio" id="public" name="privacy_level" value="public"></p> -->
                 
-
+<!-- 
                 <p><input type="submit" value="Add another clue"></p>
             </div>
         </form>
-</div>
+</div> -->
 
-
-<!-- DIV 4 -->
-<div>
-<p><input type="submit" value="Create Game"></p>
-</div>
 
 {% endblock %}

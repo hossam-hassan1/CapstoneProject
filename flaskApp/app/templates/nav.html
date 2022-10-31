@@ -35,11 +35,16 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/privacy-policy">Privacy Policy</a>
                 </li>
-
+                {% if session['login'] == False %}
                 <li class="nav-item">
                     <a class="nav-link" href="/log-in">Log in</a>
                 </li>
-
+                {% endif %}
+                {% if session['login'] == True %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Log Out</a>
+                </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="/sign-up">Get started</a>
                 </li>

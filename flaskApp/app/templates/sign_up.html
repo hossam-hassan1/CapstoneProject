@@ -21,16 +21,22 @@
 
     <!-- DIV 2 -->
     <div>
-    <form action="#" method="post">
+    <form action="" method="post">
             <div class="credentials">
                 <p>Email:</p>
                 <p><input type="text" name="email"/></p>
                 <p>Create a Username:</p>
-                <p><input type="text" name="user_name"/></p>
+                <p><input type="text" name="user"/></p>
                 <p>Create a Password:</p>
                 <p><input type="password" name ="password"/></p>
                 <p>Confirm Password:</p>
-                <p><input type="password" name ="password"/></p>
+                <p><input type="password" name ="confirm_password"/></p>
+                <p>{{message}}</p>
+                {% if check == False %}
+                {% for line in validate %}
+                <p>{{line}}</p>
+                {% endfor %}
+                {% endif %}
                 <button href="/sign-up" type="submit" class="btn btn-primary btn-lg">Sign Up</button>
             </div>
      </form>

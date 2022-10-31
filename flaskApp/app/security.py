@@ -29,9 +29,9 @@ def separateCoordinates(coordinate):
         longitude = (coordinates[1])
     return latitude, longitude
 
-latitude, longitude = separateCoordinates(coordinate)
-print(latitude)
-print(longitude)
+# latitude, longitude = separateCoordinates(coordinate)
+# print(latitude)
+# print(longitude)
 
 
 # reference: https://www.geeksforgeeks.org/how-to-encrypt-and-decrypt-strings-in-python/
@@ -44,18 +44,23 @@ def encryptData(data):
     print("decrypted string: ", decMessage)
     return encMessage
 
-encryptData(latitude)
-print(latitude)
+# encryptData(latitude)
+# print(latitude)
     
  
-def validatePassword(password):
+def validatePassword(password, confirm_password):
     upper = False
     lower = False
     number = False
     special = False
     length = False
     check = False
+    confirm = False
     error = []
+    if confirm_password == password:
+        confirm = True
+    else:
+        error.append("Passwords don't match.")
     if len(password) > 7:
         length = True
     for letter in password:
@@ -69,7 +74,7 @@ def validatePassword(password):
             special = True
         else:
             error.append(f"'{letter}' is an invalid character.")
-    if upper == lower == number == length == special == True:
+    if upper == lower == number == length == special == confirm == True:
         check = True
     else:
         if len(password) < 8:
@@ -87,9 +92,9 @@ def validatePassword(password):
 
 
 
-def passwordMessage(password):
+def passwordMessage(password, confirm_password):
     # password = input("Enter a password: ")
-    validation = validatePassword(password)
+    validation = validatePassword(password, confirm_password)
     if validation[0] == True:
         print("\nThe password is valid")
     else:
@@ -98,13 +103,6 @@ def passwordMessage(password):
             print(line)
 
 
-passwordMessage("Passw0r!df")
+# passwordMessage("Passw0r!df", "Passw0r!df")
 
-passwordMessage("Passw0rdf")
-
-passwordMessage("Passwrdf")
-
-passwordMessage("Passwrdf")
-
-passwordMessage("Passw-f")
 

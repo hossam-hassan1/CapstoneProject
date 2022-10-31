@@ -1,0 +1,101 @@
+<!-- CREATE GAME PAGE -->
+
+<!-- BASE TEMPLATE -->
+{% extends "base.html" %}
+
+{% block title %}Edit Game{% endblock %}
+
+{% block content %}
+
+<head>
+    <link rel="stylesheet" href="/static/css/create_game.css">
+</head>
+
+<!-- DIV 1 -->
+<div>
+<h1 id="header">Game Details</h1>
+</div>
+
+{% if session['login'] == False %}
+<div class="container-fluid mx-auto p-3">
+    <div class="card mx-auto m-3">
+        <div class="card-body mx-auto m-5">
+            <h3 class="card-subtitle mb-2 text-muted">Restricted Information</h3>
+            <p class="card-title">You need to login to view this information.</p>
+            <div class="m-2">
+                <a href="/log-in" class="btn btn-primary btn-lg" role="button" aria-pressed="true">Get Started</a>
+            </div> 
+        </div>
+    </div>
+</div>
+{% else %}
+<!-- DIV 2 -->
+
+<div class="container-fluid mx-auto p-3">
+    <div class="card mx-auto m-3">
+        <p>Title: {{game_title}}</p>
+        <p>game_description: {{game_title}}</p>
+        <p>privacy_level: {{privacy_level}}</p>
+        <p>Game Requirements: {{camera_required}} {{gps_required}}</p>
+        <form class="row m-2 mx-auto" action="" method="post">
+
+            <div class="form-group m-2">
+                <label for="prompt_text">Clue Prompt:</label>
+                <textarea type="text" class="form-control" id="prompt_text" name="prompt_text"></textarea>
+            </div>
+
+            <div class="form-group m-2">
+                <label for="answer_type">Answer Type:</label>
+                <select id="answer_type" name="answer_type" class="form-control">
+                  <option selected>Choose...</option>
+                  <option value="coordinates">GPS Check-In</option>
+                  <option value="text">Text Answer</option>
+                </select>
+            </div>
+
+            <div class="form-group m-2">
+                <label for="answer">Text Answer:</label>
+                <input type="text" class="form-control" id="answer "name="answer">
+            </div>
+
+
+            <!-- IF ANSWER TYPE == COORDINATES -->
+            <!-- display ___ -->
+        
+            
+            <p>{{message}}</p>
+            <p><input type="submit" value="Create Clue"></p>
+        
+        </form>
+    </div>
+</div>
+{% endif %}
+<!-- DIV 3 -->
+<!-- <div>
+    <form action="#" method="post">
+            <div>
+                <p>Clue #1</p>
+
+                <p>Clue Description:</p>
+                <p><textarea id="clue_description" name="clue_description" rows="4" cols="50"></textarea></p>
+
+                <p>Set Location:</p> -->
+                <!-- id="set_location" -->
+
+                <!-- <p>Upload Image:</p> -->
+                <!-- id="clue_image" -->
+
+                <!-- <p>Add Media Link:</p>
+                <p><textarea id="clue_link" name="clue_link" rows="1" cols="50"></textarea></p>
+
+                <p>Clue Answer:</p> -->
+                <!-- <p><input type="radio" id="public" name="privacy_level" value="public"></p> -->
+                
+<!-- 
+                <p><input type="submit" value="Add another clue"></p>
+            </div>
+        </form>
+</div> -->
+
+
+{% endblock %}
