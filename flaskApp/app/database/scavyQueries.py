@@ -243,6 +243,9 @@ def getClue(clues, id):
         answer = ""
     return clue_id, prompt, answer_type, answer
 
+def check_radius(radius):
+    pass
+
 def checkAnswer(clue, input):
     answer_type = clue[2]
     answer = clue[3]
@@ -251,6 +254,8 @@ def checkAnswer(clue, input):
         if answer.lower() == input.lower():
             correct = True
     elif answer_type == 'coordinates':
+        # input = javascrip check-in
+        # check_radius()
         correct = True
     return correct
 

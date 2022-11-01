@@ -126,6 +126,7 @@ def play(game):
     id = session[game_session]
     #  get clues from database
     clues = get_clues(game_id)
+    
     # get the clue the page is currently on
     clue = getClue(clues, id)
     # renders template with info needed to play game
