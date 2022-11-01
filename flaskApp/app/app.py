@@ -31,6 +31,7 @@ def login():
             session['user_id'] = logged_in[2]
         else:
             error = logged_in[1]
+        redirect(url_for("account"))
     return render_template("login.html", error=error)
 
 @app.route('/logout')
@@ -62,6 +63,7 @@ def create_account():
                     session['login'] = True
                     session['username'] = user
                     session['user_id'] = logged_in[2]
+                return redirect(url_for("account"))
         else:
             validate = validate[1]
     return render_template("sign_up.html", check=check, validate=validate, message=message)
