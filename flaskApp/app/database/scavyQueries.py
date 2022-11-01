@@ -203,6 +203,14 @@ def get_game_from_code(game):
         game.append(record)
     return game
 
+def get_games_from_user(user_id):
+    user_games = f"SELECT * FROM Games WHERE user_id = {user_id};"
+    result = search_query(user_games)
+    games = []
+    for record in result:
+        games.append(record)
+    return games
+
 # game = get_game_from_code(1776)
 # print(game[0][0])
 

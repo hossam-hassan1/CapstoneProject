@@ -3,7 +3,7 @@
 <!-- BASE TEMPLATE -->
 {% extends "base.html" %}
 
-{% block title %}Search Games{% endblock %}
+{% block title %}{{username}}'s' Games{% endblock %}
 
 {% block content %}
 
@@ -13,50 +13,14 @@
 
 <!-- DIV 1 -->
 <div>
-    <h1 id="header">Play a Game!</h1>
-</div>
-
-<!-- DIV 2 -->
-<div>
-    <p>Already have a game code?</p>
-    <form action="" method="POST">
-        <p><input type="text" name="game_code"/></p>
-        <p><button href="/" name="game_code" type="submit" class="btn btn-primary btn-lg">Submit</button></p>
-    </form>
-    <div class="row align-items-start">
-        <div class="col-6"><hr></div>
-        <div class="col-4"><hr></div>
-        <div class="col"><hr></div>
-    </div>
+    <h1 id="header"> Welcome {{username}}!</h1>
 </div>
 
 
 
 <!-- DIV 3 -->
 <div class="container-fluid mx-auto p-3"> 
-    <p>Searching for a new game to play?</p>
-
-
-    <div class="row p-3 container">
-        <div class="col-sm">
-            <input type="text" class="form-control" placeholder="Location">
-        </div>
-        <div class="col-sm">
-            <input type="text" class="form-control" placeholder="Keywords">
-        </div>
-        <div class="col form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="GPS">
-            <label class="form-check-label" for="inlineCheckbox1">GPS Required</label>
-        </div>
-        <div class="col form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Camera">
-            <label class="form-check-label" for="inlineCheckbox2">Camera Required</label>
-        </div>
-        <div class="col">
-            <button type="submit" class="btn btn-primary btn-sm">Filter</button>
-        </div>
-
-
+    <h1 id="header"> Your Games:</h1>
     <div id="accordion">
         <table class="table">
             <thead>
@@ -79,7 +43,7 @@
                         <td scope="col">
                             <form class="form-inline" action="" method="post">
                                 <input type="hidden" name="game_id" value="{{ game[0] }}">
-                                <button type="submit" name="load_game" value="{{ game[2] }}" class="btn btn-primary btn-sm">Play</button>
+                                <button type="submit" name="edit_game" value="{{ game[2] }}" class="btn btn-primary btn-sm">Edit</button>
                             </form>
                         </td>
                     </tr>

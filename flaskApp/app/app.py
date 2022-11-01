@@ -3,7 +3,7 @@ from click import progressbar
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_session import Session
 # from app.helper import getClue, scavenger_hunts
-from app.database.scavyQueries import get_game_list, get_game_from_code, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game
+from app.database.scavyQueries import get_game_list, get_game_from_code, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game, get_games_from_user
 from app.security import validatePassword
 
 app = Flask(__name__)
@@ -132,18 +132,18 @@ def play(game):
 
 @app.route('/search-games', methods=["POST", "GET"])
 def search():
-    if request.method == 'POST':
+    if "load_game" in request.form:
+        game = request.form.get("load_game")
+        game_id = request.form.get("game_id")
+        game = game.replace(" ", "_")
+        return redirect(url_for("play", game=game, game_id=game_id))
+    elif request.method == 'POST':
         game_code = request.form["game_code"]
         game = get_game_from_code(game_code)
         game_id = game[0][0]
         name = game[0][2]
         name = name.replace(" ", "_")
         return redirect(url_for("play", game=name, game_id=game_id))
-    if "load_game" in request.form:
-        game = request.form.get("load_game")
-        game_id = request.form.get("game_id")
-        game = game.replace(" ", "_")
-        return redirect(url_for("play", game=game, game_id=game_id))
     scavenger_hunts = get_game_list("public")
     return render_template("search.html", scavenger_hunts=scavenger_hunts)
 
@@ -166,13 +166,16 @@ def game_create():
             gps_required = 'false'
         # print(f'{user_id, game_title, game_description, privacy_level, gps_required, camera_required}')
         message = create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required)
-        # return redirect(url_for("clues", username='test', game='game'))
+        return redirect(url_for("account"))
     return render_template("create_game.html", message=message)
 
-@app.route('/<username>/games/<game>', methods=["POST", "GET"])
-def clues(username, game):
-
-    return render_template("add_clues.html")
+@app.route('/account', methods=["POST", "GET"])
+def account():
+    print(session)
+    username = session['username']
+    user_id = session['user_id']
+    scavenger_hunts = get_games_from_user(user_id)
+    return render_template("account.html", username=username, scavenger_hunts=scavenger_hunts)
 
 # https://www.geeksforgeeks.org/python-404-error-handling-in-flask/#:~:text=A%20404%20Error%20is%20showed,the%20default%20Ugly%20Error%20page.
 @app.errorhandler(404)
