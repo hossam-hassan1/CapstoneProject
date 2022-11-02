@@ -176,6 +176,18 @@ def edit_game(game_id, game_title, game_description, privacy_level, gps_required
         message = 'Game could not be updated.'
     return message
 
+def delete_game(game_id):
+    delete_game = f"""
+        DELETE FROM GAMES WHERE game_id = {game_id};
+    """
+    # try:
+    try:
+        game = create_query(delete_game)
+        print(game)
+        return 'Game has been deleted.'
+    except:
+        return 'Game could not be deleted.'
+
 #     -- get_game_list() - a get query to list all games from Games Tables
 def get_game_list(privacy_level):
     list_all_games = f"SELECT * FROM Games WHERE privacy_level = '{privacy_level}';"
@@ -270,15 +282,13 @@ def check_privacy(game_id):
             privacy = level
     print(privacy)
     return privacy
-
-check_privacy(1)
 # clues = get_clues(1)
 
 # clue = clues[0]
 
 # print(clue[2])
 
-def getClue(clues, id):
+def getClue(clues, id, game):
     total = len(clues)
     if id < total:
         clue = clues[id] 
@@ -345,14 +355,10 @@ def load_edit_form(game_id):
     gps_box = boxes[3]
     return game_title, game_description, public_radio, private_radio, gps_box, camera_box
 
-def save_game_form(game_id, request):
-    game = get_game_by_id(game_id)
+def save_game_form(game_id, user_id, request, mode):
+    message = ''
     game_title = request.form["game_title"]
-    if game_title == '': 
-        game_title = game[0][2]
     game_description = request.form["game_description"]
-    if game_description == '':
-        game_description = game[0][3]
     privacy_level = request.form["privacy_level"]
     try:
         camera_required = request.form["camera_required"]
@@ -376,5 +382,19 @@ def save_game_form(game_id, request):
         gps_box = 'checked'
     else:
         gps_box = ''
-    message = edit_game(game_id, game_title, game_description, privacy_level, gps_required, camera_required)
-    return game_title, game_description, public_radio, private_radio, gps_box, camera_box, message
+    if mode == 'create':
+        if game_title != '' and game_description != '':
+            game = create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required)
+            game_id = game[2]
+            message = game[1]
+        else:
+            message = 'Please fill out missing form fields.'
+        return False, message
+    if mode == 'save':
+        game = get_game_by_id(game_id)
+        if game_title == '': 
+            game_title = game[0][2]
+        if game_description == '':
+            game_description = game[0][3]
+            message = edit_game(game_id, game_title, game_description, privacy_level, gps_required, camera_required)
+    return game_title, game_description, public_radio, private_radio, gps_box, camera_box, message, game_id

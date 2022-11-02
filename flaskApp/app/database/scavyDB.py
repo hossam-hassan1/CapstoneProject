@@ -39,7 +39,7 @@ CREATE TABLE Locations (
     game_id int NOT NULL,
     geo_location char(255) NOT NULL,
     PRIMARY KEY (location_id),
-    FOREIGN KEY (game_id) REFERENCES Games(game_id)
+    FOREIGN KEY (game_id) REFERENCES Games(game_id) ON DELETE CASCADE
 );
 """
 
@@ -53,7 +53,7 @@ CREATE TABLE Clues (
     answer_type ENUM('coordinates', 'text') NOT NULL,
     answer text(1000) NOT NULL,
     PRIMARY KEY (clue_id),
-    FOREIGN KEY (game_id) REFERENCES Games(game_id)
+    FOREIGN KEY (game_id) REFERENCES Games(game_id) ON DELETE CASCADE
 );
 """
 
