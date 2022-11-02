@@ -14,6 +14,7 @@ CREATE TABLE Users (
 
 CREATE TABLE Games (
     game_id int NOT NULL AUTO_INCREMENT,
+        -- added default user bc of errors while testing
     user_id int NOT NULL,
     game_title char(100) NOT NULL,
     game_description text(500) NOT NULL,
@@ -21,7 +22,8 @@ CREATE TABLE Games (
     privacy_level ENUM('public', 'private') NOT NULL,
     gps_required ENUM('true', 'false') NOT NULL,
     camera_required ENUM('true', 'false') NOT NULL,
-    created_on DATE,
+        -- created_on DATE,
+    created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     play_count int DEFAULT 0,
     game_code char(255) NOT NULL,
     PRIMARY KEY (game_id)

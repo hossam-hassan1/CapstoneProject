@@ -2,8 +2,8 @@ from crypt import methods
 from click import progressbar
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_session import Session
-# from app.helper import getClue, scavenger_hunts
-from app.database.scavyQueries import get_game_list, get_game_from_code, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game
+from app.helper import getClue, scavenger_hunts
+from app.database.scavyQueries import get_game_list, get_game_from_code, get_clues, getClue, checkAnswer, user_login, create_user, create_game, log_play_count, checkProgress
 from app.security import validatePassword
 
 app = Flask(__name__)
@@ -14,7 +14,6 @@ Session(app)
 # url string of class(route)
 @app.route('/home')
 @app.route('/')
-# function for that route
 def index():
     return render_template('index.html')
 
@@ -81,6 +80,7 @@ def noGame():
         game_id = game[0][0]
         name = game[0][2]
         name = name.replace(" ", "_")
+    
         return redirect(url_for("play", game=name, game_id=game_id))
     return render_template("play.html", clue_id=-2)
 
@@ -89,10 +89,17 @@ def noGame():
 @app.route('/play/<game>', methods=["POST", "GET"])
 def play(game):
     game_id = request.args.get("game_id")
+    print("Game ID: ", game_id)
     game = game.replace("_", " ")
     print(session)
     message = ""
     game_session = f'GAME + {game_id}'
+
+    # game play counter 
+    # implement passing var count from JS
+    play_count = 2 
+    log_play_count(play_count)
+
     # if there is an id in the game session continue
     # checks input name='nextClue' to go to next clue in play.html
     if game_session in session:
@@ -132,6 +139,7 @@ def play(game):
 
 @app.route('/search-games', methods=["POST", "GET"])
 def search():
+
     if request.method == 'POST':
         game_code = request.form["game_code"]
         game = get_game_from_code(game_code)
@@ -143,8 +151,11 @@ def search():
         game = request.form.get("load_game")
         game_id = request.form.get("game_id")
         game = game.replace(" ", "_")
+
         return redirect(url_for("play", game=game, game_id=game_id))
+    
     scavenger_hunts = get_game_list("public")
+
     return render_template("search.html", scavenger_hunts=scavenger_hunts)
 
 # create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required)

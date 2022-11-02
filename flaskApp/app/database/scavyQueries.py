@@ -1,6 +1,7 @@
 # -- Python function per page:
 
 
+from email import message
 import mysql.connector
 import random
 
@@ -24,6 +25,7 @@ def create_query(query):
         )
         mycursor = mydb.cursor()
         mycursor.execute(query)
+        print(mycursor.rowcount, "record(s) affected after INSERT")
         mydb.commit()
     except Exception as err:
         print(f"Error Occured: {err}\nExiting program...")
@@ -45,6 +47,21 @@ def search_query(query):
         print(f"Error Occured: {err}\nExiting program...")
         quit()
 
+def update_query(query):
+    try:
+        mydb = mysql.connector.connect(
+            host="localhost",
+            database="scavyDB",
+            user="root",
+            passwd="pass"
+        )
+        mycursor = mydb.cursor()
+        mycursor.execute(query)
+        print(mycursor.rowcount, "record(s) affected after UPDATE")
+        mydb.commit()
+    except Exception as err:
+        print(f"Error Occured: {err}\nExiting program...")
+        quit()
 
 # create_user() - an insert query into Users Table  (email, user_name, password)
 def create_user(email, username, password):
@@ -94,6 +111,20 @@ def get_user(username, password):
         return result
     else:
         print("user does not exit")
+
+# logs how many times a game is played add "{game_id}"
+def log_play_count(play_count):
+    # select_game = f"""
+    # SELECT play_count FROM Games WHERE game_id = 2;
+    # """
+    # result = search_query(select_game)
+    update = f"""
+        UPDATE Games SET play_count = "{play_count}" WHERE game_id = 1;
+        """
+    result = update_query(update)
+
+    return result
+
 
 def user_login(username, password):
     select_user = f"""
@@ -174,7 +205,7 @@ for game in games:
 
 #     -- get_game_by_title() - a get query to list a game by game title from Games Table
 def get_game_by_title(game_title, privacy_level):
-    games_by_title = f"SELECT game_title FROM GAMES where game_tiƒtle = '{game_title}' AND privacy_level = '{privacy_level}';"
+    games_by_title = f"SELECT game_title FROM GAMES where game_title = '{game_title}' AND privacy_level = '{privacy_level}';"
     result = search_query(games_by_title)
     return result
 
@@ -248,8 +279,14 @@ def checkAnswer(clue, input):
 
 def checkProgress(clues, id):
     total = len(clues)
-    completion = (id/total) * 100
-    return completion
+    try:
+        completion = (id/total) * 100
+        return completion
+    except ZeroDivisionError:
+        z = 0
+        return z
+    
+completion = checkProgress(clues, 1)
+print(completion)
 
-# completion = checkProgress(clues, 1)
-# print(completion)
+
