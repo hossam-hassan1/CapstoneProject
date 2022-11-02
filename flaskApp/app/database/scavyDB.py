@@ -63,7 +63,8 @@ testUser = """INSERT INTO Users (email, username, password)
 testGames = """INSERT INTO Games (user_id, game_title, game_description, geo_location, privacy_level, gps_required, camera_required, game_code)
     VALUES 
     (1, "Mizzou Quest", "New to the University of Missouri? Try MizzouQuest to discover some favorite spots on campus.", "Columbia, MO", "public", "true", "false", SHA2('1776', 256)),
-    (1, "Hannibal Hunt", "Discover these cool Hannibal Landmarks with this fun scavenger hunt!", "Hannibal, MO", "public", "true", "false", SHA2('1942', 256));
+    (1, "Hannibal Hunt", "Discover these cool Hannibal Landmarks with this fun scavenger hunt!", "Hannibal, MO", "public", "true", "false", SHA2('1942', 256)),
+    (1, "Private Test", "private", "private", "private", "true", "false", SHA2('private', 256));
 """
 
 testClues = """INSERT INTO Clues (game_id, prompt_text, answer_type, answer)
@@ -79,7 +80,9 @@ testClues = """INSERT INTO Clues (game_id, prompt_text, answer_type, answer)
     (2, 'Hannibals oldest, family restaurant has been serving the downtown for four generations. They have an iconic sign spinning mug in their parking lot. What do they serve out of their mug?', 'text', 'Root Beer'),
     (2, '"...Now and then we had a hope that if we lived and were good, God would permit us to be pirates. These ambitions faded out, each in its turn; but the ambition to be a steamboatman always remained." \n- Life on the Mississippi, Mark Twain \nFind Mark Twain as a steamboatman. What does he say is his profession?', 'text', 'Steamboat Pilot'),
     (2, 'Hannibal has over a dozen public murals. Some are over 30 feet tall! One features a woman about to board a train. What color is her dress?', 'text', 'Green'),
-    (2, 'Did you know that the light house in Hannibal is strictly decorative? Riverboats do not need it. But when it was installed in 1935 President FDR pushed a button a the White House to light it for the first time. How many steps is it to the lighthouse from Main Street?', 'text', '244');
+    (2, 'Did you know that the light house in Hannibal is strictly decorative? Riverboats do not need it. But when it was installed in 1935 President FDR pushed a button a the White House to light it for the first time. How many steps is it to the lighthouse from Main Street?', 'text', '244'),
+    -- Private Test Game
+    (3, 'private test','text', 'private');
 """
 
 testLocations = """INSERT INTO Locations (game_id, geo_location)

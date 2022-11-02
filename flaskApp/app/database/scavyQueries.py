@@ -149,12 +149,17 @@ def create_game(user_id, game_title, game_description, privacy_level, gps_requir
     VALUES ({user_id}, "{game_title}", "{game_description}", "{privacy_level}", "{gps_required}", "{camera_required}", SHA2("{game_code}", 256));
     """
     message = ''
+    created = False
     # try:
-    create_query(insert)
-    message = f"Game: '{game_title}' has been created!"
-    # except:
-    #     message = 'Game could not be created.'
-    return message
+    try:
+        create_query(insert)
+        created = True
+        message = f"Game: '{game_title}' has been created!"
+    except:
+        message = 'Game could not be created.'
+    return created, message
+
+print(create_game(1, "", "", "", "", ""))
 
 #     -- get_game_list() - a get query to list all games from Games Tables
 def get_game_list(privacy_level):
@@ -197,11 +202,23 @@ def get_game_location(game_description, privacy_level):
 #     -- get_game_details() - a get query to retrieve all game details based on game code from Games, Clues, and Locations Tables.
 def get_game_from_code(game):
     game_details = f"SELECT * FROM Games WHERE game_code = SHA2('{game}', 256);"
+    code_message = ""
+    exists = False
     result = search_query(game_details)
-    game = []
-    for record in result:
-        game.append(record)
-    return game
+    if len(result) == 1:
+        exists = True
+        game = []
+        for record in result:
+            game.append(record)
+        game_id = game[0][0]
+        name = game[0][2]
+        name = name.replace(" ", "_")
+    else:
+        exists = False
+        name = False
+        game_id = False
+        code_message = "Game code does not exist."
+    return exists, name, game_id, code_message
 
 def get_games_from_user(user_id):
     user_games = f"SELECT * FROM Games WHERE user_id = {user_id};"
@@ -211,8 +228,8 @@ def get_games_from_user(user_id):
         games.append(record)
     return games
 
-# game = get_game_from_code(1776)
-# print(game[0][0])
+game = get_game_from_code(1776)
+print(game)
 
 def get_clues(game_id):
     clues_list = f"SELECT * FROM Clues WHERE game_id = '{ game_id }';"
@@ -222,7 +239,20 @@ def get_clues(game_id):
         clues.append(record)
     return clues
 
-clues = get_clues(1)
+print(get_clues(1))
+
+def check_privacy(game_id):
+    privacy_query = f"SELECT privacy_level FROM Games WHERE game_id = '{game_id}';"
+    result = search_query(privacy_query)
+    privacy = ''
+    for record in result:
+        for level in record: 
+            privacy = level
+    print(privacy)
+    return privacy
+
+check_privacy(1)
+# clues = get_clues(1)
 
 # clue = clues[0]
 

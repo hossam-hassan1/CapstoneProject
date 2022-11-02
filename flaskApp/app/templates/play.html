@@ -4,57 +4,41 @@
 
 {% block content %}
 
-<!-- If clue_id == -2 there is no game currently loaded
-    This prompts user to load a game -->
-{% if clue_id == -2 %}
-    <div class="container-fluid mx-auto p-3">
-        <div class="m-3">
+
+
+
+<div class="container-fluid mx-auto p-3">
+    <!--  PAGE TITLE: -->
+    <div class="m-3">
+        <!-- If past final clue shows mission complete -->
+        <!-- ID is automatically set to -1 at bottom after past final clue  -->
+        {% if clue_id == -1 %}
+            <h1>Mission Complete!</h1>
+        {% else %}
+        <!-- Otherwise display new game info -->
             <h1>Let the hunt begin!</h1>
-        </div>
-        <div class="row align-items-start">
-            <div class="col-6"><hr></div>
-            <div class="col-4"><hr></div>
-            <div class="col"><hr></div>
-        </div>
-
-        <!-- DIV 2 -->
-        <div>
-            <p>Already have a game code?</p>
-            <form action="" method="POST">
-                <p><input type="text" name="game_code"/></p>
-                <p><button href="/" type="submit" class="btn btn-primary btn-lg">Submit</button></p>
-            </form>
-        </div>
-
-        <div class="m-2">
-            <a href="/search-games" class="btn btn-primary btn-lg" role="button" aria-pressed="true">Find a Game</a>
-        </div> 
+        {% endif %}
+        <!-- Displays current game title -->
+        {%  if clue_id != -2 %}
+        <h3>Game: {{game}}</h3>
+        {% endif %}
     </div>
 
-<!-- Otherwise a game page is loaded with a clue or mission complete -->
-{% else %}
-    <div class="container-fluid mx-auto p-3">
-        <!--  PAGE TITLE: -->
-        <div class="m-3">
-            <!-- If past final clue shows mission complete -->
-            <!-- ID is automatically set to -1 at bottom after past final clue  -->
-            {% if clue_id == -1 %}
-                <h1>Mission Complete!</h1>
-            {% else %}
-            <!-- Otherwise display new game info -->
-                <h1>Let the hunt begin!</h1>
-            {% endif %}
-            <!-- Displays current game title -->
-            <h3>Game: {{game}}</h3>
-        </div>
-
-        <!-- DIVIDER BAR -->
+    <!-- DIVIDER BAR -->
+    <div>
         <div class="row align-items-start">
             <div class="col-6"><hr></div>
             <div class="col-4"><hr></div>
             <div class="col"><hr></div>
         </div>
+    </div>
 
+
+{% if privacy == 'private' and game_session not in session or clue_id == -2%}
+{% include 'game_code.html' %}
+    
+<!-- Otherwise a game page is loaded with a clue or mission complete -->
+{% else %}
         <!-- IF clue is not set to mission complete -->
 
         <div class="progress">

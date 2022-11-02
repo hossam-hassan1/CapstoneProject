@@ -1,9 +1,6 @@
 <!-- CREATE GAME PAGE -->
 
 <!-- BASE TEMPLATE -->
-{% extends "base.html" %}
-
-{% block title %}Edit Game{% endblock %}
 
 {% block content %}
 
@@ -11,65 +8,55 @@
     <link rel="stylesheet" href="/static/css/create_game.css">
 </head>
 
-<!-- DIV 1 -->
-<div>
-<h1 id="header">Game Details</h1>
-</div>
-
-{% if session['login'] == False %}
-<div class="container-fluid mx-auto p-3">
-    <div class="card mx-auto m-3">
-        <div class="card-body mx-auto m-5">
-            <h3 class="card-subtitle mb-2 text-muted">Restricted Information</h3>
-            <p class="card-title">You need to login to view this information.</p>
-            <div class="m-2">
-                <a href="/log-in" class="btn btn-primary btn-lg" role="button" aria-pressed="true">Get Started</a>
-            </div> 
-        </div>
-    </div>
-</div>
-{% else %}
 <!-- DIV 2 -->
-
-<div class="container-fluid mx-auto p-3">
     <div class="card mx-auto m-3">
-        <p>Title: {{game_title}}</p>
-        <p>game_description: {{game_title}}</p>
-        <p>privacy_level: {{privacy_level}}</p>
-        <p>Game Requirements: {{camera_required}} {{gps_required}}</p>
-        <form class="row m-2 mx-auto" action="" method="post">
-
-            <div class="form-group m-2">
-                <label for="prompt_text">Clue Prompt:</label>
-                <textarea type="text" class="form-control" id="prompt_text" name="prompt_text"></textarea>
+        <div class="card-header">
+            2. Edit Clues
+        </div>
+        {% if mode != "edit" %}
+        <div class="card-body">
+            <h5 class="card-title">You must create a game first in order to add clues.</h5>
+        </div>
+        {% else %}
+        <div class="accordion card-body row m-2 mx-auto" id="cluesAccordion">
+    
+            <!-- FOR CLUE IN GAME DISPLAY CLUE -->
+            {% for clue in clues %}
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="{{clue_id}}">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  For Clue In Game Display clue
+                </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse show m-2" aria-labelledby="{{clue_id}}" data-bs-parent="#cluesAccordion">
+                <div class="accordion-body m-2">
+                    {% include 'clue_form.html' %}
+                </div>
+              </div>
             </div>
+            {% endfor %}
 
-            <div class="form-group m-2">
-                <label for="answer_type">Answer Type:</label>
-                <select id="answer_type" name="answer_type" class="form-control">
-                  <option selected>Choose...</option>
-                  <option value="coordinates">GPS Check-In</option>
-                  <option value="text">Text Answer</option>
-                </select>
+            <!-- ADD CLUES -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Add Clue
+                </button>
+              </h2>
+              <div id="collapseThree" class="accordion-collapse collapse m-2" aria-labelledby="headingThree" data-bs-parent="#cluesAccordion">
+                <div class="accordion-body m-2">
+                    {% include 'clue_form.html' %}
+                </div>
+              </div>
             </div>
-
-            <div class="form-group m-2">
-                <label for="answer">Text Answer:</label>
-                <input type="text" class="form-control" id="answer "name="answer">
-            </div>
-
-
-            <!-- IF ANSWER TYPE == COORDINATES -->
-            <!-- display ___ -->
-        
-            
-            <p>{{message}}</p>
-            <p><input type="submit" value="Create Clue"></p>
-        
-        </form>
+        </div>
+        {% endif %}
     </div>
-</div>
-{% endif %}
+
+
+
+
+
 <!-- DIV 3 -->
 <!-- <div>
     <form action="#" method="post">

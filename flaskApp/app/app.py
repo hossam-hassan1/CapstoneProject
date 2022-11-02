@@ -3,7 +3,7 @@ from click import progressbar
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_session import Session
 # from app.helper import getClue, scavenger_hunts
-from app.database.scavyQueries import get_game_list, get_game_from_code, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game, get_games_from_user
+from app.database.scavyQueries import get_game_list, get_game_from_code, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game, get_games_from_user, check_privacy
 from app.security import validatePassword
 
 app = Flask(__name__)
@@ -20,6 +20,7 @@ def index():
 
 @app.route("/log-in", methods=["GET", "POST"])
 def login():
+    print(session)
     error = ''
     if request.method == 'POST' and 'user' in request.form and 'password' in request.form:
         user = request.form["user"]
@@ -29,13 +30,15 @@ def login():
             session['login'] = True
             session['username'] = user
             session['user_id'] = logged_in[2]
+            return redirect(url_for("account"))
         else:
             error = logged_in[1]
-        redirect(url_for("account"))
     return render_template("login.html", error=error)
 
 @app.route('/logout')
 def logout():
+    if session['login'] == False:
+        return redirect(url_for('login'))
     session['login'] = False
     session.pop('username', None)
     session.pop('user_id', None)
@@ -44,6 +47,8 @@ def logout():
 
 @app.route('/sign-up', methods=["POST", "GET"])
 def create_account():
+    if session['login'] == True:
+        return redirect(url_for('account'))
     message = ''
     validate = ''
     check = True
@@ -68,6 +73,15 @@ def create_account():
             validate = validate[1]
     return render_template("sign_up.html", check=check, validate=validate, message=message)
 
+@app.route('/account', methods=["POST", "GET"])
+def account():
+    if session['login'] == False:
+        return redirect(url_for('login'))
+    username = session['username']
+    user_id = session['user_id']
+    scavenger_hunts = get_games_from_user(user_id)
+    return render_template("account.html", username=username, scavenger_hunts=scavenger_hunts)
+
 # renders privacy policy
 @app.route('/privacy-policy')
 def privacy():
@@ -77,24 +91,46 @@ def privacy():
 #  clue_id = -2  -> no game
 @app.route('/play', methods=["POST", "GET"])
 def noGame():
+    code_error=""
+    code_prompt="Alread have a game code? Enter to play."
     if request.method == 'POST':
         game_code = request.form["game_code"]
         game = get_game_from_code(game_code)
-        game_id = game[0][0]
-        name = game[0][2]
-        name = name.replace(" ", "_")
-        return redirect(url_for("play", game=name, game_id=game_id))
-    return render_template("play.html", clue_id=-2)
+        
+        if game[0] == True:
+            session[f'GAME{game[2]}'] = 0
+            return redirect(url_for("play", game=game[1], game_id=game[2]))
+        elif game[1] == False:
+            return render_template("play.html", clue_id=-2, code_prompt=code_prompt, code_error=game[3]) 
+    return render_template("play.html", code_error=code_error, code_prompt=code_prompt, clue_id=-2)
 
 # renders a game with clues
 # https://pythonbasics.org/flask-sessions/
 @app.route('/play/<game>', methods=["POST", "GET"])
 def play(game):
     game_id = request.args.get("game_id")
+    game_session = f'GAME{game_id}'
     game = game.replace("_", " ")
     print(session)
     message = ""
-    game_session = f'GAME + {game_id}'
+    game_privacy = check_privacy(game_id)
+    if game_privacy == "public":
+        pass
+    elif game_privacy == 'private':
+        if game_session not in session:
+            code_prompt = f"{game} requires a code to play."
+            code_error = ""
+            if request.method == 'POST':
+                game_code = request.form["game_code"]
+                load_game = get_game_from_code(game_code)
+                if load_game[0] == True:
+                    session[f'GAME{load_game[2]}'] = 0
+                    return redirect(url_for("play", game=load_game[1], game_id=load_game[2]))
+                if load_game[0] == False:
+                    code_error = load_game[3]
+            return render_template("play.html", game=game, privacy=game_privacy, code_error=code_error, code_prompt=code_prompt)
+        else:
+            pass
     # if there is an id in the game session continue
     # checks input name='nextClue' to go to next clue in play.html
     if game_session in session:
@@ -126,15 +162,18 @@ def play(game):
     id = session[game_session]
     #  get clues from database
     clues = get_clues(game_id)
-    
     # get the clue the page is currently on
     clue = getClue(clues, id)
     # renders template with info needed to play game
     progress = checkProgress(clues, id)
     return render_template("play.html", game=game, id=id, clue_id=clue[0], prompt=clue[1], answer_type=clue[2], answer=clue[3], message=message, progress=progress)
 
+
 @app.route('/search-games', methods=["POST", "GET"])
 def search():
+    scavenger_hunts = get_game_list("public")
+    code_error=""
+    code_prompt="Alread have a game code? Enter to play."
     if "load_game" in request.form:
         game = request.form.get("load_game")
         game_id = request.form.get("game_id")
@@ -143,21 +182,32 @@ def search():
     elif request.method == 'POST':
         game_code = request.form["game_code"]
         game = get_game_from_code(game_code)
-        game_id = game[0][0]
-        name = game[0][2]
-        name = name.replace(" ", "_")
-        return redirect(url_for("play", game=name, game_id=game_id))
-    scavenger_hunts = get_game_list("public")
-    return render_template("search.html", scavenger_hunts=scavenger_hunts)
+        if game[0] == True:
+            session[f'GAME{game[2]}'] = 0
+            return redirect(url_for("play", game=game[1], game_id=game[2]))
+        elif game[1] == False:
+            return render_template("search.html", scavenger_hunts=scavenger_hunts, code_error=game[3], code_prompt=code_prompt)
+    return render_template("search.html", scavenger_hunts=scavenger_hunts, code_error=code_error, code_prompt=code_prompt)
 
 # create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required)
 @app.route('/create-game', methods=["POST", "GET"])
 def game_create():
+    mode = ''
+    read = ''
     message = ''
+    disabled = ''
+    title_placeholder = 'What is your game called?'
+    description_placeholder = 'Tell us about your game.'
+    public_radio = ""
+    private_radio = 'checked'
+    gps_box = ''
+    camera_box = ''
     if request.method == 'POST':
         user_id = session['user_id']
         game_title = request.form["game_title"]
+        print(game_title)
         game_description = request.form["game_description"]
+        print(game_description)
         privacy_level = request.form["privacy_level"]
         try:
             camera_required = request.form["camera_required"]
@@ -169,16 +219,23 @@ def game_create():
             gps_required = 'false'
         # print(f'{user_id, game_title, game_description, privacy_level, gps_required, camera_required}')
         message = create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required)
-        return redirect(url_for("account"))
-    return render_template("create_game.html", message=message)
-
-@app.route('/account', methods=["POST", "GET"])
-def account():
-    print(session)
-    username = session['username']
-    user_id = session['user_id']
-    scavenger_hunts = get_games_from_user(user_id)
-    return render_template("account.html", username=username, scavenger_hunts=scavenger_hunts)
+        print(message)
+        if message[0] == True:
+            print
+            read = 'readonly'
+            disabled = 'disabled'
+            if privacy_level == 'public':
+                public_radio = 'checked'
+                private_radio = ''
+            if camera_required == 'true':
+                camera_box = 'checked'
+            if gps_required == 'true':
+                gps_box = 'checked'
+            return render_template("create_game.html", mode='edit', read=read, disabled=disabled, message=message[1], title_placeholder=game_title, description_placeholder=game_description, public_radio=public_radio, private_radio=private_radio, gps_box=gps_box, camera_box=camera_box)
+        elif message[0] == False:
+            return render_template("create_game.html", mode=mode, read=read, disabled=disabled, message=message[1], title_placeholder=title_placeholder, description_placeholder=description_placeholder, public_radio=public_radio, private_radio=private_radio, gps_box=gps_box, camera_box=camera_box)
+        # return redirect(url_for("account"))
+    return render_template("create_game.html", mode=mode, read=read, message=message, disabled=disabled, title_placeholder=title_placeholder, description_placeholder=description_placeholder, public_radio=public_radio, private_radio=private_radio, gps_box=gps_box, camera_box=camera_box)
 
 # https://www.geeksforgeeks.org/python-404-error-handling-in-flask/#:~:text=A%20404%20Error%20is%20showed,the%20default%20Ugly%20Error%20page.
 @app.errorhandler(404)
