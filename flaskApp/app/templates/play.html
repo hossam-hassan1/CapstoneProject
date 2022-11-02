@@ -52,7 +52,8 @@
         <div class="card mx-auto m-3">
             <div class="card-body mx-auto m-5">
                 <h3 class="card-subtitle mb-2 text-muted">Clue #: {{ clue_id }}</h3>
-                <h3 class="card-title">{{ prompt }}</h3>
+                <h3 class="card-title">{{ prompt }}</h3><br>
+                <h3 class="card-subtitle mb-2 text-muted">Find the location described in the clue above.</h3>
                 <!-- ADD PROMPT IMAGE -->
                 <!-- ADD PROMPT LINK -->
             </div>
@@ -63,7 +64,7 @@
         <div class="m-2">
 
             <!-- Display answer information while testing -->
-            <p>Answer: {{ answer }}</p>
+            <!-- <p>Answer: {{ answer }}</p> -->
 
             <!-- Display if the user did not get the correct answer -->
             {% if message != ""%}
@@ -76,6 +77,7 @@
             <div class="m-2">
                 <form class="form-inline" action="" method="post">
                     <div class="form-group mx-sm-3 mb-2">
+                        <p>Enter the answer found at the clue.</p>
                         <input type="text" name="answer_input"> 
                         <button type="submit" name="nextClue" class="btn btn-primary btn-lg">Next Clue</button>
                     </div>
@@ -85,7 +87,8 @@
             <div class="m-2">
                 <form class="form-inline" action="" method="post">
                     <div class="form-group mx-sm-3 mb-2">
-                        <button type="submit" name="nextClue" class="btn btn-primary btn-lg">Next Clue</button>
+                        <p>Check-In when you have found the clue to proceed.</p>
+                        <button type="submit" name="nextClue" class="btn btn-primary btn-lg">Check-In</button>
                     </div>
                 </form>
             </div> 

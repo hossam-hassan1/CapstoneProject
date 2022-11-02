@@ -199,7 +199,8 @@ def search():
 # create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required)
 @app.route('/create-game', methods=["POST", "GET"])
 def game_create():
-    user_id = session['user_id']
+    if session['login'] == True :
+        user_id = session['user_id']
     message = ''
     if 'save_game' in request.form:
         mode = 'save'

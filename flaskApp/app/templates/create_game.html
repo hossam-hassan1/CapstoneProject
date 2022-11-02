@@ -11,14 +11,7 @@
     <link rel="stylesheet" href="/static/css/create_game.css">
 </head>
 
-<!-- DIV 1 -->
-<div>
-{% if mode == 'edit' %}
-<h1 id="header">Edit {{title_placeholder}}</h1>
-{% else %}
-<h1 id="header">Create a Game!</h1>
-{% endif %}
-</div>
+
 
 {% if 'login' not in session or session['login'] == false %}
 <div class="container-fluid mx-auto p-3">
@@ -33,6 +26,17 @@
     </div>
 </div>
 {% else %}
+
+
+<!-- DIV 1 -->
+<div>
+    {% if mode == 'edit' %}
+    <h1 id="header">Edit {{title_placeholder}}</h1>
+    {% else %}
+    <h1 id="header">Create a Game!</h1>
+    {% endif %}
+</div>
+
 <!-- DIV 2 -->
 
 <div class="container-fluid mx-auto p-3">
