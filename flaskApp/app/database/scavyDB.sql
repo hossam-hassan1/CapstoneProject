@@ -85,3 +85,4 @@ CREATE TABLE Clues (
     (1, "Columbia, MO"),
     -- Hannibal
     (2, "Hannibal, MO");
+

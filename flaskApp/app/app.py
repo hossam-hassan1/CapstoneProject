@@ -3,7 +3,7 @@ from click import progressbar
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_session import Session
 # from app.helper import getClue, scavenger_hunts
-from app.database.scavyQueries import get_game_list, get_game_from_code, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game, get_games_from_user, check_privacy
+from app.database.scavyQueries import get_game_list, get_game_from_code, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game, get_games_from_user, check_privacy, get_game_by_id, edit_game, load_edit_form, save_game_form
 from app.security import validatePassword
 
 app = Flask(__name__)
@@ -80,6 +80,10 @@ def account():
     username = session['username']
     user_id = session['user_id']
     scavenger_hunts = get_games_from_user(user_id)
+    if 'load_edit' in request.form:
+        game_id = request.form["game_id"]
+        game = load_edit_form(game_id)
+        return render_template("create_game.html", mode='edit', read='readonly', disabled='disabled', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id)
     return render_template("account.html", username=username, scavenger_hunts=scavenger_hunts)
 
 # renders privacy policy
@@ -192,22 +196,18 @@ def search():
 # create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required)
 @app.route('/create-game', methods=["POST", "GET"])
 def game_create():
-    mode = ''
-    read = ''
-    message = ''
-    disabled = ''
-    title_placeholder = 'What is your game called?'
-    description_placeholder = 'Tell us about your game.'
-    public_radio = ""
-    private_radio = 'checked'
-    gps_box = ''
-    camera_box = ''
-    if request.method == 'POST':
-        user_id = session['user_id']
+    user_id = session['user_id']
+    if 'save_game' in request.form:
+        game_id = request.form["game_id"]
+        game = save_game_form(game_id, request)
+        return render_template("create_game.html", mode='edit', read='readonly', disabled='disabled', message=game[6], title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id)
+    if 'edit_game' in request.form:
+        game_id = request.form["game_id"]
+        game = load_edit_form(game_id)
+        return render_template("create_game.html", mode='save', read='', disabled='', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id)
+    if 'create_game' in request.form:
         game_title = request.form["game_title"]
-        print(game_title)
         game_description = request.form["game_description"]
-        print(game_description)
         privacy_level = request.form["privacy_level"]
         try:
             camera_required = request.form["camera_required"]
@@ -217,25 +217,30 @@ def game_create():
             gps_required = request.form["gps_required"]
         except:
             gps_required = 'false'
-        # print(f'{user_id, game_title, game_description, privacy_level, gps_required, camera_required}')
-        message = create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required)
-        print(message)
+        if game_title != '' and game_description != '':
+            message = create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required)
+        else:
+            message = 'Please fill out missing form fields.'
         if message[0] == True:
-            print
-            read = 'readonly'
-            disabled = 'disabled'
             if privacy_level == 'public':
                 public_radio = 'checked'
                 private_radio = ''
+            else:
+                public_radio = ''
+                private_radio = 'checked'
             if camera_required == 'true':
                 camera_box = 'checked'
+            else:
+                camera_box = ''
             if gps_required == 'true':
                 gps_box = 'checked'
-            return render_template("create_game.html", mode='edit', read=read, disabled=disabled, message=message[1], title_placeholder=game_title, description_placeholder=game_description, public_radio=public_radio, private_radio=private_radio, gps_box=gps_box, camera_box=camera_box)
+            else:
+                gps_box = ''
+            return render_template("create_game.html", mode='edit', read='readonly', disabled='disabled', message=message[1], title_placeholder=game_title, description_placeholder=game_description, public_radio=public_radio, private_radio=private_radio, gps_box=gps_box, camera_box=camera_box, game_id=message[2])
         elif message[0] == False:
-            return render_template("create_game.html", mode=mode, read=read, disabled=disabled, message=message[1], title_placeholder=title_placeholder, description_placeholder=description_placeholder, public_radio=public_radio, private_radio=private_radio, gps_box=gps_box, camera_box=camera_box)
+            return render_template("create_game.html", mode="", read='', disabled='', message=message[1], title_placeholder='What is your game called?', description_placeholder='Tell us about your game.', public_radio=public_radio, private_radio='checked', gps_box='', camera_box='')
         # return redirect(url_for("account"))
-    return render_template("create_game.html", mode=mode, read=read, message=message, disabled=disabled, title_placeholder=title_placeholder, description_placeholder=description_placeholder, public_radio=public_radio, private_radio=private_radio, gps_box=gps_box, camera_box=camera_box)
+    return render_template("create_game.html", mode='', read='', message='', disabled='', title_placeholder='What is your game called?', description_placeholder='Tell us about your game.', public_radio='', private_radio='checked', gps_box='', camera_box='')
 
 # https://www.geeksforgeeks.org/python-404-error-handling-in-flask/#:~:text=A%20404%20Error%20is%20showed,the%20default%20Ugly%20Error%20page.
 @app.errorhandler(404)

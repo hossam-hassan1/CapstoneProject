@@ -40,7 +40,7 @@
         <div class="col-sm">
             <div class="card mx-auto m-3">
                 <div class="card-header">
-                    1. Game Details
+                    1. Game Details 
                 </div>
                 <form class="row m-2 mx-auto" action="" method="post">
         
@@ -84,8 +84,16 @@
                     </div>
                     
                     <p>{{message}}</p>
-                    <p><input type="submit" value="Create Game"></p>
-                
+                    {% if mode == 'edit' %}
+                    <input type="hidden"  name="game_id" value="{{game_id}}">
+                    <button type="submit" value="Edit Game" name="edit_game" class="btn btn-primary btn-sm">Edit Game</button>
+                    {% elif mode == 'save' %}
+                    <input type="hidden"  name="game_id" value="{{game_id}}">
+                    <button type="submit" value="Save Game" name="save_game" class="btn btn-primary btn-sm">Save Game</button>
+                    {% else %}
+                    <input type="hidden" value="Create Game">
+                    <button type="submit" value="Create Game" name="create_game" class="btn btn-primary btn-sm">Create Game</button>
+                    {% endif %}
                 </form>
             </div>
         </div>

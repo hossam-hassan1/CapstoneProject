@@ -25,6 +25,7 @@ def create_query(query):
         mycursor = mydb.cursor()
         mycursor.execute(query)
         mydb.commit()
+        return mycursor.lastrowid
     except Exception as err:
         print(f"Error Occured: {err}\nExiting program...")
         quit()
@@ -150,16 +151,30 @@ def create_game(user_id, game_title, game_description, privacy_level, gps_requir
     """
     message = ''
     created = False
+    game_id = 0
     # try:
     try:
-        create_query(insert)
+        game_id = create_query(insert)
         created = True
         message = f"Game: '{game_title}' has been created!"
     except:
         message = 'Game could not be created.'
-    return created, message
+    return created, message, game_id
 
-print(create_game(1, "", "", "", "", ""))
+def edit_game(game_id, game_title, game_description, privacy_level, gps_required, camera_required):
+    update = f"""
+        UPDATE Games
+        SET game_title="{game_title}", game_description="{game_description}", privacy_level="{privacy_level}", gps_required="{gps_required}", camera_required="{camera_required}"
+        WHERE game_id = {game_id};
+    """
+    message = ''
+    # try:
+    try:
+        game_id = create_query(update)
+        message = f"Game: '{game_title}' has been updated!"
+    except:
+        message = 'Game could not be updated.'
+    return message
 
 #     -- get_game_list() - a get query to list all games from Games Tables
 def get_game_list(privacy_level):
@@ -173,14 +188,19 @@ def get_game_list(privacy_level):
         games.append(record)
     return games
 
-games = get_game_list("public")
-for game in games:
-    print(game[2])
+# games = get_game_list("public")
+# for game in games:
+#     print(game[2])
 
 #     -- get_game_by_title() - a get query to list a game by game title from Games Table
 def get_game_by_title(game_title, privacy_level):
-    games_by_title = f"SELECT game_title FROM GAMES where game_tiƒtle = '{game_title}' AND privacy_level = '{privacy_level}';"
+    games_by_title = f"SELECT game_title FROM GAMES where game_title = '{game_title}' AND privacy_level = '{privacy_level}';"
     result = search_query(games_by_title)
+    return result
+
+def get_game_by_id(game_id):
+    game = f"SELECT * FROM GAMES where game_id = '{game_id}';"
+    result = search_query(game)
     return result
 
 #     -- get_game_by_descr() - a get query to list a game by game description from Games Table
@@ -228,8 +248,8 @@ def get_games_from_user(user_id):
         games.append(record)
     return games
 
-game = get_game_from_code(1776)
-print(game)
+# game = get_game_from_code(1776)
+# print(game)
 
 def get_clues(game_id):
     clues_list = f"SELECT * FROM Clues WHERE game_id = '{ game_id }';"
@@ -239,7 +259,7 @@ def get_clues(game_id):
         clues.append(record)
     return clues
 
-print(get_clues(1))
+# print(get_clues(1))
 
 def check_privacy(game_id):
     privacy_query = f"SELECT privacy_level FROM Games WHERE game_id = '{game_id}';"
@@ -296,3 +316,65 @@ def checkProgress(clues, id):
 
 # completion = checkProgress(clues, 1)
 # print(completion)
+
+def check_form_boxes(privacy_level, camera_required, gps_required):
+    if privacy_level == 'public':
+        public_radio = 'checked'
+        private_radio = ''
+    else:
+        public_radio = ''
+        private_radio = 'checked'
+    if camera_required == 'true':
+        camera_box = 'checked'
+    else:
+        camera_box = ''
+    if gps_required == 'true':
+        gps_box = 'checked'
+    else:
+        gps_box = ''
+    return public_radio, private_radio, camera_box, gps_box
+
+def load_edit_form(game_id):
+    game = get_game_by_id(game_id)
+    game_description = game[0][3]
+    game_title = game[0][2]
+    boxes = check_form_boxes(game[0][5], game[0][6], game[0][7])
+    public_radio = boxes[0]
+    private_radio = boxes[1]
+    camera_box = boxes[2]
+    gps_box = boxes[3]
+    return game_title, game_description, public_radio, private_radio, gps_box, camera_box
+
+def save_game_form(game_id, request):
+    game = get_game_by_id(game_id)
+    game_title = request.form["game_title"]
+    if game_title == '': 
+        game_title = game[0][2]
+    game_description = request.form["game_description"]
+    if game_description == '':
+        game_description = game[0][3]
+    privacy_level = request.form["privacy_level"]
+    try:
+        camera_required = request.form["camera_required"]
+    except:
+        camera_required = 'false'
+    try:
+        gps_required = request.form["gps_required"]
+    except:
+        gps_required = 'false'
+    if privacy_level == 'public':
+        public_radio = 'checked'
+        private_radio = ''
+    else:
+        public_radio = ''
+        private_radio = 'checked'
+    if camera_required == 'true':
+        camera_box = 'checked'
+    else:
+        camera_box = ''
+    if gps_required == 'true':
+        gps_box = 'checked'
+    else:
+        gps_box = ''
+    message = edit_game(game_id, game_title, game_description, privacy_level, gps_required, camera_required)
+    return game_title, game_description, public_radio, private_radio, gps_box, camera_box, message
