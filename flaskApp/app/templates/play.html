@@ -137,22 +137,22 @@
 
 <!--  game play counter  -->
 <div>
-    <p>This scavenger hunt has been played <span class="website-counter"></span> times.</p>
+    <p>This scavenger hunt has been played {{play_count}} time(s).</p>
 </div>
 
 <script>
-    var counterContainer = document.querySelector(".website-counter");
-    var visitCount = localStorage.getItem("page_view");
+    // var counterContainer = document.querySelector(".website-counter");
+    // var visitCount = localStorage.getItem("page_view");
 
-    // Check if page_view entry is present
-    if (visitCount) {
-    visitCount = Number(visitCount) + 1;
-    localStorage.setItem("page_view", visitCount);
-    } else {
-    visitCount = 1;
-    localStorage.setItem("page_view", 1);
-    }
-    counterContainer.innerHTML = visitCount;
+    // // Check if page_view entry is present
+    // if (visitCount) {
+    // visitCount = Number(visitCount) + 1;
+    // localStorage.setItem("page_view", visitCount);
+    // } else {
+    // visitCount = 1;
+    // localStorage.setItem("page_view", 1);
+    // }
+    // counterContainer.innerHTML = visitCount;
 
 </script>
 {% endblock %}

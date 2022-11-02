@@ -47,6 +47,22 @@ def search_query(query):
         print(f"Error Occured: {err}\nExiting program...")
         quit()
 
+def search_one_query(query):
+    try:
+        mydb = mysql.connector.connect(
+            host="localhost",
+            database="scavyDB",
+            user="root",
+            passwd="pass"
+        )
+        mycursor = mydb.cursor()
+        mycursor.execute(query)
+        query_result = mycursor.fetchone()[0]
+        return query_result
+    except Exception as err:
+        print(f"Error Occured: {err}\nExiting program...")
+        quit()
+
 def update_query(query):
     try:
         mydb = mysql.connector.connect(
@@ -112,17 +128,22 @@ def get_user(username, password):
     else:
         print("user does not exit")
 
+def find_play_count(game_id):
+    select_game = f"""
+        SELECT play_count FROM Games WHERE game_id = "{game_id}";
+        """
+    result = search_one_query(select_game)
+    print("find play count result: ", result)
+    print("find play count result TYPE: ", (type(result)))
+    return result
+
 # logs how many times a game is played add "{game_id}"
-def log_play_count(play_count):
-    # select_game = f"""
-    # SELECT play_count FROM Games WHERE game_id = 2;
-    # """
-    # result = search_query(select_game)
+def log_play_count(total_count, game_id):
     update = f"""
-        UPDATE Games SET play_count = "{play_count}" WHERE game_id = 1;
+        UPDATE Games SET play_count = "{total_count}" WHERE game_id = "{game_id}";
         """
     result = update_query(update)
-
+    print("log play count result: ", result)
     return result
 
 

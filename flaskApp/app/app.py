@@ -3,7 +3,7 @@ from click import progressbar
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_session import Session
 # from app.helper import getClue, scavenger_hunts
-from app.database.scavyQueries import get_game_list, get_game_from_code, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game, get_games_from_user
+from app.database.scavyQueries import get_game_list, get_game_from_code, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game, get_games_from_user, find_play_count, log_play_count
 from app.security import validatePassword
 
 app = Flask(__name__)
@@ -90,22 +90,28 @@ def noGame():
 # https://pythonbasics.org/flask-sessions/
 @app.route('/play/<game>', methods=["POST", "GET"])
 def play(game):
-    game_id = request.args.get("game_id")
+    game_id = request.args.get("game_id")    
     print("Game ID: ", game_id)
+
+    # game play counter 
+    play_count = find_play_count(game_id)
+    print("play count: ", play_count)
+
     game = game.replace("_", " ")
     print(session)
     message = ""
     game_session = f'GAME + {game_id}'
 
-    # game play counter 
-    # implement passing var count from JS
-    play_count = 2 
-    log_play_count(play_count)
-
     # if there is an id in the game session continue
     # checks input name='nextClue' to go to next clue in play.html
     if game_session in session:
         print(True)
+        
+        total_count = play_count + 1
+        print("total count: ", total_count)
+
+        log_play_count(total_count, game_id)
+
         if "nextClue" in request.form:
             id = session[game_session]
             #  get clues from database
@@ -138,7 +144,7 @@ def play(game):
     clue = getClue(clues, id)
     # renders template with info needed to play game
     progress = checkProgress(clues, id)
-    return render_template("play.html", game=game, id=id, clue_id=clue[0], prompt=clue[1], answer_type=clue[2], answer=clue[3], message=message, progress=progress)
+    return render_template("play.html", game=game, id=id, clue_id=clue[0], prompt=clue[1], answer_type=clue[2], answer=clue[3], message=message, progress=progress, play_count=play_count)
 
 @app.route('/search-games', methods=["POST", "GET"])
 def search():
