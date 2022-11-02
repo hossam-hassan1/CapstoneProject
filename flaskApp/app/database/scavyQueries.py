@@ -234,6 +234,14 @@ def get_game_from_code(game):
         game.append(record)
     return game
 
+def get_games_from_user(user_id):
+    user_games = f"SELECT * FROM Games WHERE user_id = {user_id};"
+    result = search_query(user_games)
+    games = []
+    for record in result:
+        games.append(record)
+    return games
+
 # game = get_game_from_code(1776)
 # print(game[0][0])
 
@@ -266,6 +274,9 @@ def getClue(clues, id):
         answer = ""
     return clue_id, prompt, answer_type, answer
 
+def check_radius(radius):
+    pass
+
 def checkAnswer(clue, input):
     answer_type = clue[2]
     answer = clue[3]
@@ -274,6 +285,8 @@ def checkAnswer(clue, input):
         if answer.lower() == input.lower():
             correct = True
     elif answer_type == 'coordinates':
+        # input = javascrip check-in
+        # check_radius()
         correct = True
     return correct
 
