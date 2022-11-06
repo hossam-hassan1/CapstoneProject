@@ -90,7 +90,8 @@ def account():
     if 'load_edit' in request.form:
         game_id = request.form["game_id"]
         game = get_game_by_id(game_id)
-        return redirect(url_for("game_edit", game=game[2]))
+        name = game[2].replace(" ", "_")
+        return redirect(url_for("game_edit", game=name))
         # return render_template("create_game.html", mode='edit', read='readonly', disabled='disabled', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id)
     username = session['username']
     user_id = session['user_id']
@@ -251,8 +252,8 @@ def game_edit(game):
         else:
             clue_message = clue[1]
     if 'delete_clue' in request.form:
-        clue_id = request.form["clue_id"]
-        clue_message = delete_clue(clue_id)
+        clue_id = request.form["delete_clue"]
+        clue_message = delete_clue(clue_id, game_id)
         return redirect(url_for("game_edit", game=game[0]))
     if 'save_game' in request.form:
         mode = 'save'

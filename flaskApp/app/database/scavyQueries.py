@@ -393,6 +393,29 @@ def add_clue_order(game_id):
         clue_order = 1
     return clue_order
 
+def edit_clue_order(clue_id, clue_order):
+    update = f"""
+        UPDATE Clues
+        SET clue_order={clue_order}
+        WHERE clue_id = {clue_id};
+    """
+    message = ''
+    # try:
+    try:
+        clue_id = create_query(update)
+        message = "Clue order has been updated!"
+    except:
+        message = 'Game could not be updated.'
+    return message
+
+def get_clue_order(clue_id):
+    query = f"""
+        SELECT clue_order
+        FROM Clues
+        WHERE clue_id = {clue_id};
+    """
+    result = search_query(query)
+    return result
 
 def add_clue(game_id, prompt_text, answer_type, answer):
     clue_order = add_clue_order(game_id)
@@ -411,14 +434,21 @@ def add_clue(game_id, prompt_text, answer_type, answer):
         message = 'Clue could not be created.'
     return created, message, clue_id
 
-def delete_clue(clue_id):
+def delete_clue(clue_id, game_id):
     delete_clue = f"""
         DELETE FROM Clues WHERE clue_id = {clue_id};
     """
+    delete_order = get_clue_order(clue_id)
     # try:
     try:
-        clue = create_query(delete_clue)
-        return 'Clue has been deleted.'
+        create_query(delete_clue)
     except:
         return 'Clue could not be deleted.'
+    clues = get_clues(game_id)
+    for clue in clues:
+        clue_order = get_clue_order(clue[0])
+        if clue_order > delete_order:
+            clue_order = clue[2] - 1
+            edit_clue_order(clue[0], clue_order)
  
+# print(edit_clue_order(1, 21))

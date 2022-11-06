@@ -27,49 +27,55 @@
           </div>
     
             <!-- FOR CLUE IN GAME DISPLAY CLUE -->
+            {% for clue in clues %}
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="heading{{clue[0]}}">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{clue[0]}}" aria-expanded="false" aria-controls="collapse{{clue[0]}}">
+                    Clues: #{{ clue[2] }}   |   {{ clue[3][:30]}}
+                  </button>
+              </h2>
+              <div id="collapse{{clue[0]}}" class="accordion-collapse collapse m-2" aria-labelledby="heading{{clue[0]}}" data-bs-parent="#cluesAccordion">
+                <div class="accordion-body m-2">
+                  <p>Prompt: {{clue[3]}}</p>
+                  <p>Answer Type: {{clue[6]}}</p>
+                  <p>Answer: {{clue[7]}}</p>
+                  <form action="" method="post">
+                    <button type="submit" name="edit_clue" value="{{ clue[0] }}" class="btn btn-primary btn-sm">Edit</button>
+                    <button type="submit" name="delete_clue" value="{{ clue[0] }}" class="btn btn-primary btn-sm">Delete</button>
+                    {% if clue != clues[0] %}
+                    <button type="submit" name="move_clue_up" value="{{ clue[0] }}" class="btn btn-primary btn-sm">Move Up</button>
+                    {% endif %}
+                    {% if clue != clues[-1] %}
+                    <button type="submit" name="move_clue_down" value="{{ clue[0] }}" class="btn btn-primary btn-sm">Move Down</button>
+                    {% endif %}
+                  </form>
+                </div>
+              </div>
+            </div>
+
+
+                              <!-- <form action="">
+                    <input type="hidden" name="clue_id" value="{{ clue[0] }}">
+                    <button class="btn btn-primary btn-sm" method="post" type="submit" name="edit_clue" value="{{ clue[0] }}" class="btn btn-primary btn-sm">Edit</button>
+                
+                    <input type="hidden" name="clue_id" value="{{ clue[0] }}">
+                    <button class="btn btn-primary btn-sm" method="post" type="submit" name="delete_clue" value="{{ clue[0] }}" class="btn btn-primary btn-sm">Delete</button>
+                    
+                    
+                    <input type="hidden" name="clue_id" value="{{ clue[0] }}">
+                    <button class="btn btn-primary btn-sm" method="post" type="submit" name="move_clue_up" value="{{ clue[0] }}" class="btn btn-primary btn-sm">Move Up</button>
+                    
+
+                    {% if clue != clues[-1] %}
+                    <input type="hidden" name="clue_id" value="{{ clue[0] }}">
+                    <button class="btn btn-primary btn-sm" method="post" type="submit" name="move_clue_down" value="{{ clue[0] }}" class="btn btn-primary btn-sm">Move Down</button>
+                    {% endif %}
+                  </form> -->
+
+            {% endfor %}
             
         </div>
-
-    <div id="accordion">
-        <table class="table">
-            <thead>
-                <tr>
-                  <th scope="col">Clue Order</th>
-                  <th scope="col">+</th>
-                </tr>
-            </thead>
-            <tbody>
-              {% for clue in clues %}
-                <div class="card">
-                    <tr>
-                        <th scope="col">
-                            <button class="btn btn-link" data-toggle="collapse" data-target="#{{ clue }}">
-                            Clue: #{{ clue[2] }}
-                            </button>
-                        </th>
-                        <td scope="col">
-                            <form class="form-inline" action="" method="post">
-                                <input type="hidden" name="clue_id" value="{{ clue[0] }}">
-                                <button type="submit" name="delete_clue" value="{{ clue[0] }}" class="btn btn-primary btn-sm">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                    <tr id="{{ clue }}" class="collapse out">
-                        <td>
-                            <div>
-                              <p>Prompt: {{clue[3]}}</p>
-                              <p>Answer Type: {{clue[6]}}</p>
-                              <p>Answer: {{clue[7]}}</p>
-                              <p>Clue ID {{clue[0]}}</p>
-                              <input type="hidden" name="clue_id" value="{{ clue[0] }}">
-                              <button type="submit" name="delete_clue" value="{{ clue[0] }}" class="btn btn-primary btn-sm">Delete</button>
-                            </div>
-                        </td>
-                    </tr>
-                </div>
-            {% endfor %}
-        </table>
-    </div>
 
 
 {% endblock %}
