@@ -11,9 +11,20 @@
     <link rel="stylesheet" href="/static/css/create_game.css">
 </head>
 
+{% if user_creator == false %}
+<div class="container-fluid mx-auto p-3">
+    <div class="card mx-auto m-3">
+        <div class="card-body mx-auto m-5">
+            <h3 class="card-subtitle mb-2 text-muted">You do not have permission to edit this game.</h3>
+            <p class="card-title">Please go to your account to edit games you have created.</p><br>
+            <div class="m-2">
+                <a class="btn btn-primary btn-lg" href="/account" role="button">My Account</a>
+            </div> 
+        </div>
+    </div>
+</div>
 
-
-{% if 'login' not in session or session['login'] == false %}
+{% elif 'login' not in session or session['login'] == false %}
 <div class="container-fluid mx-auto p-3">
     <div class="card mx-auto m-3">
         <div class="card-body mx-auto m-5">
@@ -25,9 +36,8 @@
         </div>
     </div>
 </div>
+
 {% else %}
-
-
 <!-- DIV 1 -->
 <div>
     {% if mode == 'edit' %}
@@ -101,9 +111,11 @@
                 </form>
             </div>
         </div>
+        {% if mode != 'create' %}
         <div class="col-sm">
             {% include 'add_clues.html' %}
         </div>
+        {% endif %}
         
     </div>
 </div>

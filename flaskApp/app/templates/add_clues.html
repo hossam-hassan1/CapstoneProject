@@ -9,44 +9,42 @@
         <div class="card-header">
             2. Edit Clues
         </div>
-        {% if mode != "edit" %}
-        <div class="card-body">
-            <h5 class="card-title">You must create a game first in order to add clues.</h5>
-        </div>
-        {% else %}
+        
         <div class="accordion card-body row m-2 mx-auto" id="cluesAccordion">
+
+          <!-- ADD CLUES -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                Add Clue
+              </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse m-2" aria-labelledby="headingThree" data-bs-parent="#cluesAccordion">
+              <div class="accordion-body m-2">
+                  {% include 'clue_form.html' %}
+              </div>
+            </div>
+          </div>
     
             <!-- FOR CLUE IN GAME DISPLAY CLUE -->
             {% for clue in clues %}
             <div class="accordion-item">
-              <h2 class="accordion-header" id="{{clue_id}}">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                  For Clue In Game Display clue
+              <h2 class="accordion-header" id="heading{{clue[0]}}">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{clue[0]}}" aria-expanded="false" aria-controls="collapse{{clue[0]}}">
+                  Clue: {{clue[2]}}
                 </button>
               </h2>
-              <div id="collapseOne" class="accordion-collapse collapse show m-2" aria-labelledby="{{clue_id}}" data-bs-parent="#cluesAccordion">
+              <div id="collapse{{clue[0]}}" class="accordion-collapse collapse m-2" aria-labelledby="heading{{clue[0]}}" data-bs-parent="#cluesAccordion">
                 <div class="accordion-body m-2">
-                    {% include 'clue_form.html' %}
+                  <p>Prompt: {{clue[3]}}</p>
+                  <p>Answer Type: {{clue[6]}}</p>
+                  <p>Answer: {{clue[7]}}</p>
                 </div>
               </div>
             </div>
             {% endfor %}
 
-            <!-- ADD CLUES -->
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="headingThree">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                  Add Clue
-                </button>
-              </h2>
-              <div id="collapseThree" class="accordion-collapse collapse m-2" aria-labelledby="headingThree" data-bs-parent="#cluesAccordion">
-                <div class="accordion-body m-2">
-                    {% include 'clue_form.html' %}
-                </div>
-              </div>
-            </div>
         </div>
-        {% endif %}
     </div>
 
 

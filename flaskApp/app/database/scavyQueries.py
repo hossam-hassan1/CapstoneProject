@@ -214,7 +214,7 @@ def get_game_by_title(game_title):
 def get_game_by_id(game_id):
     game = f"SELECT * FROM GAMES where game_id = '{game_id}';"
     result = search_query(game)
-    return result
+    return result[0]
 
 #     -- get_game_by_descr() - a get query to list a game by game description from Games Table
 def get_game_location(game_description, privacy_level):
@@ -265,13 +265,12 @@ def get_games_from_user(user_id):
 # print(game)
 
 def get_clues(game_id):
-    clues_list = f"SELECT * FROM Clues WHERE game_id = '{ game_id }';"
+    clues_list = f"SELECT * FROM Clues WHERE game_id = '{ game_id }' ORDER BY clue_order;"
     result = search_query(clues_list)
     clues = []
     for record in result:
         clues.append(record)
     return clues
-
 # print(get_clues(1))
 
 def check_privacy(game_id):
@@ -294,9 +293,9 @@ def getClue(clues, id, game):
     if id < total:
         clue = clues[id] 
         clue_id = id + 1
-        prompt = clue[2]
-        answer_type = clue[5]
-        answer = clue[6]
+        prompt = clue[7]
+        answer_type = clue[6]
+        answer = clue[7]
     else:
         clue_id = -1
         prompt = f"Congrats! You have completed {game}."
@@ -347,9 +346,10 @@ def check_form_boxes(privacy_level, camera_required, gps_required):
 
 def load_edit_form(game_id):
     game = get_game_by_id(game_id)
-    game_description = game[0][3]
-    game_title = game[0][2]
-    boxes = check_form_boxes(game[0][5], game[0][6], game[0][7])
+    # print(game)
+    game_title = game[2]
+    game_description = game[3]
+    boxes = check_form_boxes(game[5], game[6], game[7])
     public_radio = boxes[0]
     private_radio = boxes[1]
     camera_box = boxes[2]
@@ -369,20 +369,11 @@ def save_game_form(game_id, user_id, request, mode):
         gps_required = request.form["gps_required"]
     except:
         gps_required = 'false'
-    if privacy_level == 'public':
-        public_radio = 'checked'
-        private_radio = ''
-    else:
-        public_radio = ''
-        private_radio = 'checked'
-    if camera_required == 'true':
-        camera_box = 'checked'
-    else:
-        camera_box = ''
-    if gps_required == 'true':
-        gps_box = 'checked'
-    else:
-        gps_box = ''
+    boxes = check_form_boxes(privacy_level, camera_required, gps_required)
+    public_radio = boxes[0]
+    private_radio = boxes[1]
+    camera_box = boxes[2]
+    gps_box = boxes[3]
     if mode == 'create':
         if game_title != '' and game_description != '':
             game = create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required)
@@ -390,12 +381,12 @@ def save_game_form(game_id, user_id, request, mode):
             message = game[1]
         else:
             message = 'Please fill out missing form fields.'
-        return False, message
+            return False, message
     if mode == 'save':
         game = get_game_by_id(game_id)
         if game_title == '': 
-            game_title = game[0][2]
+            game_title = game[2]
         if game_description == '':
-            game_description = game[0][3]
-            message = edit_game(game_id, game_title, game_description, privacy_level, gps_required, camera_required)
+            game_description = game[3]
+        message = edit_game(game_id, game_title, game_description, privacy_level, gps_required, camera_required)
     return game_title, game_description, public_radio, private_radio, gps_box, camera_box, message, game_id

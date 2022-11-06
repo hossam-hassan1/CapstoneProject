@@ -89,8 +89,9 @@ def account():
         message = delete_game(game_id)
     if 'load_edit' in request.form:
         game_id = request.form["game_id"]
-        game = load_edit_form(game_id)
-        return render_template("create_game.html", mode='edit', read='readonly', disabled='disabled', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id)
+        game = get_game_by_id(game_id)
+        return redirect(url_for("game_edit", game=game[2]))
+        # return render_template("create_game.html", mode='edit', read='readonly', disabled='disabled', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id)
     username = session['username']
     user_id = session['user_id']
     scavenger_hunts = get_games_from_user(user_id)
@@ -201,32 +202,6 @@ def search():
     return render_template("search.html", scavenger_hunts=scavenger_hunts, code_error=code_error, code_prompt=code_prompt)
 
 # create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required)
-# @app.route('/create-game', methods=["POST", "GET"])
-# def game_create():
-#     if session['login'] == True :
-#         user_id = session['user_id']
-#     message = ''
-#     if 'save_game' in request.form:
-#         mode = 'save'
-#         game_id = request.form["game_id"]
-#         game = save_game_form(game_id, user_id, request, mode)
-#         return render_template("create_game.html", mode='edit', read='readonly', disabled='disabled', message=game[6], title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id[7])
-#     if 'edit_game' in request.form:
-#         mode = 'edit'
-#         game_id = request.form["game_id"]
-#         game = load_edit_form(game_id)
-#         return render_template("create_game.html", mode='save', read='', disabled='', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id)
-#     if 'create_game' in request.form:
-#         mode = 'create'
-#         game_id = 0
-#         game = save_game_form(game_id, user_id, request, mode)
-#         if game[0] == False:
-#             message = game[1]
-#         else:
-#             return render_template("create_game.html", mode='edit', read='readonly', disabled='disabled', message=game[6], title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game[7])
-#     return render_template("create_game.html", mode='create', read='', message=message, disabled='', title_placeholder='What is your game called?', description_placeholder='Tell us about your game.', public_radio='', private_radio='checked', gps_box='', camera_box='')
-    
-# create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required)
 @app.route('/create-game', methods=["POST", "GET"])
 def game_create():
     if 'login' not in session or session['login'] == False:
@@ -242,28 +217,38 @@ def game_create():
         game_id = 0
         game = save_game_form(game_id, user_id, request, mode)
         if game[0] == False:
-            message = game[1]
+            return redirect(url_for("game_edit", game=game[0]))
         else:
-            return redirect(url_for("game_edit", game=request.form["game_title"]))
+            message = game[1]
     return render_template("create_game.html", mode='create', read='', message=message, disabled='', title_placeholder='What is your game called?', description_placeholder='Tell us about your game.', public_radio='', private_radio='checked', gps_box='', camera_box='')
-    
+
 @app.route('/edit-game/<game>', methods=["POST", "GET"])
 def game_edit(game):
-    game = game.replace("_", " ")
-    game_id = get_game_by_title(game)
-    if session['login'] == True :
-        user_id = session['user_id']
-    game_id = get_game_by_title(game)
-    message = ''
+    game_id = get_game_by_title(game.replace("_", " "))
+    game = load_edit_form(game_id)
+    clues = get_clues(game_id)
+    if 'login' not in session or session['login'] == False:
+        error = login_form()
+        if error == False:
+            return redirect(url_for("game_edit", game=game[0]))
+        else:
+            return render_template("create_game.html", error=error)
+    elif session['login'] == True:
+        user_creator = get_game_by_id(game_id)[1]
+        user_id = session['user_id'] 
+        if user_creator != user_id:
+            user_creator = False
+            return render_template("create_game.html", user_creator=user_creator)
     if 'save_game' in request.form:
         mode = 'save'
+        game_id = request.form["game_id"]
         game = save_game_form(game_id, user_id, request, mode)
-        return render_template("create_game.html", mode='edit', read='readonly', disabled='disabled', message=game[6], title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id[7])
+        return redirect(url_for("game_edit", game=game[0]))
     if 'edit_game' in request.form:
         mode = 'edit'
-        game = load_edit_form(game_id)
-        return render_template("create_game.html", mode='save', read='', disabled='', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id)
-    return render_template("create_game.html", mode='create', read='', message=message, disabled='', title_placeholder='What is your game called?', description_placeholder='Tell us about your game.', public_radio='', private_radio='checked', gps_box='', camera_box='')
+        game_id = request.form["game_id"]
+        return render_template("create_game.html", clues=clues, mode='save', read='', disabled='', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id)
+    return render_template("create_game.html", clues=clues, mode='edit', read='readonly', disabled='disabled', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id)
 
 
 # https://www.geeksforgeeks.org/python-404-error-handling-in-flask/#:~:text=A%20404%20Error%20is%20showed,the%20default%20Ugly%20Error%20page.
