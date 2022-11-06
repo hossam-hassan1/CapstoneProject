@@ -262,9 +262,6 @@ def get_games_from_user(user_id):
         games.append(record)
     return games
 
-# game = get_game_from_code(1776)
-# print(game)
-
 def get_clues(game_id):
     clues_list = f"SELECT * FROM Clues WHERE game_id = '{ game_id }' ORDER BY clue_order;"
     result = search_query(clues_list)
@@ -272,7 +269,6 @@ def get_clues(game_id):
     for record in result:
         clues.append(record)
     return clues
-# print(get_clues(1))
 
 def check_privacy(game_id):
     privacy_query = f"SELECT privacy_level FROM Games WHERE game_id = '{game_id}';"
@@ -283,11 +279,7 @@ def check_privacy(game_id):
             privacy = level
 
     return privacy
-# clues = get_clues(1)
 
-# clue = clues[0]
-
-# print(clue[2])
 
 def getClue(clues, id, game):
     total = len(clues)
@@ -325,8 +317,6 @@ def checkProgress(clues, id):
     completion = (id/total) * 100
     return completion
 
-# completion = checkProgress(clues, 1)
-# print(completion)
 
 def check_form_boxes(privacy_level, camera_required, gps_required):
     if privacy_level == 'public':
@@ -420,3 +410,15 @@ def add_clue(game_id, prompt_text, answer_type, answer):
     except:
         message = 'Clue could not be created.'
     return created, message, clue_id
+
+def delete_clue(clue_id):
+    delete_clue = f"""
+        DELETE FROM Clues WHERE clue_id = {clue_id};
+    """
+    # try:
+    try:
+        clue = create_query(delete_clue)
+        return 'Clue has been deleted.'
+    except:
+        return 'Clue could not be deleted.'
+ 
