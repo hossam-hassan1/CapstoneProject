@@ -229,13 +229,13 @@ def search():
 # create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required)
 @app.route('/create-game', methods=["POST", "GET"])
 def game_create():
-    if session['login'] == True :
-        user_id = session['user_id']
-    else:
+    if 'login' not in session or session['login'] == False:
         error = login_form()
         if error == False:
             return redirect(url_for("game_create"))
         return render_template("create_game.html", error=error)
+    elif session['login'] == True:
+        user_id = session['user_id'] 
     message = ''
     if 'create_game' in request.form:
         mode = 'create'

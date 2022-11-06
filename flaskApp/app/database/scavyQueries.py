@@ -211,8 +211,6 @@ def get_game_by_title(game_title):
     result = search_query(games_by_title)
     return result[0][0]
 
-print(get_game_by_title("Mizzou Quest"))
-
 def get_game_by_id(game_id):
     game = f"SELECT * FROM GAMES where game_id = '{game_id}';"
     result = search_query(game)
