@@ -3,7 +3,7 @@ from click import progressbar
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_session import Session
 # from app.helper import getClue, scavenger_hunts
-from app.database.scavyQueries import get_game_list, get_game_from_code, delete_game, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game, get_games_from_user, check_privacy, get_game_by_id, edit_game, load_edit_form, save_game_form, get_game_by_title
+from app.database.scavyQueries import get_game_list, get_game_from_code, delete_game, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game, get_games_from_user, check_privacy, get_game_by_id, edit_game, load_edit_form, save_game_form, get_game_by_title, add_clue
 from app.security import validatePassword
 
 app = Flask(__name__)
@@ -227,6 +227,7 @@ def game_edit(game):
     game_id = get_game_by_title(game.replace("_", " "))
     game = load_edit_form(game_id)
     clues = get_clues(game_id)
+    clue_message = ''
     if 'login' not in session or session['login'] == False:
         error = login_form()
         if error == False:
@@ -239,6 +240,16 @@ def game_edit(game):
         if user_creator != user_id:
             user_creator = False
             return render_template("create_game.html", user_creator=user_creator)
+    if 'add_clue' in request.form:
+        mode = 'edit'
+        prompt_text = request.form["prompt_text"]
+        answer_type = request.form["answer_type"]
+        answer = request.form["answer"]
+        clue = add_clue(game_id, prompt_text, answer_type, answer)
+        if clue[0] == False:   
+            return redirect(url_for("game_edit", game=game[0]))   
+        else:
+            clue_message = clue[1]
     if 'save_game' in request.form:
         mode = 'save'
         game_id = request.form["game_id"]
@@ -248,7 +259,7 @@ def game_edit(game):
         mode = 'edit'
         game_id = request.form["game_id"]
         return render_template("create_game.html", clues=clues, mode='save', read='', disabled='', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id)
-    return render_template("create_game.html", clues=clues, mode='edit', read='readonly', disabled='disabled', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id)
+    return render_template("create_game.html", clue_message=clue_message, clues=clues, mode='edit', read='readonly', disabled='disabled', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id)
 
 
 # https://www.geeksforgeeks.org/python-404-error-handling-in-flask/#:~:text=A%20404%20Error%20is%20showed,the%20default%20Ugly%20Error%20page.

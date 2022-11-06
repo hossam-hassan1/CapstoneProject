@@ -162,6 +162,7 @@ def create_game(user_id, game_title, game_description, privacy_level, gps_requir
         message = 'Game could not be created.'
     return created, message, game_id
 
+
 def edit_game(game_id, game_title, game_description, privacy_level, gps_required, camera_required):
     update = f"""
         UPDATE Games
@@ -390,3 +391,32 @@ def save_game_form(game_id, user_id, request, mode):
             game_description = game[3]
         message = edit_game(game_id, game_title, game_description, privacy_level, gps_required, camera_required)
     return game_title, game_description, public_radio, private_radio, gps_box, camera_box, message, game_id
+
+
+def add_clue_order(game_id):
+    clues = get_clues(game_id)
+    clue_order = 0
+    try:
+        last_clue_order = clues[-1][2]
+        clue_order = last_clue_order + 1
+    except IndexError:
+        clue_order = 1
+    return clue_order
+
+
+def add_clue(game_id, prompt_text, answer_type, answer):
+    clue_order = add_clue_order(game_id)
+    insert = f"""
+    INSERT INTO Clues (game_id, clue_order, prompt_text, answer_type, answer)
+    VALUES ({game_id}, {clue_order}, '{prompt_text}', '{answer_type}', '{answer}');
+    """
+    message = ''
+    created = False
+    clue_id = 0
+    try:
+        clue_id = create_query(insert)
+        created = True
+        message = f"Clue#: '{clue_order}' has been created!"
+    except:
+        message = 'Clue could not be created.'
+    return created, message, clue_id
