@@ -106,6 +106,7 @@ def user_login(username, password):
     error = ''
     if len(user) == 1:
         logged_in = True
+        error = False
         for record in user:
             for id in record:
                 user_id = id
@@ -205,10 +206,12 @@ def get_game_list(privacy_level):
 #     print(game[2])
 
 #     -- get_game_by_title() - a get query to list a game by game title from Games Table
-def get_game_by_title(game_title, privacy_level):
-    games_by_title = f"SELECT game_title FROM GAMES where game_title = '{game_title}' AND privacy_level = '{privacy_level}';"
+def get_game_by_title(game_title):
+    games_by_title = f"SELECT game_id FROM Games where game_title = '{game_title}';"
     result = search_query(games_by_title)
-    return result
+    return result[0][0]
+
+print(get_game_by_title("Mizzou Quest"))
 
 def get_game_by_id(game_id):
     game = f"SELECT * FROM GAMES where game_id = '{game_id}';"
@@ -280,7 +283,7 @@ def check_privacy(game_id):
     for record in result:
         for level in record: 
             privacy = level
-    print(privacy)
+
     return privacy
 # clues = get_clues(1)
 
