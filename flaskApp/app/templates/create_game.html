@@ -1,8 +1,5 @@
 <!-- CREATE GAME PAGE -->
 
-
-
-
 <!-- BASE TEMPLATE -->
 {% extends "base.html" %}
 
@@ -12,7 +9,18 @@
 
 <head>
     <link rel="stylesheet" href="/static/css/create_game.css">
+   
+    <!-- Google API
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQUZWzt9YimeoO7S7BfOhiihKWVtBewtw&libraries=places&callback=initAutocomplete" async defer></script>
+    <script>document.body.appendChild(clearButton)</script> -->
 </head>
+
+    <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+    <div id="map"></div>
+    <script src="{{url_for('static',filename='js/placeLibary.js')}}"></script>
+    <!-- Google API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQUZWzt9YimeoO7S7BfOhiihKWVtBewtw&libraries=places&callback=initAutocomplete" async defer></script>
+    <script>document.body.appendChild(clearButton)</script>
 
 <!-- DIV 1 -->
 <div>
@@ -87,8 +95,12 @@
     <p><button onclick="getLocation()" class="btn btn-primary btn-lg">Grab current location</button></p>
     <p id="location"></p>
 
+
 </div>
 {% endif %}
+
+
+
 <!-- DIV 3 -->
 
         <!-- action="#" method="post" -->
