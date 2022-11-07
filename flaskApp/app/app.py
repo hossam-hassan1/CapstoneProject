@@ -219,7 +219,8 @@ def game_create():
         mode = 'create'
         game_id = 0
         game = save_game_form(game_id, user_id, request, mode)
-        if game[0] == False:
+        print(game)
+        if game[0] != False:
             return redirect(url_for("game_edit", game=game[0]))
         else:
             message = game[1]
@@ -248,7 +249,7 @@ def game_edit(game):
         answer_type = request.form["answer_type"]
         answer = request.form["answer"]
         clue = add_clue(game_id, prompt_text, answer_type, answer)
-        if clue[0] == False:   
+        if clue[0] != False:   
             return redirect(url_for("game_edit", game=game[0]))   
         else:
             clue_message = clue[1]
