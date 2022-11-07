@@ -277,7 +277,6 @@ def check_privacy(game_id):
     for record in result:
         for level in record: 
             privacy = level
-
     return privacy
 
 
@@ -415,7 +414,11 @@ def get_clue_order(clue_id):
         WHERE clue_id = {clue_id};
     """
     result = search_query(query)
-    return result
+    order = result
+    # for record in result:
+    #     for line in record:
+    #         order = line
+    return order[0][0]
 
 def add_clue(game_id, prompt_text, answer_type, answer):
     clue_order = add_clue_order(game_id)
@@ -446,9 +449,22 @@ def delete_clue(clue_id, game_id):
         return 'Clue could not be deleted.'
     clues = get_clues(game_id)
     for clue in clues:
-        clue_order = get_clue_order(clue[0])
-        if clue_order > delete_order:
+        clue_order = clue[2]
+        if clue[2] > delete_order:
             clue_order = clue[2] - 1
             edit_clue_order(clue[0], clue_order)
- 
-# print(edit_clue_order(1, 21))
+
+def move_clue(clue_id, game_id, direction):
+    current_clue_order = get_clue_order(clue_id)
+    clues = get_clues(game_id)
+    for clue in clues:
+        if direction == 'up':
+            clue_order = clue[2]+1
+            change_order = current_clue_order-1
+        elif direction == 'down':
+            clue_order = clue[2]-1
+            change_order = current_clue_order+1
+        if current_clue_order == clue_order:
+            edit_clue_order(clue[0], clue_order)
+            edit_clue_order(clue_id, change_order)
+            break

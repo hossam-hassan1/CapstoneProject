@@ -3,7 +3,7 @@ from click import progressbar
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_session import Session
 # from app.helper import getClue, scavenger_hunts
-from app.database.scavyQueries import get_game_list, get_game_from_code, delete_game, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game, get_games_from_user, check_privacy, get_game_by_id, edit_game, load_edit_form, save_game_form, get_game_by_title, add_clue, delete_clue
+from app.database.scavyQueries import get_game_list, get_game_from_code, delete_game, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game, get_games_from_user, check_privacy, get_game_by_id, edit_game, load_edit_form, save_game_form, get_game_by_title, add_clue, delete_clue, move_clue
 from app.security import validatePassword
 
 app = Flask(__name__)
@@ -254,6 +254,14 @@ def game_edit(game):
     if 'delete_clue' in request.form:
         clue_id = request.form["delete_clue"]
         clue_message = delete_clue(clue_id, game_id)
+        return redirect(url_for("game_edit", game=game[0]))
+    if 'move_clue_up' in request.form:
+        clue_id = request.form["move_clue_up"]
+        clue_message = move_clue(clue_id, game_id, 'up')
+        return redirect(url_for("game_edit", game=game[0]))
+    if 'move_clue_down' in request.form:
+        clue_id = request.form["move_clue_down"]
+        clue_message = move_clue(clue_id, game_id, 'down')
         return redirect(url_for("game_edit", game=game[0]))
     if 'save_game' in request.form:
         mode = 'save'
