@@ -78,15 +78,15 @@ def validatePassword(password, confirm_password):
         check = True
     else:
         if len(password) < 8:
-            error.append("Must contain 8 or more characters.")
+            error.append("Password must contain 8 or more characters.")
         if upper == False:
-            error.append("Missing an upper case letter.")
+            error.append("Password is missing an upper case letter.")
         if lower == False:
-            error.append("Missing a lower case letter.")
+            error.append("Password is missing a lower case letter.")
         if number == False:
-            error.append("Missing a number.")
+            error.append("Password is missing a number.")
         if special == False:
-            error.append("Missing a special character")
+            error.append("Password is missing a special character")
     message = [line for line in error]
     return check, message     
 

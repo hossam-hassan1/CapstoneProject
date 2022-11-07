@@ -1,5 +1,8 @@
 <!-- CREATE GAME PAGE -->
 
+
+
+
 <!-- BASE TEMPLATE -->
 {% extends "base.html" %}
 
@@ -79,19 +82,28 @@
         
         </form>
     </div>
+
+    <p id="set_location">Set Location:</p>
+    <p><button onclick="getLocation()" class="btn btn-primary btn-lg">Grab current location</button></p>
+    <p id="location"></p>
+
 </div>
 {% endif %}
 <!-- DIV 3 -->
-<!-- <div>
-    <form action="#" method="post">
-            <div>
-                <p>Clue #1</p>
+
+        <!-- action="#" method="post" -->
+
+                <!-- <p>Clue #1</p>
 
                 <p>Clue Description:</p>
-                <p><textarea id="clue_description" name="clue_description" rows="4" cols="50"></textarea></p>
+                <p><textarea id="clue_description" name="clue_description" rows="4" cols="50"></textarea></p> -->
 
-                <p>Set Location:</p> -->
-                <!-- id="set_location" -->
+                <!-- <p id="set_location">Set Location:</p>
+                <button onclick="getLocation()">Grab current location</button>
+                <p id="location"> .  </p> -->
+
+            
+
 
                 <!-- <p>Upload Image:</p> -->
                 <!-- id="clue_image" -->
@@ -103,10 +115,41 @@
                 <!-- <p><input type="radio" id="public" name="privacy_level" value="public"></p> -->
                 
 <!-- 
-                <p><input type="submit" value="Add another clue"></p>
-            </div>
-        </form>
-</div> -->
+                <p><input type="submit" value="Add another clue"></p> -->
 
+
+
+
+
+<script>
+    document.getElementById("public").addEventListener('click',function(){
+    alert('Public games and associated data will be accessible to all. Please refer to Scavy Apps Privacy Policy for more information.');})
+
+    document.getElementById("private").addEventListener('click',function(){
+    alert('Private games and associated data will only be accessible to those with a game code or private game link. Please refer to Scavy Apps Privacy Policy for more information.');})
+
+    document.getElementById("gps_required").addEventListener('click',function(){
+    alert('GPS access allows Scavy App to collect user coordinates. Please refer to Scavy Apps Privacy Policy for more information.');})
+
+    document.getElementById("camera_required").addEventListener('click',function(){
+    alert('Camera access allows Scavy App to capture photos from users. Please refer to Scavy Apps Privacy Policy for more information.');})
+
+    var geo_location = document.getElementById("location");
+
+    function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else { 
+        geo_location.innerHTML = "Geolocation is not supported by this browser.";
+    }
+    }
+
+    function showPosition(position) {
+        geo_location.innerHTML = "Latitude: " + position.coords.latitude + 
+    "<br>Longitude: " + position.coords.longitude;
+    }
+</script>
 
 {% endblock %}
+
+

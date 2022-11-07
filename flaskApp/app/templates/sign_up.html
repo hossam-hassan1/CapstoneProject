@@ -21,7 +21,7 @@
 
     <!-- DIV 2 -->
     <div>
-    <form action="" method="post">
+    <form onsubmit="return checkForm(this);" action="" method="post">
             <div class="credentials">
                 <p>Email:</p>
                 <p><input type="text" name="email"/></p>
@@ -37,14 +37,24 @@
                 <p>{{line}}</p>
                 {% endfor %}
                 {% endif %}
+                <p><input type="checkbox" name="terms"> I accept the <a href="/privacy-policy">Terms and Conditions</a></p>
                 <button href="/sign-up" type="submit" class="btn btn-primary btn-lg">Sign Up</button>
             </div>
      </form>
-    
-     <br>
-    <p>By signing up you accept our <a href="/privacy-policy">Privacy Policy</a></p>
-    
-    
     </div>
 
 {% endblock %}
+
+<script>
+
+    function checkForm(form)
+    {
+      if(!form.terms.checked) {
+        alert("Please indicate that you accept the Terms and Conditions");
+        form.terms.focus();
+        return false;
+      }
+      return true;
+    }
+  
+  </script>
