@@ -66,7 +66,35 @@
         </table>
     </div>
       
-        
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#exampleModal">
+Delete Account
+</button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Warning: Permanent Action</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            Are you sure you want to delete your account? This will remove all games that you have created.
+        </div>
+        <div class="modal-footer">
+            <form action="" method="POST">
+                <button type="button" id="confirm_delete_account" name="confirm_delete_account" class="btn btn-secondary">Confirm Delete</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
    
 </div>

@@ -407,18 +407,15 @@ def edit_clue_order(clue_id, clue_order):
         message = 'Game could not be updated.'
     return message
 
-def get_clue_order(clue_id):
+def get_clue(clue_id):
     query = f"""
-        SELECT clue_order
+        SELECT *
         FROM Clues
         WHERE clue_id = {clue_id};
     """
     result = search_query(query)
-    order = result
-    # for record in result:
-    #     for line in record:
-    #         order = line
-    return order[0][0]
+    clue = result
+    return clue[0]
 
 def add_clue(game_id, prompt_text, answer_type, answer):
     clue_order = add_clue_order(game_id)
@@ -441,7 +438,7 @@ def delete_clue(clue_id, game_id):
     delete_clue = f"""
         DELETE FROM Clues WHERE clue_id = {clue_id};
     """
-    delete_order = get_clue_order(clue_id)
+    delete_order = get_clue(clue_id)[2]
     # try:
     try:
         create_query(delete_clue)
@@ -455,7 +452,7 @@ def delete_clue(clue_id, game_id):
             edit_clue_order(clue[0], clue_order)
 
 def move_clue(clue_id, game_id, direction):
-    current_clue_order = get_clue_order(clue_id)
+    current_clue_order = get_clue(clue_id)[2]
     clues = get_clues(game_id)
     for clue in clues:
         if direction == 'up':
@@ -468,3 +465,29 @@ def move_clue(clue_id, game_id, direction):
             edit_clue_order(clue[0], clue_order)
             edit_clue_order(clue_id, change_order)
             break
+
+
+def edit_clue(clue_id, prompt_text, answer_type, answer):
+    update = f"""
+        UPDATE Clues
+        SET prompt_text='{prompt_text}', answer_type='{answer_type}', answer='{answer}' 
+        WHERE clue_id = {clue_id};
+    """
+    message = ''
+    # try:
+    try:
+        clue_id = create_query(update)
+        message = "Clue has been updated!"
+    except:
+        message = 'Clue could not be updated.'
+    return message
+
+def delete_account(user_id):
+    delete_account = f"""
+        DELETE FROM Users WHERE user_id = {user_id};
+    """
+    # try:
+    try:
+        create_query(delete_account)
+    except:
+        return 'Clue could not be deleted.'

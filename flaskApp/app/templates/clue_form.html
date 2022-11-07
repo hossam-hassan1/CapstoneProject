@@ -1,33 +1,24 @@
 <form class="row m-2 mx-auto" action="" method="post">
     <div class="form-group m-2">
         <label for="prompt_text">Clue Prompt:</label>
-        <textarea type="text" class="form-control" id="prompt_text" name="prompt_text"></textarea>
+        <textarea type="text" class="form-control" id="prompt_text" name="edit_prompt_text"></textarea>
     </div>
-
-    <!-- <div class="form-group m-2">
-        <label for="answer_type">Answer Type:</label>
-        <select id="answer_type" name="answer_type" class="form-control">
-            <option selected>Choose...</option>
-            <option value="coordinates">GPS Check-In</option>
-            <option value="text">Text Answer</option>
-        </select>
-    </div> -->
 
     <div class="form-group m-2">
         <label>Answer Type:</label>
         <div class="form-check">
-            <input class="form-check-input" type="radio" id="coordinates" name="answer_type" value="coordinates">
+            <input class="form-check-input" type="radio" id="coordinates" name="edit_answer_type" value="coordinates">
             <label class="form-check-label" for="coordinates">GPS Check-In</label><br> 
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" id="text" name="answer_type" value="text">
+            <input class="form-check-input" type="radio" id="text" name="edit_answer_type" value="text">
             <label class="form-check-label" for="text">Text Answer</label><br> 
         </div>  
     </div>
 
     <div class="form-group m-2">
         <label for="answer">Text Answer:</label>
-        <input type="text" class="form-control" id="answer "name="answer">
+        <input type="text" class="form-control" id="answer "name="edit_answer">
     </div>
 
 

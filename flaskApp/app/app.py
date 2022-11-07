@@ -1,9 +1,7 @@
-from crypt import methods
-from click import progressbar
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_session import Session
 # from app.helper import getClue, scavenger_hunts
-from app.database.scavyQueries import get_game_list, get_game_from_code, delete_game, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game, get_games_from_user, check_privacy, get_game_by_id, edit_game, load_edit_form, save_game_form, get_game_by_title, add_clue, delete_clue, move_clue
+from app.database.scavyQueries import get_game_list, get_game_from_code, delete_game, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game, get_games_from_user, check_privacy, get_game_by_id, edit_game, load_edit_form, save_game_form, get_game_by_title, add_clue, delete_clue, move_clue, get_clue, edit_clue, delete_account
 from app.security import validatePassword
 
 app = Flask(__name__)
@@ -84,8 +82,12 @@ def account():
     if session['login'] == False:
         return redirect(url_for('login'))
     message = ''
+    if 'confirm_delete_account' in request.form:
+        user_id = request.form["user_id"]
+        delete_account(game_id)
+        return redirect(url_for("index"))
     if 'delete_game' in request.form:
-        game_id = request.form["game_id"]
+        user_id = session["user_id"]
         message = delete_game(game_id)
     if 'load_edit' in request.form:
         game_id = request.form["game_id"]
@@ -242,7 +244,6 @@ def game_edit(game):
             user_creator = False
             return render_template("create_game.html", user_creator=user_creator)
     if 'add_clue' in request.form:
-        mode = 'edit'
         prompt_text = request.form["prompt_text"]
         answer_type = request.form["answer_type"]
         answer = request.form["answer"]
@@ -251,6 +252,18 @@ def game_edit(game):
             return redirect(url_for("game_edit", game=game[0]))   
         else:
             clue_message = clue[1]
+    if 'edit_clue' in request.form:
+        clue_id = request.form["edit_clue"]
+        clue = get_clue(clue_id)
+        prompt_text = request.form["edit_prompt_text"]
+        if prompt_text == '':
+            prompt_text = clue[3]
+        answer_type = request.form["edit_answer_type"]
+        answer = request.form["edit_answer"]
+        if answer == '':
+            answer = clue[7]
+        clue = edit_clue(clue_id, prompt_text, answer_type, answer)
+        return redirect(url_for("game_edit", game=game[0])) 
     if 'delete_clue' in request.form:
         clue_id = request.form["delete_clue"]
         clue_message = delete_clue(clue_id, game_id)
