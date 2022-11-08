@@ -26,7 +26,7 @@ CREATE TABLE Games (
     privacy_level ENUM('public', 'private') NOT NULL,
     gps_required ENUM('true', 'false') NOT NULL,
     camera_required ENUM('true', 'false') NOT NULL,
-    created_on DATE,
+    created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     play_count int DEFAULT 0,
     game_code char(255) UNIQUE NOT NULL,
     PRIMARY KEY (game_id)

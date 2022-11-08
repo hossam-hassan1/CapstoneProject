@@ -14,18 +14,16 @@ CREATE TABLE Users (
 
 CREATE TABLE Games (
     game_id int NOT NULL AUTO_INCREMENT,
-        -- added default user bc of errors while testing
     user_id int NOT NULL,
     game_title char(100) NOT NULL UNIQUE,
     game_description text(500) NOT NULL,
-    geo_location char(255) DEFAULT NULL,
+    geo_location char(255) DEFAULT "NULL",
     privacy_level ENUM('public', 'private') NOT NULL,
     gps_required ENUM('true', 'false') NOT NULL,
     camera_required ENUM('true', 'false') NOT NULL,
-        -- created_on DATE,
     created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     play_count int DEFAULT 0,
-    game_code char(255) NOT NULL,
+    game_code char(255) UNIQUE NOT NULL,
     PRIMARY KEY (game_id)
 );
 
@@ -35,7 +33,7 @@ CREATE TABLE Locations (
     geo_location char(255) NOT NULL,  
         -- need to identify how user checks this location
     PRIMARY KEY (location_id),
-    FOREIGN KEY (game_id) REFERENCES Games(game_id)
+    FOREIGN KEY (game_id) REFERENCES Games(game_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Clues (
@@ -48,7 +46,7 @@ CREATE TABLE Clues (
     -- error checking to make sure clues are near game location
     answer text(1000) NOT NULL,
     PRIMARY KEY (clue_id),
-    FOREIGN KEY (game_id) REFERENCES Games(game_id)
+    FOREIGN KEY (game_id) REFERENCES Games(game_id) ON DELETE CASCADE
 );
 
 -----------------------TEST DATA---------------------------

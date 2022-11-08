@@ -124,18 +124,17 @@ def noGame():
 # https://pythonbasics.org/flask-sessions/
 @app.route('/play/<game>', methods=["POST", "GET"])
 def play(game):
-    game_id = request.args.get("game_id")    
-    print("Game ID: ", game_id)
-
-    # game play counter 
-    play_count = find_play_count(game_id)
-    print("play count: ", play_count)
-
     game = game.replace("_", " ")
     game_id = get_game_by_title(game)
     game_session = f'GAME{game_id}'
     message = ""
     game_privacy = check_privacy(game_id)
+
+    # game play counter 
+    print("Game ID: ", game_id)
+    play_count = find_play_count(game_id)
+    print("play count: ", play_count)
+
     if game_privacy == "public":
         pass
     elif game_privacy == 'private':
