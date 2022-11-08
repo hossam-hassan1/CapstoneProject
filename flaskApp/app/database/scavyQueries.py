@@ -365,8 +365,12 @@ def checkAnswer(clue, input):
 
 def checkProgress(clues, id):
     total = len(clues)
-    completion = (id/total) * 100
-    return completion
+    try:
+        completion = (id/total) * 100
+        return completion
+    except:
+        print("checkProgress completion failed in scavyQueries.py")
+    
 
 
 def check_form_boxes(privacy_level, camera_required, gps_required):

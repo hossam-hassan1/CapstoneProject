@@ -33,7 +33,7 @@ CREATE TABLE Locations (
     geo_location char(255) NOT NULL,  
         -- need to identify how user checks this location
     PRIMARY KEY (location_id),
-    FOREIGN KEY (game_id) REFERENCES Games(game_id) ON DELETE CASCADE
+    FOREIGN KEY (game_id) REFERENCES Games(game_id)
 );
 
 CREATE TABLE Clues (
@@ -47,7 +47,7 @@ CREATE TABLE Clues (
     -- error checking to make sure clues are near game location
     answer text(1000) NOT NULL,
     PRIMARY KEY (clue_id),
-    FOREIGN KEY (game_id) REFERENCES Games(game_id) ON DELETE CASCADE
+    FOREIGN KEY (game_id) REFERENCES Games(game_id)
 );
 
 -----------------------TEST DATA---------------------------
