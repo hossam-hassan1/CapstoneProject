@@ -136,9 +136,11 @@
 {% endif %}
 
 <!--  game play counter  -->
+{% if clue_id == 1 %}
 <div>
     <p>This scavenger hunt has been played {{play_count}} time(s).</p>
 </div>
+{% endif %}
 
 <script>
 
