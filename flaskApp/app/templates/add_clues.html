@@ -1,101 +1,94 @@
 <!-- CREATE GAME PAGE -->
 
 <!-- BASE TEMPLATE -->
-{% extends "base.html" %}
-
-{% block title %}Edit Game{% endblock %}
 
 {% block content %}
 
-<head>
-    <link rel="stylesheet" href="/static/css/create_game.css">
-</head>
-
-<!-- DIV 1 -->
-<div>
-<h1 id="header">Game Details</h1>
-</div>
-
-{% if session['login'] == False %}
-<div class="container-fluid mx-auto p-3">
-    <div class="card mx-auto m-3">
-        <div class="card-body mx-auto m-5">
-            <h3 class="card-subtitle mb-2 text-muted">Restricted Information</h3>
-            <p class="card-title">You need to login to view this information.</p>
-            <div class="m-2">
-                <a href="/log-in" class="btn btn-primary btn-lg" role="button" aria-pressed="true">Get Started</a>
-            </div> 
-        </div>
-    </div>
-</div>
-{% else %}
 <!-- DIV 2 -->
-
-<div class="container-fluid mx-auto p-3">
     <div class="card mx-auto m-3">
-        <p>Title: {{game_title}}</p>
-        <p>game_description: {{game_title}}</p>
-        <p>privacy_level: {{privacy_level}}</p>
-        <p>Game Requirements: {{camera_required}} {{gps_required}}</p>
-        <form class="row m-2 mx-auto" action="" method="post">
-
-            <div class="form-group m-2">
-                <label for="prompt_text">Clue Prompt:</label>
-                <textarea type="text" class="form-control" id="prompt_text" name="prompt_text"></textarea>
-            </div>
-
-            <div class="form-group m-2">
-                <label for="answer_type">Answer Type:</label>
-                <select id="answer_type" name="answer_type" class="form-control">
-                  <option selected>Choose...</option>
-                  <option value="coordinates">GPS Check-In</option>
-                  <option value="text">Text Answer</option>
-                </select>
-            </div>
-
-            <div class="form-group m-2">
-                <label for="answer">Text Answer:</label>
-                <input type="text" class="form-control" id="answer "name="answer">
-            </div>
-
-
-            <!-- IF ANSWER TYPE == COORDINATES -->
-            <!-- display ___ -->
+        <div class="card-header">
+            2. Edit Clues
+        </div>
         
-            
-            <p>{{message}}</p>
-            <p><input type="submit" value="Create Clue"></p>
-        
-        </form>
-    </div>
-</div>
-{% endif %}
-<!-- DIV 3 -->
-<!-- <div>
-    <form action="#" method="post">
-            <div>
-                <p>Clue #1</p>
+        <div class="accordion card-body row m-2 mx-auto" id="cluesAccordion">
 
-                <p>Clue Description:</p>
-                <p><textarea id="clue_description" name="clue_description" rows="4" cols="50"></textarea></p>
+          <!-- ADD CLUES -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                Add Clue
+              </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse m-2" aria-labelledby="headingThree" data-bs-parent="#cluesAccordion">
+              <div class="accordion-body m-2">
+                {% include 'clue_form.html' %}
+              </div>
+            </div>
+          </div>
+    
+            <!-- FOR CLUE IN GAME DISPLAY CLUE -->
+            {% for clue in clues %}
 
-                <p>Set Location:</p> -->
-                <!-- id="set_location" -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="heading{{clue[0]}}">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{clue[0]}}" aria-expanded="false" aria-controls="collapse{{clue[0]}}">
+                    Clues: #{{ clue[2] }}   |   {{ clue[3][:30]}}...
+                  </button>
+              </h2>
+              <div id="collapse{{clue[0]}}" class="accordion-collapse collapse m-2" aria-labelledby="heading{{clue[0]}}" data-bs-parent="#cluesAccordion">
+                <div class="accordion-body m-2">
 
-                <!-- <p>Upload Image:</p> -->
-                <!-- id="clue_image" -->
+                  <form action="" method="post">
 
-                <!-- <p>Add Media Link:</p>
-                <p><textarea id="clue_link" name="clue_link" rows="1" cols="50"></textarea></p>
-
-                <p>Clue Answer:</p> -->
-                <!-- <p><input type="radio" id="public" name="privacy_level" value="public"></p> -->
+                    <div class="form-group m-2">
+                        <label for="prompt_text">Clue Prompt:</label>
+                        <textarea type="text" class="form-control" id="prompt_text" name="edit_prompt_text" placeholder="{{clue[3]}}"></textarea>
+                    </div>
                 
-<!-- 
-                <p><input type="submit" value="Add another clue"></p>
+                    <div class="form-group m-2">
+                        <label>Answer Type: </label>
+                        {% if clue[6] == 'coordinates' %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="coordinates" name="edit_answer_type" value="coordinates" checked>
+                            <label class="form-check-label" for="coordinates">GPS Check-In</label><br> 
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="text" name="edit_answer_type" value="text">
+                            <label class="form-check-label" for="text">Text Answer</label><br> 
+                        </div>  
+                        {% else %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="coordinates" name="edit_answer_type" value="coordinates">
+                            <label class="form-check-label" for="coordinates">GPS Check-In</label><br> 
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="text" name="edit_answer_type" value="text" checked>
+                            <label class="form-check-label" for="text">Text Answer</label><br> 
+                        </div>  
+                        {% endif %}
+                    </div>
+                
+                    <div class="form-group m-2">
+                        <label for="answer">Text Answer:</label>
+                        <input type="text" class="form-control" id="answer " name="edit_answer" placeholder="{{clue[7]}}">
+                    </div>
+
+                    <button type="submit" name="edit_clue" value="{{ clue[0] }}" class="btn btn-primary btn-sm">Edit</button>
+                    <button type="submit" name="delete_clue" value="{{ clue[0] }}" class="btn btn-primary btn-sm">Delete</button>
+                    {% if clue != clues[0] %}
+                    <button type="submit" name="move_clue_up" value="{{ clue[0] }}" class="btn btn-primary btn-sm">Move Up</button>
+                    {% endif %}
+                    {% if clue != clues[-1] %}
+                    <button type="submit" name="move_clue_down" value="{{ clue[0] }}" class="btn btn-primary btn-sm">Move Down</button>
+                    {% endif %}
+                  </form>
+                </div>
+              </div>
             </div>
-        </form>
-</div> -->
+
+            {% endfor %}
+            
+        </div>
 
 
 {% endblock %}

@@ -15,80 +15,112 @@
     <script>document.body.appendChild(clearButton)</script> -->
 </head>
 
-    <input id="pac-input" class="controls" type="text" placeholder="Search Box">
-    <div id="map"></div>
-    <script src="{{url_for('static',filename='js/placeLibary.js')}}"></script>
-    <!-- Google API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQUZWzt9YimeoO7S7BfOhiihKWVtBewtw&libraries=places&callback=initAutocomplete" async defer></script>
-    <script>document.body.appendChild(clearButton)</script>
-
-<!-- DIV 1 -->
-<div>
-<h1 id="header">Create a Game!</h1>
-</div>
-
-{% if session['login'] == False %}
+{% if user_creator == false %}
 <div class="container-fluid mx-auto p-3">
     <div class="card mx-auto m-3">
         <div class="card-body mx-auto m-5">
-            <h3 class="card-subtitle mb-2 text-muted">Would you like to make Scavenger Hunts?</h3>
-            <p class="card-title">You need to login or create an account to get started.</p>
+            <h3 class="card-subtitle mb-2 text-muted">You do not have permission to edit this game.</h3>
+            <p class="card-title">Please go to your account to edit games you have created.</p><br>
             <div class="m-2">
-                <a href="/log-in" class="btn btn-primary btn-lg" role="button" aria-pressed="true">Get Started</a>
+                <a class="btn btn-primary btn-lg" href="/account" role="button">My Account</a>
             </div> 
         </div>
     </div>
 </div>
+
+{% elif 'login' not in session or session['login'] == false %}
+<div class="container-fluid mx-auto p-3">
+    <div class="card mx-auto m-3">
+        <div class="card-body mx-auto m-5">
+            <h3 class="card-subtitle mb-2 text-muted">Would you like to make Scavenger Hunts?</h3>
+            <p class="card-title">You need to login or create an account to get started.</p><br>
+            <div class="m-2">
+                {% include 'login_form.html' %}
+            </div> 
+        </div>
+    </div>
+</div>
+
 {% else %}
+<!-- DIV 1 -->
+<div>
+    {% if mode == 'edit' %}
+    <h1 id="header">Edit {{title_placeholder}}</h1>
+    {% else %}
+    <h1 id="header">Create a Game!</h1>
+    {% endif %}
+</div>
+
 <!-- DIV 2 -->
 
 <div class="container-fluid mx-auto p-3">
-    <div class="card mx-auto m-3">
-        <form class="row m-2 mx-auto" action="" method="post">
-
-            <div class="form-group m-2">
-                <label for="game_title">Game Title:</label>
-                <input type="text" class="form-control" id="game_title "name="game_title">
-            </div>
-
-            <div class="form-group m-2">
-                <label for="game_description">Game Description:</label>
-                <textarea class="form-control" id="game_description" name="game_description" rows="4"></textarea>
-            </div>
-
-            <div class="form-group m-2">
-                <label>Privacy Level:</label>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" id="public" name="privacy_level" value="public">
-                    <label class="form-check-label" for="public">Public</label><br> 
+    <div class="row">
+        <div class="col-sm">
+            <div class="card mx-auto m-3">
+                <div class="card-header">
+                    1. Game Details 
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" id="private" name="privacy_level" value="private" checked>
-                    <label class="form-check-label" for="private">Private</label><br> 
-                </div>  
-            </div>
-                
-            <div class="form-group m-2">
-                <label>Device Requirements:</label>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="gps_required" name="gps_required" value="true">
-                    <label class="form-check-label" for="gps_required">GPS Access</label><br>
-                </div>
-                <!-- DISPLAY only if gps_required is checked -->
-                    <!-- <div class="form-group m-2">
-                        <label for="game_code">Game Location</label>
-                        <input type>
-                    </div> -->
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="camera_required" name="camera_required" value="true">
-                <label class="form-check-label" for="camera_required">Camera Access</label><br> 
-                </div>
-            </div>
-            
-            <p>{{message}}</p>
-            <p><input type="submit" value="Create Game"></p>
+                <form class="row m-2 mx-auto" action="" method="post">
         
-        </form>
+                    <div class="form-group m-2">
+                        <label for="game_title">Game Title:</label>
+                        <input type="text" class="form-control" id="game_title "name="game_title" placeholder="{{title_placeholder}}" {{read}}>
+                    </div>
+        
+                    <div class="form-group m-2">
+                        <label for="game_description">Game Description:</label>
+                        <textarea class="form-control" id="game_description" name="game_description" rows="4" placeholder="{{description_placeholder}}" {{read}}></textarea>
+                    </div>
+        
+                    <div class="form-group m-2">
+                        <label>Privacy Level:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="public" name="privacy_level" value="public" {{disabled}} {{public_radio}}>
+                            <label class="form-check-label" for="public">Public</label><br> 
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="private" name="privacy_level" value="private" {{disabled}} {{private_radio}}>
+                            <label class="form-check-label" for="private">Private</label><br> 
+                        </div>  
+                    </div>
+                        
+                    <div class="form-group m-2">
+                        <label>Device Requirements:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="gps_required" name="gps_required" value="true" {{disabled}} {{gps_box}}>
+                            <label class="form-check-label" for="gps_required">GPS Access</label><br>
+                        </div>
+                        <!-- DISPLAY only if gps_required is checked -->
+                            <!-- <div class="form-group m-2">
+                                <label for="game_code">Game Location</label>
+                                <input type>
+                            </div> -->
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="camera_required" name="camera_required" value="true" {{disabled}} {{camera_box}}>
+                        <label class="form-check-label" for="camera_required">Camera Access</label><br> 
+                        </div>
+                    </div>
+                    
+                    <p>{{message}}</p>
+                    {% if mode == 'edit' %}
+                    <input type="hidden"  name="game_id" value="{{game_id}}">
+                    <button type="submit" value="Edit Game" name="edit_game" class="btn btn-primary btn-sm">Edit Game</button>
+                    {% elif mode == 'save' %}
+                    <input type="hidden"  name="game_id" value="{{game_id}}">
+                    <button type="submit" value="Save Game" name="save_game" class="btn btn-primary btn-sm">Save Game</button>
+                    {% else %}
+                    <input type="hidden" value="Create Game">
+                    <button type="submit" value="Create Game" name="create_game" class="btn btn-primary btn-sm">Create Game</button>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+        {% if mode != 'create' %}
+        <div class="col-sm">
+            {% include 'add_clues.html' %}
+        </div>
+        {% endif %}
+        
     </div>
 
     <p id="set_location">Set Location:</p>
@@ -97,10 +129,10 @@
 
 
 </div>
+
+
+
 {% endif %}
-
-
-
 <!-- DIV 3 -->
 
         <!-- action="#" method="post" -->

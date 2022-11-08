@@ -16,7 +16,7 @@ CREATE TABLE Games (
     game_id int NOT NULL AUTO_INCREMENT,
         -- added default user bc of errors while testing
     user_id int NOT NULL,
-    game_title char(100) NOT NULL,
+    game_title char(100) NOT NULL UNIQUE,
     game_description text(500) NOT NULL,
     geo_location char(255) DEFAULT NULL,
     privacy_level ENUM('public', 'private') NOT NULL,
@@ -87,3 +87,4 @@ CREATE TABLE Clues (
     (1, "Columbia, MO"),
     -- Hannibal
     (2, "Hannibal, MO");
+
