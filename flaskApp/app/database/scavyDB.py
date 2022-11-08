@@ -66,7 +66,7 @@ testGames = """INSERT INTO Games (user_id, game_title, game_description, geo_loc
     (1, "Mizzou Quest", "New to the University of Missouri? Try MizzouQuest to discover some favorite spots on campus.", "Columbia, MO", "public", "true", "false", SHA2('1776', 256)),
     (1, "Hannibal Hunt", "Discover these cool Hannibal Landmarks with this fun scavenger hunt!", "Hannibal, MO", "public", "true", "false", SHA2('1942', 256)),
     (1, "Private Test", "private", "private", "private", "true", "false", SHA2('private', 256)),
-    (2, "Other User Game", "private", "private", "private", "true", "false", SHA2('other', 256));;
+    (2, "Other User Game", "private", "private", "private", "true", "false", SHA2('other', 256));
 """
 
 testClues = """INSERT INTO Clues (game_id, clue_order, prompt_text, answer_type, answer)

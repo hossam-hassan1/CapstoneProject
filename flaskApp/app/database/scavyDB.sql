@@ -39,6 +39,7 @@ CREATE TABLE Locations (
 CREATE TABLE Clues (
     clue_id int NOT NULL AUTO_INCREMENT,
     game_id int NOT NULL,
+    clue_order int NOT NULL,
     prompt_text text(1000) NOT NULL,
     prompt_link text (1000),
     prompt_image mediumblob,
