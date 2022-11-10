@@ -50,8 +50,11 @@ def logout():
 
 @app.route('/sign-up', methods=["POST", "GET"])
 def create_account():
-    if session['login'] == True:
-        return redirect(url_for('account'))
+    # if 'login' not in session:
+    #     return redirect(url_for('create_account'))
+    # elif session['login'] == True:
+    #     return redirect(url_for('account'))
+    
     message = ''
     validate = ''
     check = True
@@ -78,7 +81,9 @@ def create_account():
 
 @app.route('/account', methods=["POST", "GET"])
 def account():
-    if session['login'] == False:
+    if 'login' not in session:
+        return redirect(url_for('create_account'))
+    elif session['login'] == False:
         return redirect(url_for('login'))
     message = ''
     if 'confirm_delete_account' in request.form:
