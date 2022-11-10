@@ -29,9 +29,9 @@ def separateCoordinates(coordinate):
         longitude = (coordinates[1])
     return latitude, longitude
 
-latitude, longitude = separateCoordinates(coordinate)
-print(latitude)
-print(longitude)
+# latitude, longitude = separateCoordinates(coordinate)
+# print(latitude)
+# print(longitude)
 
 
 # reference: https://www.geeksforgeeks.org/how-to-encrypt-and-decrypt-strings-in-python/
@@ -44,18 +44,23 @@ def encryptData(data):
     print("decrypted string: ", decMessage)
     return encMessage
 
-encryptData(latitude)
-print(latitude)
+# encryptData(latitude)
+# print(latitude)
     
  
-def validatePassword(password):
+def validatePassword(password, confirm_password):
     upper = False
     lower = False
     number = False
     special = False
     length = False
     check = False
+    confirm = False
     error = []
+    if confirm_password == password:
+        confirm = True
+    else:
+        error.append("Passwords don't match.")
     if len(password) > 7:
         length = True
     for letter in password:
@@ -69,27 +74,27 @@ def validatePassword(password):
             special = True
         else:
             error.append(f"'{letter}' is an invalid character.")
-    if upper == lower == number == length == special == True:
+    if upper == lower == number == length == special == confirm == True:
         check = True
     else:
         if len(password) < 8:
-            error.append("Must contain 8 or more characters.")
+            error.append("Password must contain 8 or more characters.")
         if upper == False:
-            error.append("Missing an upper case letter.")
+            error.append("Password is missing an upper case letter.")
         if lower == False:
-            error.append("Missing a lower case letter.")
+            error.append("Password is missing a lower case letter.")
         if number == False:
-            error.append("Missing a number.")
+            error.append("Password is missing a number.")
         if special == False:
-            error.append("Missing a special character")
+            error.append("Password is missing a special character")
     message = [line for line in error]
     return check, message     
 
 
 
-def passwordMessage(password):
+def passwordMessage(password, confirm_password):
     # password = input("Enter a password: ")
-    validation = validatePassword(password)
+    validation = validatePassword(password, confirm_password)
     if validation[0] == True:
         print("\nThe password is valid")
     else:
@@ -98,12 +103,6 @@ def passwordMessage(password):
             print(line)
 
 
-passwordMessage("Passw0r!df")
+# passwordMessage("Passw0r!df", "Passw0r!df")
 
-passwordMessage("Passw0rdf")
-
-passwordMessage("Passwrdf")
-
-
-passwordMessage("Passw-f")
 

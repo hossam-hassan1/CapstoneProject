@@ -1,26 +1,11 @@
-<!-- LOGIN PAGE -->
-
-<!-- BASE TEMPLATE -->
-{% extends "base.html" %}
-
-{% block title %}Log In{% endblock %}
-
-{% block content %}
-
-<head>
-    <link rel="stylesheet" href="/static/css/login.css">
-</head>
-
-<body>
+<!-- LOGIN Form -->
 
     <!-- DIV 1 -->
     <div>
-        <h1 id="header">Welcome back! Log in</h1>
         <p>Don't have a Scavy App account? <a href="/sign-up">Sign up</a></p>
     </div>
 
     <!-- DIV 2 -->
-    <div>
         <form action="" method="POST">
         <div class="credentials">
             <p>Username:</p>
@@ -36,13 +21,3 @@
         <p>{{session['user']}}</p>
         {% endif %}
     </div>
-
-    <!-- DIV 3 -->
-    <div class="login_options">
-        <br>
-        <p>Continue as <a href="/home" value="guest">Guest</a></p>
-    <div>
-
-</body>
-
-{% endblock %}
