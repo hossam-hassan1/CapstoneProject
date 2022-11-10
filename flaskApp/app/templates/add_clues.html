@@ -1,0 +1,94 @@
+<!-- CREATE GAME PAGE -->
+
+<!-- BASE TEMPLATE -->
+
+{% block content %}
+
+<!-- DIV 2 -->
+    <div class="card mx-auto m-3">
+        <div class="card-header">
+            2. Edit Clues
+        </div>
+        
+        <div class="accordion card-body row m-2 mx-auto" id="cluesAccordion">
+
+          <!-- ADD CLUES -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                Add Clue
+              </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse m-2" aria-labelledby="headingThree" data-bs-parent="#cluesAccordion">
+              <div class="accordion-body m-2">
+                {% include 'clue_form.html' %}
+              </div>
+            </div>
+          </div>
+    
+            <!-- FOR CLUE IN GAME DISPLAY CLUE -->
+            {% for clue in clues %}
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="heading{{clue[0]}}">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{clue[0]}}" aria-expanded="false" aria-controls="collapse{{clue[0]}}">
+                    Clues: #{{ clue[2] }}   |   {{ clue[3][:30]}}...
+                  </button>
+              </h2>
+              <div id="collapse{{clue[0]}}" class="accordion-collapse collapse m-2" aria-labelledby="heading{{clue[0]}}" data-bs-parent="#cluesAccordion">
+                <div class="accordion-body m-2">
+
+                  <form action="" method="post">
+
+                    <div class="form-group m-2">
+                        <label for="prompt_text">Clue Prompt:</label>
+                        <textarea type="text" class="form-control" id="prompt_text" name="edit_prompt_text" placeholder="{{clue[3]}}"></textarea>
+                    </div>
+                
+                    <div class="form-group m-2">
+                        <label>Answer Type: </label>
+                        {% if clue[6] == 'coordinates' %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="coordinates" name="edit_answer_type" value="coordinates" checked>
+                            <label class="form-check-label" for="coordinates">GPS Check-In</label><br> 
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="text" name="edit_answer_type" value="text">
+                            <label class="form-check-label" for="text">Text Answer</label><br> 
+                        </div>  
+                        {% else %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="coordinates" name="edit_answer_type" value="coordinates">
+                            <label class="form-check-label" for="coordinates">GPS Check-In</label><br> 
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="text" name="edit_answer_type" value="text" checked>
+                            <label class="form-check-label" for="text">Text Answer</label><br> 
+                        </div>  
+                        {% endif %}
+                    </div>
+                
+                    <div class="form-group m-2">
+                        <label for="answer">Text Answer:</label>
+                        <input type="text" class="form-control" id="answer " name="edit_answer" placeholder="{{clue[7]}}">
+                    </div>
+
+                    <button type="submit" name="edit_clue" value="{{ clue[0] }}" class="btn btn-primary btn-sm">Edit</button>
+                    <button type="submit" name="delete_clue" value="{{ clue[0] }}" class="btn btn-primary btn-sm">Delete</button>
+                    {% if clue != clues[0] %}
+                    <button type="submit" name="move_clue_up" value="{{ clue[0] }}" class="btn btn-primary btn-sm">Move Up</button>
+                    {% endif %}
+                    {% if clue != clues[-1] %}
+                    <button type="submit" name="move_clue_down" value="{{ clue[0] }}" class="btn btn-primary btn-sm">Move Down</button>
+                    {% endif %}
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            {% endfor %}
+            
+        </div>
+
+
+{% endblock %}

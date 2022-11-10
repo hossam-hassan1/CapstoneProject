@@ -36,6 +36,16 @@
                     <a class="nav-link" href="/privacy-policy">Privacy Policy</a>
                 </li>
 
+                {% if session['login'] == True %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Log Out</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/account">Account</a>
+                </li>
+
+                {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="/log-in">Log in</a>
                 </li>
@@ -43,6 +53,8 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/sign-up">Get started</a>
                 </li>
+                
+                {% endif %}
             </ul>
             
         </div>
