@@ -83,7 +83,7 @@ def account():
         return redirect(url_for('login'))
     message = ''
     if 'confirm_delete_account' in request.form:
-        user_id = request.form["user_id"]
+        user_id = session["user_id"]
         delete_account(game_id)
         return redirect(url_for("index"))
     if 'delete_game' in request.form:

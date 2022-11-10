@@ -1,6 +1,5 @@
 # -- Python function per page:
 
-
 import mysql.connector
 import random
 
