@@ -10,6 +10,8 @@ services:
         - APP_NAME=MyFlaskApp
       expose:
         - 8080
+      ports:
+        - 8080
 
     nginx:
       build: ./nginx
