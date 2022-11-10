@@ -24,9 +24,9 @@
         <form action="#" method="GET">
         <div class="credentials">
             <p>Username:</p>
-            <p><input type="text" name = "user_name"/></p>
+            <p><input type="text" name = "user_name" onkeyup="letter_number_only(this)"/></p>
             <p>Password:</p>
-            <p><input type="password" name = "password"/></p>
+            <p><input type="password" name = "password" onkeyup="letter_number_only(this)"/></p>
             <button href="/login" type="submit" class="btn btn-primary btn-lg">Log in</button>
         </div>
         </form>

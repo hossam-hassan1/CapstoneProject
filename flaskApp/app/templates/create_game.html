@@ -21,23 +21,25 @@
     <form action="#" method="post">
             <div>
                 <p>Game Title:</p>
-                <p><input type="text" name="game_title"/></p>
+                <!-- minlength="4" maxlength="30" -->
+                <p><input type="text" name="game_title" onkeyup="letter_number_only(this)"  required/></p>
 
                 <p>Game Description:</p>
-                <p><textarea id="game_description" name="game_description" rows="4" cols="50"></textarea></p>
+                <p><textarea id="game_description" name="game_description" rows="4" cols="50" onkeyup="letter_number_only(this)" required></textarea></p>
 
                 <p>Privacy Level:</p>
-                <input type="radio" id="public" name="privacy_level" value="public">
+                <input type="radio" id="public" name="privacy_level" value="public" checked="checked">
                 <label for="public">Public</label><br>
                 <input type="radio" id="private" name="privacy_level" value="private">
                 <label for="private">Private</label><br> 
 
                 <p>Location Verification:</p>
-                <input type="radio" id="geo_location" name="location_verification" value="geo location">
+                <input type="radio" id="geo_location" name="location_verification" value="geo location" checked="checked">
                 <label for="geo_location">Geo Location</label><br>
                 <input type="radio" id="qr_code" name="location_verification" value="gr code">
-                <label for="qr_code">QR Code</label><br> 
-
+                <label for="qr_code">QR Code</label><br>
+                
+                <p><input type="submit" value="Create Game"></p>
             </div>
         </form>
 </div>
@@ -49,7 +51,7 @@
                 <p>Clue #1</p>
 
                 <p>Clue Description:</p>
-                <p><textarea id="clue_description" name="clue_description" rows="4" cols="50"></textarea></p>
+                <p><textarea id="clue_description" name="clue_description" rows="4" cols="50" onkeyup="letter_number_only(this)" required></textarea></p>
 
                 <p>Set Location:</p>
                 <!-- id="set_location" -->
