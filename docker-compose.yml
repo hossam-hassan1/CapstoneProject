@@ -40,3 +40,4 @@ services:
       # volumes:
       #   - sql-volumes:/var/lib/mysql
       
+# pip install mysql-connector-python
