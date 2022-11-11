@@ -20,6 +20,9 @@
 
 <!-- DIV 2 -->
 <div>
+    <p>Already have a game code?</p>
+    <p><input type="text" name="game_code" onkeyup="letter_number_only(this)"/></p>
+    <p><button href="/" type="submit" class="btn btn-primary btn-lg">Submit</button></p>
     <div class="row align-items-start">
         <div class="col-6"><hr></div>
         <div class="col-4"><hr></div>
@@ -51,10 +54,10 @@
 
 
         <div class="col-sm">
-            <input type="text" class="form-control" placeholder="Location">
+            <input type="text" class="form-control" placeholder="Location" onkeyup="letter_number_only(this)">
         </div>
         <div class="col-sm">
-            <input type="text" class="form-control" placeholder="Keywords">
+            <input type="text" class="form-control" placeholder="Keywords" onkeyup="letter_number_only(this)">
         </div>
 
         <!-- <div class="col form-check form-check-inline">

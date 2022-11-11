@@ -24,13 +24,13 @@
     <form onsubmit="return checkForm(this);" action="" method="post">
             <div class="credentials">
                 <p>Email:</p>
-                <p><input type="text" name="email"/></p>
+                <p><input type="email" name="email" required/></p>
                 <p>Create a Username:</p>
-                <p><input type="text" name="user"/></p>
+                <p><input type="text" name="user" required onkeyup="letter_number_only(this)"/></p>
                 <p>Create a Password:</p>
-                <p><input type="password" name ="password"/></p>
+                <p><input type="password" name ="password" required onkeyup="letter_number_only(this)"/></p>
                 <p>Confirm Password:</p>
-                <p><input type="password" name ="confirm_password"/></p>
+                <p><input type="password" name ="confirm_password" required onkeyup="letter_number_only(this)"/></p>
                 <p>{{message}}</p>
                 {% if check == False %}
                 {% for line in validate %}
