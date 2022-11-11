@@ -1,19 +1,130 @@
+<!-- SEARCH PAGE -->
+
+<!-- BASE TEMPLATE -->
 {% extends "base.html" %}
 
 {% block title %}Search Games{% endblock %}
 
 {% block content %}
 
-<h1> Find Games Here </h1>
+<head>
+    <link rel="stylesheet" href="/static/css/search.css">
+</head>
 
-<ul>
-    <!-- Implement a for loop to iterate through 
-    `template_games`-->
-    {% for game in scavenger_hunts %}
-    <li><a href= "/play/{{ game }}/0">{{ game }}</a></li>
-    {% endfor %}
- </ul>
+<!-- DIV 1 -->
+<div>
+    <h1 id="header">Play a Game!</h1>
+</div>
 
+{% include 'game_code.html' %}
+
+<!-- DIV 2 -->
+<div>
+    <div class="row align-items-start">
+        <div class="col-6"><hr></div>
+        <div class="col-4"><hr></div>
+        <div class="col"><hr></div>
+    </div>
+</div>
+
+
+
+<!-- DIV 3 -->
+<div class="container-fluid mx-auto p-3"> 
+
+    <div class="row p-3 container">
+        <!-- https://getbootstrap.com/docs/4.0/components/dropdowns/ -->
+        <div class="dropdown">
+            <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Searching for a new game to play?
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <option type="button" class="dropdown-item" onclick='allGames()'>All Games</option>
+              <a class="dropdown-item" href="#">Most Played</a>
+              <!-- query DB keyword from games game_title and game_description -->
+              <a class="dropdown-item" href="#">Keyword</a>
+              <a class="dropdown-item" href="#">Location</a>
+              <a class="dropdown-item" href="#">GPS Required</a>
+              <a class="dropdown-item" href="#">Camera Required</a>
+            </div>
+          </div>
+
+
+        <div class="col-sm">
+            <input type="text" class="form-control" placeholder="Location">
+        </div>
+        <div class="col-sm">
+            <input type="text" class="form-control" placeholder="Keywords">
+        </div>
+
+        <!-- <div class="col form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="GPS">
+            <label class="form-check-label" for="inlineCheckbox1">GPS Required</label>
+        </div>
+        <div class="col form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Camera">
+            <label class="form-check-label" for="inlineCheckbox2">Camera Required</label>
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+        </div> -->
+
+
+    <div id="accordion">
+        <table class="table" id="table" style="display:block">
+            <thead>
+                <tr>
+                  <th scope="col">GAMES</th>
+                  <th scope="col">LOCATION</th>
+                  <th scope="col">+</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for game in scavenger_hunts %}
+                <div class="card">
+                    <tr>
+                        <th scope="col">
+                            <button class="btn btn-link" data-toggle="collapse" data-target="#{{ game }}">
+                            {{ game[2] }}
+                            </button>
+                        </th>
+                        <td scope="col">{{ game[4] }}</td>
+                        <td scope="col">
+                            <form class="form-inline" action="" method="post">
+                                <input type="hidden" name="game_id" value="{{ game[0] }}">
+                                <button type="submit" name="load_game" value="{{ game[2] }}" class="btn btn-primary btn-sm">Play</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr id="{{ game }}" class="collapse out">
+                        <td>
+                            <div>
+                                <p>Description: {{ game[3] }}</p>
+                                <div class="col-">GPS Required: {{ game[6] }}</div>
+                                <div class="col-">Camera Required: {{ game[7] }}</div>
+                                <div class="col-">Created On: {{ game[8] }}</div>
+                                <div class="col-">Play Count: {{ game[9] }}</div>
+                            </div>
+                        </td>
+                    </tr>
+                </div>
+            {% endfor %}
+        </table>
+    </div>
+      
+        
+
+   
+</div>
 
 {% endblock %}
+
+<script>
+var select = document.getElementById('dropdown-menu');
+
+function allGames(){
+    document.getElementById("table").style.display = "block";
+}
+    
+</script>
 

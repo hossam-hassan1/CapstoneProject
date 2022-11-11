@@ -1,0 +1,103 @@
+<!-- SEARCH PAGE -->
+
+<!-- BASE TEMPLATE -->
+{% extends "base.html" %}
+
+{% block title %}{{username}}'s' Games{% endblock %}
+
+{% block content %}
+
+<head>
+    <link rel="stylesheet" href="/static/css/search.css">
+</head>
+
+<!-- DIV 1 -->
+<div>
+    <h1 id="header"> Welcome {{username}}!</h1>
+</div>
+
+
+
+<!-- DIV 3 -->
+<div class="container-fluid mx-auto p-3"> 
+    <h1 id="header"> Your Games:</h1>
+    <div id="accordion">
+        <table class="table">
+            <thead>
+                <tr>
+                  <th scope="col">GAMES</th>
+                  <th scope="col">LOCATION</th>
+                  <th scope="col">+</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for game in scavenger_hunts %}
+                <div class="card">
+                    <tr>
+                        <th scope="col">
+                            <button class="btn btn-link" data-toggle="collapse" data-target="#{{ game }}">
+                            {{ game[2] }}
+                            </button>
+                        </th>
+                        <td scope="col">{{ game[4] }}</td>
+                        <td scope="col">
+                            <form class="form-inline" action="" method="post">
+                                <input type="hidden" name="game_id" value="{{ game[0] }}">
+                                <button type="submit" name="load_edit" value="{{ game[2] }}" class="btn btn-primary btn-sm">Edit</button>
+                                <input type="hidden" name="game_id" value="{{ game[0] }}">
+                                <input type="hidden" name="game_title" value="{{ game[2] }}">
+                                <button type="submit" name="delete_game" value="{{ game[2] }}" class="btn btn-primary btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr id="{{ game }}" class="collapse out">
+                        <td>
+                            <div>
+                                <p>Description: {{ game[3] }}</p>
+                                <div class="col-">GPS Required: {{ game[6] }}</div>
+                                <div class="col-">Camera Required: {{ game[7] }}</div>
+                                <div class="col-">Created On: {{ game[8] }}</div>
+                                <div class="col-">Play Count: {{ game[9] }}</div>
+                            </div>
+                        </td>
+                    </tr>
+                </div>
+            {% endfor %}
+        </table>
+    </div>
+      
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#exampleModal">
+Delete Account
+</button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Warning: Permanent Action</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            Are you sure you want to delete your account? This will remove all games that you have created.
+        </div>
+        <div class="modal-footer">
+            <form action="" method="POST">
+                <button type="button" id="confirm_delete_account" name="confirm_delete_account" class="btn btn-secondary">Confirm Delete</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+   
+</div>
+
+{% endblock %}
+

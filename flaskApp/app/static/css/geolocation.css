@@ -1,22 +1,3 @@
-h1
-{
-    text-align: center;
-    text-decoration: underline;
-    font-size: large;
-}
-table
-{
-   margin: auto;
-   margin: auto;
-}
-th
-{
-    color: brown;
-}
-td
-{
-    font-size: medium;
-}
 
 /* GOOGLE API */
 #map
@@ -24,11 +5,11 @@ td
     height: 400px;
     width: 100%;
 }
-html, body {
+/* html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-  }
+  } */
   #description {
     font-family: Roboto;
     font-size: 15px;
