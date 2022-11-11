@@ -10,3 +10,30 @@ services:
         - APP_NAME=MyFlaskApp
       expose:
         - 8080
+      ports:
+        - 8080
+
+
+    nginx:
+      build: ./nginx
+      container_name: nginx
+      restart: always
+      ports: 
+        - "80:80"
+
+
+    sql-db:
+      build: ./database
+      container_name: mysql-container-scavyapp
+      image: mysql:latest
+      command: mysqld --default-authentication-plugin=mysql_native_password
+      restart: always
+      environment:
+        MYSQL_ROOT_PASSWORD: pass
+        MYSQL_DATABASE: scavyDB
+        MYSQL_USER: root
+        MYSQL_PASSWORD: pass
+      expose:
+        - 3306
+      ports:
+        - "3306:3306"
