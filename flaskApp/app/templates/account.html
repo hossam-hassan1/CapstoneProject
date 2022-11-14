@@ -69,9 +69,9 @@
 
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#exampleModal">
-Delete Account
-</button>
+<button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#exampleModal">Delete Account</button>
+    
+
   
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -88,8 +88,9 @@ Delete Account
         </div>
         <div class="modal-footer">
             <form action="" method="POST">
-                <button type="button" id="confirm_delete_account" name="confirm_delete_account" class="btn btn-secondary">Confirm Delete</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                <button type="submit" id="confirm_delete_account" name="confirm_delete_account" value='{{user_id}}' class="btn btn-secondary">Confirm Delete</button>
+            </form>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
             </form>
         </div>
       </div>

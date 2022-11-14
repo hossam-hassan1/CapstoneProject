@@ -44,13 +44,13 @@
 
                     <div class="form-group m-2">
                       <label for="prompt_text">Clue Prompt:</label>
-                      <textarea type="text" class="form-control" id="prompt_text" name="edit_prompt_text" placeholder="{{clue[3]}}"></textarea>
+                      <textarea type="text" class="form-control" id="prompt_text" name="edit_prompt_text" placeholder="{{clue[3]}}" disabled></textarea>
                     </div>
                 
 
                     <div class="form-group m-2">
                       <label for="prompt_text">Clue Link:</label>
-                      <textarea type="text" class="form-control" id="prompt_text" name="edit_prompt_link" placeholder="{{clue[4]}}"></textarea>
+                      <input type="text" class="form-control" id="prompt_text" name="edit_prompt_link" placeholder="{{clue[4]}}" disabled>
                     </div>
 
                     <div class="form-group m-2">
@@ -58,7 +58,7 @@
                       <label for="prompt_image">Clue Image:</label>
                       <img class="img-thumbnail" src="/static/prompt_image_uploads/{{clue[5]}}" alt="Card image cap">
                       {% else %}
-                      <label for="prompt_image">Clue Image: NONE</label>
+                      <label for="prompt_image">Clue Image: No image uploaded.</label>
                       {% endif %}
                     </div>
 
@@ -82,12 +82,9 @@
                 
                     <div class="form-group m-2">
                         <label for="answer">Text Answer:</label>
-                        <input type="text" class="form-control" id="answer " name="edit_answer" placeholder="{{clue[7]}}">
+                        <input type="text" class="form-control" id="answer " name="edit_answer" placeholder="{{clue[7]}}" disabled>
                     </div>
 
-
-         
-                    <button type="submit" name="edit_clue" value="{{ clue[0] }}" class="btn btn-primary btn-sm">Edit</button>
                     <button type="submit" name="delete_clue" value="{{ clue[0] }}" class="btn btn-primary btn-sm">Delete</button>
                     {% if clue != clues[0] %}
                     <button type="submit" name="move_clue_up" value="{{ clue[0] }}" class="btn btn-primary btn-sm">Move Up</button>
