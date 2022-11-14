@@ -64,18 +64,19 @@
         
                     <div class="form-group m-2">
                         <label for="game_title">Game Title:</label>
-                        <input type="text" class="form-control" id="game_title "name="game_title" placeholder="{{title_placeholder}}" {{read}}>
+                <!-- minlength="4" maxlength="30" -->
+                        <input type="text" class="form-control" id="game_title "name="game_title" onkeyup="letter_number_only(this)"  required placeholder="{{title_placeholder}}" {{read}}>
                     </div>
         
                     <div class="form-group m-2">
                         <label for="game_description">Game Description:</label>
-                        <textarea class="form-control" id="game_description" name="game_description" rows="4" placeholder="{{description_placeholder}}" {{read}}></textarea>
+                        <textarea class="form-control" id="game_description" name="game_description" rows="4" placeholder="{{description_placeholder}}" onkeyup="letter_number_only(this)" required {{read}}></textarea>
                     </div>
         
                     <div class="form-group m-2">
                         <label>Privacy Level:</label>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" id="public" name="privacy_level" value="public" {{disabled}} {{public_radio}}>
+                            <input class="form-check-input" type="radio" id="public" name="privacy_level" value="public" checked="checked" {{disabled}} {{public_radio}}>
                             <label class="form-check-label" for="public">Public</label><br> 
                         </div>
                         <div class="form-check">
@@ -90,17 +91,18 @@
                             <input class="form-check-input" type="checkbox" id="gps_required" name="gps_required" value="true" {{disabled}} {{gps_box}}>
                             <label class="form-check-label" for="gps_required">GPS Access</label><br>
                         </div>
-                        <!-- DISPLAY only if gps_required is checked -->
+                        <!-- DISPLAY on" checked="checkedly if gps_required is checked -->
                             <!-- <div class="form-group m-2">
                                 <label for="game_code">Game Location</label>
                                 <input type>
                             </div> -->
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="camera_required" name="camera_required" value="true" {{disabled}} {{camera_box}}>
-                        <label class="form-check-label" for="camera_required">Camera Access</label><br> 
-                        </div>
+                        <label class="form-check-label" for="camera_required">Camera Access</label><br>
+                                        </div>
                     </div>
                     
+                <p><input type="submit" value="Create Game"></p>
                     <p>{{message}}</p>
                     {% if mode == 'edit' %}
                     <input type="hidden"  name="game_id" value="{{game_id}}">
@@ -140,7 +142,7 @@
                 <!-- <p>Clue #1</p>
 
                 <p>Clue Description:</p>
-                <p><textarea id="clue_description" name="clue_description" rows="4" cols="50"></textarea></p> -->
+                <p><textarea id="clue_description" name="clue_description" rows="4" cols="50" onkeyup="letter_number_only(this)" required></textarea></p> -->
 
                 <!-- <p id="set_location">Set Location:</p>
                 <button onclick="getLocation()">Grab current location</button>
