@@ -24,20 +24,21 @@
     <form onsubmit="return checkForm(this);" action="" method="post">
             <div class="credentials">
                 <p>Email:</p>
-                <p><input type="text" name="email"/></p>
+                <p><input type="email" name="email" required /></p>
                 <p>Create a Username:</p>
-                <p><input type="text" name="user"/></p>
+                <p><input type="text" name="user" onkeyup="letter_number_only(this)" required/></p>
                 <p>Create a Password:</p>
-                <p><input type="password" name ="password"/></p>
+                <!-- onkeyup="letter_number_only(this)"  -->
+                <p><input type="password" name ="password" onkeypress="password_val(input)" required/></p>
                 <p>Confirm Password:</p>
-                <p><input type="password" name ="confirm_password"/></p>
+                <p><input type="password" name ="confirm_password" onkeypress="password_val(input)" required/></p>
                 <p>{{message}}</p>
                 {% if check == False %}
                 {% for line in validate %}
                 <p>{{line}}</p>
                 {% endfor %}
                 {% endif %}
-                <p><input type="checkbox" name="terms"> I accept the <a href="/privacy-policy">Terms and Conditions</a></p>
+                <p><input type="checkbox" name="terms" required> I accept the <a href="/privacy-policy">Terms and Conditions</a></p>
                 <button href="/sign-up" type="submit" class="btn btn-primary btn-lg">Sign Up</button>
             </div>
      </form>
