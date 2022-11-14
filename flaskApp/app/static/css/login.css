@@ -10,3 +10,6 @@ p{
 .login_options{
     text-align: center;
 }
+.error{
+  color: #dd4229;
+}

@@ -1,0 +1,23 @@
+/* body{
+    background-color: #f7e7ca;
+} */
+.play_title{
+    text-align: center;
+}
+.game_title{
+    color: #e99040;
+}
+.error{
+    color: #dd4229;
+  }
+.card{
+    border: none;
+    background-color:#f7e7ca;
+    color: white;
+}
+.card-subtitle-text{
+    color: white;
+}
+.clue_id{
+    color:#e99040;
+}

@@ -30,10 +30,10 @@
 
 {% elif 'login' not in session or session['login'] == false %}
 <div class="container-fluid mx-auto p-3">
-    <div class="card mx-auto m-3">
-        <div class="card-body mx-auto m-5">
-            <h3 class="card-subtitle mb-2 text-muted">Would you like to make Scavenger Hunts?</h3>
-            <p class="card-title">You need to login or create an account to get started.</p><br>
+    <div class="mx-auto m-3">
+        <div class="mx-auto m-5">
+            <!-- <h3 class="card-subtitle mb-2 text-muted">Would you like to make Scavenger Hunts?</h3>
+            <p class="card-title">You need to login or create an account to get started.</p><br> -->
             <div class="m-2">
                 {% include 'login_form.html' %}
             </div> 

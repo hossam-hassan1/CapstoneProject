@@ -1,5 +1,13 @@
 <!-- LOGIN Form -->
 
+{% block content %}
+
+<head>
+    <link rel="stylesheet" href="/static/css/login.css">
+</head>
+
+    <p class="error">You need to login or create an account to create games.</p><br>
+
     <!-- DIV 1 -->
     <div>
         <p>Don't have a Scavy App account? <a href="/sign-up">Sign up</a></p>
@@ -12,7 +20,7 @@
             <p><input type="text" name = "user"/></p>
             <p>Password:</p>
             <p><input type="password" name = "password"/></p>
-            <p>{{error}}</p>
+            <p class="error">{{error}}</p>
             <button href="/login" type="submit" name = "login" class="btn btn-primary btn-lg">Log in</button>
         </div>
         </form>
@@ -21,3 +29,5 @@
         <p>{{session['user']}}</p>
         {% endif %}
     </div>
+
+{% endblock %}
