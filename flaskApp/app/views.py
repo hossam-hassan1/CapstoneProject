@@ -1,20 +1,14 @@
-import os
-from flask import Flask, flash, render_template, request, redirect, url_for, session, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, session
 from flask_session import Session
 # from app.helper import getClue, scavenger_hunts
 from app.database.scavyQueries import get_game_list, get_game_from_code, delete_game, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game, get_games_from_user, check_privacy, get_game_by_id, edit_game, load_edit_form, save_game_form, get_game_by_title, add_clue, delete_clue, move_clue, get_clue, edit_clue, delete_account, find_play_count, log_play_count
 from app.security import validatePassword
 from app import app
-from werkzeug.utils import secure_filename
 
-UPLOAD_FOLDER = '/Users/kennabogue/Documents/MIZZOU/22_FALL/INFOTC_4970_Capstone/CapstoneProject/flaskApp/app/static/uploads'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 # app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.secret_key = 'super secret key'
 Session(app)
 
 # url string of class(route)
@@ -174,6 +168,12 @@ def play(game):
     # checks input name='nextClue' to go to next clue in play.html
     if game_session in session:
         print(True)
+        
+        total_count = play_count + 1
+        print("total count: ", total_count)
+
+        log_play_count(total_count, game_id)
+
         if "nextClue" in request.form:
             id = session[game_session]
             #  get clues from database
@@ -184,10 +184,6 @@ def play(game):
             verify = checkAnswer(clue, input)
             print(verify)
             if verify == True:
-                # if clue == clues[0]:
-                total_count = play_count + 1
-                print("total count: ", total_count)
-                log_play_count(total_count, game_id)
                 session[game_session] += 1
             else:
                 message = "Sorry, try again!"
@@ -208,7 +204,7 @@ def play(game):
     clue = getClue(clues, id, game)
     # renders template with info needed to play game
     progress = checkProgress(clues, id)
-    return render_template("play.html", game=game, id=id, clue_id=clue[0], prompt=clue[1], prompt_link=clue[2], prompt_image=clue[3], answer_type=clue[4], answer=clue[5], message=message, progress=progress, play_count=play_count)
+    return render_template("play.html", game=game, id=id, clue_id=clue[0], prompt=clue[1], answer_type=clue[2], answer=clue[3], message=message, progress=progress, play_count=play_count)
 
 @app.route('/search-games', methods=["POST", "GET"])
 def search():
@@ -253,59 +249,10 @@ def game_create():
             message = game[1]
     return render_template("create_game.html", mode='create', read='', message=message, disabled='', title_placeholder='What is your game called?', description_placeholder='Tell us about your game.', public_radio='', private_radio='checked', gps_box='', camera_box='')
 
-# How to upload files with flask
-# https://flask.palletsprojects.com/en/2.2.x/patterns/fileuploads/
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-def upload_file():
-    if request.method == 'POST':
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
-        # If the user does not select a file, the browser submits an
-        # empty file without a filename.
-        if file.filename == '':
-            flash('No selected file')
-            print('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            filename = os.path.splitext(filename)
-            filename = 'newname' + filename[1]
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        else:
-          if not allowed_file(file.filename):
-            print('File not allowed')  
-    # return '''
-    # <!doctype html>
-    # <title>Upload new File</title>
-    # <h1>Upload new File</h1>
-    # <form method=post >
-    #   <input type=file >
-    #   <input type=submit value=Upload>
-    # </form>
-    # '''
-
-# @app.route('/uploads/<name>')
-# def download_file(name):
-#     return send_from_directory(app.config["UPLOAD_FOLDER"], name)
-
-def game(game):
-    game_id = get_game_by_title(game.replace("_", " "))
-    game = load_edit_form(game_id)
-    return game
-print(game('MizzouQuest'))
-
-# def load_edit_form(game_id): return game_title, game_description, public_radio, private_radio, gps_box, camera_box
 @app.route('/edit-game/<game>', methods=["POST", "GET"])
 def game_edit(game):
     game_id = get_game_by_title(game.replace("_", " "))
     game = load_edit_form(game_id)
-    print(game)
     clues = get_clues(game_id)
     clue_message = ''
     if 'login' not in session or session['login'] == False:
@@ -322,26 +269,9 @@ def game_edit(game):
             return render_template("create_game.html", user_creator=user_creator)
     if 'add_clue' in request.form:
         prompt_text = request.form["prompt_text"]
-        prompt_link = request.form["prompt_link"]
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
-        # if user does not select file, browser also
-        # submit a empty part without filename
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
-        with open(prompt_image, 'rb') as file:
-             prompt_image = file.read()
-        print(prompt_image)
         answer_type = request.form["answer_type"]
         answer = request.form["answer"]
-        clue = add_clue(game_id, prompt_text, prompt_link, answer_type, answer)
+        clue = add_clue(game_id, prompt_text, answer_type, answer)
         if clue[0] != False:   
             return redirect(url_for("game_edit", game=game[0]))   
         else:
@@ -352,14 +282,11 @@ def game_edit(game):
         prompt_text = request.form["edit_prompt_text"]
         if prompt_text == '':
             prompt_text = clue[3]
-        prompt_link = request.form["edit_prompt_link"]
-        if prompt_link == '':
-            prompt_link = clue[4]
         answer_type = request.form["edit_answer_type"]
         answer = request.form["edit_answer"]
         if answer == '':
             answer = clue[7]
-        clue = edit_clue(clue_id, prompt_text, prompt_link, answer_type, answer)
+        clue = edit_clue(clue_id, prompt_text, answer_type, answer)
         return redirect(url_for("game_edit", game=game[0])) 
     if 'delete_clue' in request.form:
         clue_id = request.form["delete_clue"]

@@ -334,29 +334,22 @@ def getClue(clues, id, game):
     if id < total:
         clue = clues[id] 
         clue_id = id + 1
-        prompt = clue[3]
-        prompt_link = clue[4]
-        prompt_image = clue[5]
+        prompt = clue[7]
         answer_type = clue[6]
         answer = clue[7]
     else:
         clue_id = -1
         prompt = f"Congrats! You have completed {game}."
-        prompt_link = ""
-        prompt_image = ''
         answer_type = ""
         answer = ""
-    return clue_id, prompt, prompt_link, prompt_image, answer_type, answer, 
-
-clues = get_clues(1)
-print(clues[1][7])
+    return clue_id, prompt, answer_type, answer
 
 def check_radius(radius):
     pass
 
 def checkAnswer(clue, input):
-    answer_type = clue[4]
-    answer = clue[5]
+    answer_type = clue[2]
+    answer = clue[3]
     correct = False
     if answer_type == 'text':
         if answer.lower() == input.lower():
@@ -366,8 +359,6 @@ def checkAnswer(clue, input):
         # check_radius()
         correct = True
     return correct
-
-clue = [0,0, 'text', 'tacos']
 
 def checkProgress(clues, id):
     total = len(clues)
@@ -479,11 +470,11 @@ def get_clue(clue_id):
     clue = result
     return clue[0]
 
-def add_clue(game_id, prompt_text, prompt_link, answer_type, answer):
+def add_clue(game_id, prompt_text, answer_type, answer):
     clue_order = add_clue_order(game_id)
     insert = f"""
-    INSERT INTO Clues (game_id, clue_order, prompt_text, prompt_link, answer_type, answer)
-    VALUES ({game_id}, {clue_order}, '{prompt_text}', '{prompt_link}', '{answer_type}', '{answer}');
+    INSERT INTO Clues (game_id, clue_order, prompt_text, answer_type, answer)
+    VALUES ({game_id}, {clue_order}, '{prompt_text}', '{answer_type}', '{answer}');
     """
     message = ''
     created = False
@@ -529,10 +520,10 @@ def move_clue(clue_id, game_id, direction):
             break
 
 
-def edit_clue(clue_id, prompt_text, prompt_link, answer_type, answer):
+def edit_clue(clue_id, prompt_text, answer_type, answer):
     update = f"""
         UPDATE Clues
-        SET prompt_text='{prompt_text}', prompt_link='{prompt_link}', answer_type='{answer_type}', answer='{answer}' 
+        SET prompt_text='{prompt_text}', answer_type='{answer_type}', answer='{answer}' 
         WHERE clue_id = {clue_id};
     """
     message = ''

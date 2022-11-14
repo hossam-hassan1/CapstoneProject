@@ -96,13 +96,13 @@
                                 <label for="game_code">Game Location</label>
                                 <input type>
                             </div> -->
-                            
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="camera_required" name="camera_required" value="true" {{disabled}} {{camera_box}}>
-                            <label class="form-check-label" for="camera_required">Camera Access</label><br>
-                        </div>
+                        <label class="form-check-label" for="camera_required">Camera Access</label><br>
+                                        </div>
                     </div>
                     
+                <p><input type="submit" value="Create Game"></p>
                     <p>{{message}}</p>
                     {% if mode == 'edit' %}
                     <input type="hidden"  name="game_id" value="{{game_id}}">
@@ -110,7 +110,7 @@
                     {% elif mode == 'save' %}
                     <input type="hidden"  name="game_id" value="{{game_id}}">
                     <button type="submit" value="Save Game" name="save_game" class="btn btn-primary btn-sm">Save Game</button>
-                    {% elif mode == 'create' %}
+                    {% else %}
                     <input type="hidden" value="Create Game">
                     <button type="submit" value="Create Game" name="create_game" class="btn btn-primary btn-sm">Create Game</button>
                     {% endif %}
