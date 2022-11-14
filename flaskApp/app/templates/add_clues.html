@@ -9,6 +9,8 @@
         <div class="card-header">
             2. Edit Clues
         </div>
+
+        <p>{{clue_message}}</p>
         
         <div class="accordion card-body row m-2 mx-auto" id="cluesAccordion">
 
@@ -41,28 +43,38 @@
                   <form action="" method="post">
 
                     <div class="form-group m-2">
-                        <label for="prompt_text">Clue Prompt:</label>
-                        <textarea type="text" class="form-control" id="prompt_text" name="edit_prompt_text" placeholder="{{clue[3]}}"></textarea>
+                      <label for="prompt_text">Clue Prompt:</label>
+                      <textarea type="text" class="form-control" id="prompt_text" name="edit_prompt_text" placeholder="{{clue[3]}}"></textarea>
                     </div>
+                
+
+                    <div class="form-group m-2">
+                      <label for="prompt_text">Clue Link:</label>
+                      <textarea type="text" class="form-control" id="prompt_text" name="edit_prompt_link" placeholder="{{clue[4]}}"></textarea>
+                    </div>
+
+                    <div class="form-group m-2">
+                      {% if clue[5] != '' and clue[5] != None %}
+                      <label for="prompt_image">Clue Image:</label>
+                      <img class="img-thumbnail" src="/static/prompt_image_uploads/{{clue[5]}}" alt="Card image cap">
+                      {% else %}
+                      <label for="prompt_image">Clue Image: NONE</label>
+                      {% endif %}
+                    </div>
+
+                    
+
                 
                     <div class="form-group m-2">
                         <label>Answer Type: </label>
                         {% if clue[6] == 'coordinates' %}
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" id="coordinates" name="edit_answer_type" value="coordinates" checked>
+                            <input class="form-check-input" type="radio" id="coordinates" name="edit_answer_type" value="coordinates" checked disabled>
                             <label class="form-check-label" for="coordinates">GPS Check-In</label><br> 
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" id="text" name="edit_answer_type" value="text">
-                            <label class="form-check-label" for="text">Text Answer</label><br> 
-                        </div>  
                         {% else %}
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" id="coordinates" name="edit_answer_type" value="coordinates">
-                            <label class="form-check-label" for="coordinates">GPS Check-In</label><br> 
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" id="text" name="edit_answer_type" value="text" checked>
+                            <input class="form-check-input" type="radio" id="text" name="edit_answer_type" value="text" checked disabled>
                             <label class="form-check-label" for="text">Text Answer</label><br> 
                         </div>  
                         {% endif %}
@@ -73,6 +85,8 @@
                         <input type="text" class="form-control" id="answer " name="edit_answer" placeholder="{{clue[7]}}">
                     </div>
 
+
+         
                     <button type="submit" name="edit_clue" value="{{ clue[0] }}" class="btn btn-primary btn-sm">Edit</button>
                     <button type="submit" name="delete_clue" value="{{ clue[0] }}" class="btn btn-primary btn-sm">Delete</button>
                     {% if clue != clues[0] %}

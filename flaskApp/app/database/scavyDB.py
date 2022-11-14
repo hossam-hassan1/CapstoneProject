@@ -50,7 +50,7 @@ CREATE TABLE Clues (
     clue_order int NOT NULL,
     prompt_text text(1000) NOT NULL,
     prompt_link text (1000),
-    prompt_image mediumblob,
+    prompt_image char(255),
     answer_type ENUM('coordinates', 'text') NOT NULL,
     answer text(1000) NOT NULL,
     PRIMARY KEY (clue_id),

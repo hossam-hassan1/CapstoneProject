@@ -51,11 +51,30 @@
 
         <div class="card mx-auto m-3">
             <div class="card-body mx-auto m-5">
+                <h3 class="card-subtitle mb-2 text-muted">Find the location described in the clue above.</h3><br>
+
+                <!-- PROMPT TEXT -->
                 <h3 class="card-subtitle mb-2 text-muted">Clue #: {{ clue_id }}</h3>
                 <h3 class="card-title">{{ prompt }}</h3><br>
-                <h3 class="card-subtitle mb-2 text-muted">Find the location described in the clue above.</h3>
-                <!-- ADD PROMPT IMAGE -->
+                
+                
+                {% if prompt_link != '' and  prompt_link != None %}
                 <!-- ADD PROMPT LINK -->
+                <h3 class="card-subtitle mb-2 text-muted">We thought you might find this link helpful.</h3>
+                <a href="{{ prompt_link }}" class="btn btn-primary stretched-link">Visit this Link</a><br><br>
+                {% endif %}
+
+                <!-- ADD PROMPT IMAGE -->
+                {% if prompt_image != '' and  prompt_image != None %}
+                <h3 class="card-subtitle mb-2 text-muted">Here's a visual hint!</h3>
+                <div class="container-fluid row">
+                    <div class="col-2"></div>
+                    <div class="col-8">
+                        <img class="img-fluid" src="/static/prompt_image_uploads/{{prompt_image}}" alt="Card image cap">
+                    </div>
+                    <div class="col-2"></div>
+                </div>
+                {% endif %}
             </div>
         </div>
 
