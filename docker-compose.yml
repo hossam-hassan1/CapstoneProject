@@ -3,7 +3,7 @@ version: "3.7"
 services:
 
     flask:
-      build: ./flaskapp
+      build: ./flaskApp
       container_name: capstoneflaskproject
       restart: always
       environment:

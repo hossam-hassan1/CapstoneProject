@@ -5,13 +5,13 @@
     /* all font including headers */ 
     color: black;
     /* active page */ 
-    /* active clue bubble > play.html */ 
+    /* footer */ 
     color: #f1b675;
     /* error messages */ 
     color: #dd4229;
     /* div background > play.html */ 
     color: #e99040;
-    /* buttons, footer */    
+    /* buttons */    
     color: #e76d36;
     color: #a2311f;
     color: #0f151b;
@@ -64,16 +64,21 @@ hr {
   #content-wrap {
     padding-bottom: 2.5rem;    /* Footer height */
   }
-  #footer {
+  /* #footer {
+    background-color: #f1b675;
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 2.5rem;            /* Footer height */
-    z-index: -1;
     left: 0;
     bottom: 0;
-  }
-
+  } */
+.over_ride{
+    /* position: absolute; */
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    margin-bottom: -80px;
+}
 /* Nav Style */
 #nav {
     color: black;

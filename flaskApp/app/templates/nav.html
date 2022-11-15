@@ -32,17 +32,18 @@
                     <a class="nav-link" href="/search-games">Search</a>
                 </li>
 
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link" href="/privacy-policy">Privacy Policy</a>
-                </li>
+                </li> -->
 
                 {% if session['login'] == True %}
-                <li class="nav-item">
-                    <a class="nav-link" href="/logout">Log Out</a>
-                </li>
 
                 <li class="nav-item">
                     <a class="nav-link" href="/account">Account</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Log Out</a>
                 </li>
 
                 {% else %}
