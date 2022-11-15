@@ -2,8 +2,22 @@
     text-align: center;
 }
 p{
-    text-align: center;  
+    text-align: center; 
 }
 .credentials{
     text-align: center;
+}
+.error{
+    color: #dd4229;
+  }
+#password{
+    font-size: 11px;
+}
+.left{
+    margin-left: -150px;
+    font-size: 15px;
+}
+.left2{
+    margin-left: -65px;
+    font-size: 15px;
 }

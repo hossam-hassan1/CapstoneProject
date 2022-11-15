@@ -13,4 +13,11 @@ p{
 .error{
   color: #dd4229;
 }
-
+.left{
+    margin-left: -120px;
+    font-size: 15px;
+}
+.left2{
+    margin-left: -115px;
+    font-size: 15px;
+}

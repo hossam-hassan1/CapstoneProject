@@ -75,21 +75,75 @@
         
                     <div class="form-group m-2">
                         <label>Privacy Level:</label>
+
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" id="public" name="privacy_level" value="public" checked="checked" {{disabled}} {{public_radio}}>
+                            <input class="form-check-input" type="radio" id="public" name="privacy_level" value="public" checked="checked" data-toggle="modal" data-target="#exampleModal" {{disabled}} {{public_radio}}>
                             <label class="form-check-label" for="public">Public</label><br> 
                         </div>
+
+                          <!-- Modal Public-->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Warning: <b style="color: #e76d36;">Public Games</b></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    Public games and associated data will be accessible to all. Please refer to Scavy Apps Privacy Policy for more information.
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" id="private" name="privacy_level" value="private" {{disabled}} {{private_radio}}>
+                            <input class="form-check-input" type="radio" id="private" name="privacy_level" value="private" data-toggle="modal" data-target="#exampleModal2" {{disabled}} {{private_radio}}>
                             <label class="form-check-label" for="private">Private</label><br> 
-                        </div>  
+                        </div> 
+                        
+                        <!-- Modal Private-->
+                        <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Warning: <b style="color: #e76d36;">Private Games</b></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    Private games and associated data will only be accessible to those with a game code or private game link. Please refer to Scavy Apps Privacy Policy for more information.
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+
                     </div>
                         
                     <div class="form-group m-2">
                         <label>Device Requirements:</label>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="gps_required" name="gps_required" value="true" {{disabled}} {{gps_box}}>
+                            <input class="form-check-input" type="checkbox" id="gps_required" name="gps_required" value="true" data-toggle="modal" data-target="#exampleModal3" {{disabled}} {{gps_box}}>
                             <label class="form-check-label" for="gps_required">GPS Access</label><br>
+                        </div>
+
+                        <!-- Modal GPS-->
+                        <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Warning: <b style="color: #e76d36;">GPS Access</b></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    GPS access allows Scavy App to collect user coordinates. Please refer to Scavy Apps Privacy Policy for more information.
+                                </div>
+                            </div>
+                            </div>
                         </div>
                         <!-- DISPLAY on" checked="checkedly if gps_required is checked -->
                             <!-- <div class="form-group m-2">
@@ -97,9 +151,25 @@
                                 <input type>
                             </div> -->
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="camera_required" name="camera_required" value="true" {{disabled}} {{camera_box}}>
-                        <label class="form-check-label" for="camera_required">Camera Access</label><br>
-                                        </div>
+                            <input class="form-check-input" type="checkbox" id="camera_required" name="camera_required" value="true" data-toggle="modal" data-target="#exampleModal4" {{disabled}} {{camera_box}}>
+                            <label class="form-check-label" for="camera_required">Camera Access</label><br>
+                        </div>
+
+                        <!-- Modal Camera-->
+                        <div class="modal fade" id="exampleModal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Warning: <b style="color: #e76d36;">Camera Access</b></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    Camera access allows Scavy App to capture photos from users. Please refer to Scavy Apps Privacy Policy for more information.
+                            </div>
+                            </div>
+                        </div>
                     </div>
                     
                 <p><input type="submit" value="Create Game"></p>
@@ -168,17 +238,17 @@
 
 
 <script>
-    document.getElementById("public").addEventListener('click',function(){
-    alert('Public games and associated data will be accessible to all. Please refer to Scavy Apps Privacy Policy for more information.');})
+    // document.getElementById("public").addEventListener('click',function(){
+    // alert('Public games and associated data will be accessible to all. Please refer to Scavy Apps Privacy Policy for more information.');})
 
-    document.getElementById("private").addEventListener('click',function(){
-    alert('Private games and associated data will only be accessible to those with a game code or private game link. Please refer to Scavy Apps Privacy Policy for more information.');})
+    // document.getElementById("private").addEventListener('click',function(){
+    // alert('Private games and associated data will only be accessible to those with a game code or private game link. Please refer to Scavy Apps Privacy Policy for more information.');})
 
-    document.getElementById("gps_required").addEventListener('click',function(){
-    alert('GPS access allows Scavy App to collect user coordinates. Please refer to Scavy Apps Privacy Policy for more information.');})
+    // document.getElementById("gps_required").addEventListener('click',function(){
+    // alert('GPS access allows Scavy App to collect user coordinates. Please refer to Scavy Apps Privacy Policy for more information.');})
 
-    document.getElementById("camera_required").addEventListener('click',function(){
-    alert('Camera access allows Scavy App to capture photos from users. Please refer to Scavy Apps Privacy Policy for more information.');})
+    // document.getElementById("camera_required").addEventListener('click',function(){
+    // alert('Camera access allows Scavy App to capture photos from users. Please refer to Scavy Apps Privacy Policy for more information.');})
 
     var geo_location = document.getElementById("location");
 
