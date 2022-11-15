@@ -1,14 +1,25 @@
 # -- Python function per page:
 import mysql.connector
 import random
+import os
 
-# create_game(1, "test title", "test description", "public", "true", "false")
+# most played
+most_played = 'SELECT * FROM Games ORDER BY play_count desc;'
 
+# keyword
+keyword = '''SELECT * FROM Games 
+WHERE MATCH (game_title, game_description)
+AGAINST('Missouri' IN NATURAL LANGUAGE MODE);'''
 
-# -- play/search.html
+# location
+# location = 'SELECT * FROM Games WHERE geo_location = geo_location;'
 
+# gps_requirement
+gps_required = 'SELECT * FROM Games WHERE gps_required = "true";'
 
-#     -- get_game() - a get query to find game by game code from Games Tables
+# camera requirement
+camera_required = 'SELECT * FROM Games WHERE camera_required = "true";'
+
 
 
 # -- sign_up.html
@@ -241,7 +252,7 @@ def delete_game(game_id):
 
 #     -- get_game_list() - a get query to list all games from Games Tables
 def get_game_list(privacy_level):
-    list_all_games = f"SELECT * FROM Games WHERE privacy_level = '{privacy_level}';"
+    list_all_games = f"SELECT * FROM Games WHERE privacy_level = '{privacy_level}' AND published = 'true';"
     result = search_query(list_all_games)
     games = []
     for record in result:
@@ -559,6 +570,25 @@ def move_clue(clue_id, game_id, direction):
 #         message = 'Clue could not be updated.'
 #     return message
 
+UPLOAD_FOLDER = '/Users/kennabogue/Documents/MIZZOU/22_FALL/INFOTC_4970_Capstone/CapstoneProject/flaskApp/app/static/prompt_image_uploads'
+def delete_user_images(user_id):
+    select_images = f'''
+                SELECT Clues.prompt_image
+                FROM Clues, Games
+                WHERE Games.game_id = Clues.game_id AND Games.user_id = {user_id} AND Clues.prompt_image IS NOT NULL;
+                '''
+    result = search_query(select_images)
+    files = []
+    for file in result:
+        files.append(file[0])
+    for file in files:
+        filepath = f'{UPLOAD_FOLDER}/{file}'
+        print(filepath)
+        if os.path.exists(filepath):
+            os.remove(filepath)
+        else:
+            print("The file does not exist")
+
 def delete_account(user_id):
     delete_account = f"""
         DELETE FROM Users WHERE user_id = {user_id};
@@ -568,7 +598,36 @@ def delete_account(user_id):
     """
     # try:
     try:
-        create_query(delete_account)
+        delete_user_images(user_id)
         create_query(delete_games)
+        create_query(delete_account)
     except:
         return 'Account could not be deleted.'
+
+def is_game_published(game_id):
+    published = f"SELECT published FROM Games where game_id = '{game_id}';"
+    result = search_query(published)
+    return result[0][0]
+
+def change_publish(game_id):
+    publish = is_game_published(game_id)
+    if publish == 'false':
+        publish = 'true'
+    else:
+        publish = 'false'
+    update = f"""
+        UPDATE Games
+        SET published='{publish}' 
+        WHERE game_id = {game_id};
+    """
+    message = ''
+    # try:
+    try:
+        publish = create_query(update)
+        if status == 'true':
+            message = "Game has been published!"
+        else:
+            message = "Game has been unpublished!"
+    except:
+        message = 'Publish status could not be changed.'
+    return message

@@ -29,6 +29,8 @@ CREATE TABLE Games (
     created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     play_count int DEFAULT 0,
     game_code char(255) UNIQUE NOT NULL,
+    published ENUM('true', 'false') DEFAULT 'false',
+    FULLTEXT(game_title,game_description),
     PRIMARY KEY (game_id)
 );
 """
@@ -61,12 +63,12 @@ CREATE TABLE Clues (
 testUser = """INSERT INTO Users (email, username, password)
     VALUES ('test@gmail.com', 'test', SHA2('test', 256));"""
 
-testGames = """INSERT INTO Games (user_id, game_title, game_description, geo_location, privacy_level, gps_required, camera_required, game_code)
+testGames = """INSERT INTO Games (user_id, game_title, game_description, geo_location, privacy_level, gps_required, camera_required, game_code, published)
     VALUES 
-    (1, "Mizzou Quest", "New to the University of Missouri? Try MizzouQuest to discover some favorite spots on campus.", "Columbia, MO", "public", "true", "false", SHA2('1776', 256)),
-    (1, "Hannibal Hunt", "Discover these cool Hannibal Landmarks with this fun scavenger hunt!", "Hannibal, MO", "public", "true", "false", SHA2('1942', 256)),
-    (1, "Private Test", "private", "private", "private", "true", "false", SHA2('private', 256)),
-    (2, "Other User Game", "private", "private", "private", "true", "false", SHA2('other', 256));
+    (1, "Mizzou Quest", "New to the University of Missouri? Try MizzouQuest to discover some favorite spots on campus.", "Columbia, MO", "public", "true", "false", '1776', 'false'),
+    (1, "Hannibal Hunt", "Discover these cool Hannibal, Missouri Landmarks with this fun scavenger hunt!", "Hannibal, MO", "public", "true", "false", '1942', 'true'),
+    (1, "Private Test", "private", "private", "private", "true", "false", 'private', 'true'),
+    (2, "Other User Game", "private", "private", "public", "true", "false", 'other,', 'false');
 """
 
 testClues = """INSERT INTO Clues (game_id, clue_order, prompt_text, answer_type, answer)

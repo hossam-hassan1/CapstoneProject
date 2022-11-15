@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from werkzeug.utils import secure_filename
 from flask_session import Session
 # from app.helper import getClue, scavenger_hunts
-from app.database.scavyQueries import get_game_list, get_game_from_code, delete_game, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game, get_games_from_user, check_privacy, get_game_by_id, edit_game, load_edit_form, save_game_form, get_game_by_title, add_clue, delete_clue, move_clue, get_clue, delete_account, find_play_count, log_play_count, edit_prompt_image
+from app.database.scavyQueries import get_game_list, get_game_from_code, delete_game, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game, get_games_from_user, check_privacy, get_game_by_id, edit_game, load_edit_form, save_game_form, get_game_by_title, add_clue, delete_clue, move_clue, get_clue, delete_account, find_play_count, log_play_count, edit_prompt_image, is_game_published, change_publish
 from app.security import validatePassword
 from app import app
 
@@ -112,6 +112,9 @@ def account():
         name = game[2].replace(" ", "_")
         return redirect(url_for("game_edit", game=name))
         # return render_template("create_game.html", mode='edit', read='readonly', disabled='disabled', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id)
+    if 'change_publish' in request.form:
+        game_id = request.form["game_id"]
+        message = change_publish(game_id)
     username = session['username']
     user_id = session['user_id']
     scavenger_hunts = get_games_from_user(user_id)
@@ -147,12 +150,14 @@ def play(game):
     game_session = f'GAME{game_id}'
     message = ""
     game_privacy = check_privacy(game_id)
-
+    published = is_game_published(game_id)
     # game play counter 
     print("Game ID: ", game_id)
     play_count = find_play_count(game_id)
     print("play count: ", play_count)
 
+    if published == 'false':
+        return render_template("play.html", game=game, clue_id=-3, progress=0, published=published)
     if game_privacy == "public":
         pass
     elif game_privacy == 'private':
@@ -208,7 +213,7 @@ def play(game):
     clue = getClue(clues, id, game)
     # renders template with info needed to play game
     progress = checkProgress(clues, id)
-    return render_template("play.html", game=game, id=id, clue_id=clue[0], prompt=clue[1], prompt_link=clue[2], prompt_image=clue[3], answer_type=clue[4], answer=clue[5], message=message, progress=progress, play_count=play_count)
+    return render_template("play.html", game=game, id=id, clue_id=clue[0], prompt=clue[1], prompt_link=clue[2], prompt_image=clue[3], answer_type=clue[4], answer=clue[5], message=message, progress=progress, play_count=play_count, published=game[-1])
 
 @app.route('/search-games', methods=["POST", "GET"])
 def search():
