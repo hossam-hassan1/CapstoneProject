@@ -26,6 +26,7 @@
             <thead>
                 <tr>
                   <th scope="col">GAMES</th>
+                  <th scope="col">GAME CODE</th>
                   <th scope="col">PUBLISHED</th>
                   <th scope="col"></th>
                 </tr>
@@ -39,6 +40,7 @@
                             {{ game[2] }}
                             </button>
                         </th>
+                        <td scope="col">{{ game[-2] }}</td>
                         {% if game[-1] == 'true' %}
                         <td scope="col">Published</td>
                         {% else %}
@@ -69,6 +71,7 @@
                                 <div class="col-">Camera Required: {{ game[7] }}</div>
                                 <div class="col-">Created On: {{ game[8] }}</div>
                                 <div class="col-">Play Count: {{ game[9] }}</div>
+                                <div class="col-">Game Code: {{ game[-2] }}</div>
                             </div>
                         </td>
                     </tr>

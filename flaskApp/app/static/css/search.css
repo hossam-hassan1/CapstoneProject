@@ -7,3 +7,8 @@ p{
 ul{
     text-align: center;      
 }
+
+.btn-primary {
+    background-color: #e76d36;
+    border: none;
+}

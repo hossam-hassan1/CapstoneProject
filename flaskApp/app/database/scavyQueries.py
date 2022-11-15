@@ -3,22 +3,6 @@ import mysql.connector
 import random
 import os
 
-# most played
-most_played = 'SELECT * FROM Games ORDER BY play_count desc;'
-
-# keyword
-keyword = '''SELECT * FROM Games 
-WHERE MATCH (game_title, game_description)
-AGAINST('Missouri' IN NATURAL LANGUAGE MODE);'''
-
-# location
-# location = 'SELECT * FROM Games WHERE geo_location = geo_location;'
-
-# gps_requirement
-gps_required = 'SELECT * FROM Games WHERE gps_required = "true";'
-
-# camera requirement
-camera_required = 'SELECT * FROM Games WHERE camera_required = "true";'
 
 
 
@@ -208,7 +192,7 @@ def create_game(user_id, game_title, game_description, privacy_level, gps_requir
     game_code = generate_game_code(game_title)
     insert = f"""
     INSERT INTO Games (user_id, game_title, game_description, privacy_level, gps_required, camera_required, game_code)
-    VALUES ({user_id}, "{game_title}", "{game_description}", "{privacy_level}", "{gps_required}", "{camera_required}", SHA2("{game_code}", 256));
+    VALUES ({user_id}, "{game_title}", "{game_description}", "{privacy_level}", "{gps_required}", "{camera_required}", "{game_code}");
     """
     message = ''
     created = False
@@ -250,9 +234,48 @@ def delete_game(game_id):
     except:
         return 'Game could not be deleted.'
 
+# # most played
+# most_played = '''SELECT * 
+#                 FROM Games 
+#                 WHERE privacy_level = "public" AND published = "true"
+#                 ORDER BY play_count desc LIMIT 10;'''
+
+# keyword
+keyword = '''SELECT * FROM Games 
+            WHERE privacy_level = "public" AND published = "true" AND  MATCH (game_title, game_description)
+            AGAINST('Missouri' IN NATURAL LANGUAGE MODE);'''
+
+# location
+# location = 'SELECT * FROM Games WHERE geo_location = geo_location;'
+
+# gps_requirement
+gps_required = 'SELECT * FROM Games WHERE gps_required = "true" AND privacy_level = "public" AND published = "true";'
+
+# camera requirement
+camera_required = 'SELECT * FROM Games WHERE camera_required = "true" AND privacy_level = "public" AND published = "true";'
+
+
 #     -- get_game_list() - a get query to list all games from Games Tables
-def get_game_list(privacy_level):
-    list_all_games = f"SELECT * FROM Games WHERE privacy_level = '{privacy_level}' AND published = 'true';"
+def get_game_list(filter, input):
+    additional_query = ''
+    if filter == 'all-games':
+        additional_query = ''
+    elif filter == 'most-played':
+        additional_query = 'ORDER BY play_count desc LIMIT 10'
+    elif filter == 'gps-required':
+        additional_query = 'AND gps_required = "true"'
+    elif filter == 'camera-required':
+        additional_query = 'AND camera_required = "true"'
+    elif filter == 'location':
+        additional_query = f'AND geo_location LIKE "%{input}%"'
+    elif filter == 'keyword':
+        additional_query = f'''AND MATCH (game_title, game_description) 
+                        AGAINST('{input}' IN NATURAL LANGUAGE MODE)'''
+    else:
+        pass
+    list_all_games = f'''SELECT * FROM Games 
+                        WHERE privacy_level = 'public' AND published = 'true' 
+                        {additional_query};'''
     result = search_query(list_all_games)
     games = []
     for record in result:
@@ -261,6 +284,7 @@ def get_game_list(privacy_level):
         #     items.append(item)
         games.append(record)
     return games
+
 
 # games = get_game_list("public")
 # for game in games:
@@ -624,7 +648,7 @@ def change_publish(game_id):
     # try:
     try:
         publish = create_query(update)
-        if status == 'true':
+        if publish == 'true':
             message = "Game has been published!"
         else:
             message = "Game has been unpublished!"

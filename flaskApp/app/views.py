@@ -216,10 +216,23 @@ def play(game):
     return render_template("play.html", game=game, id=id, clue_id=clue[0], prompt=clue[1], prompt_link=clue[2], prompt_image=clue[3], answer_type=clue[4], answer=clue[5], message=message, progress=progress, play_count=play_count, published=game[-1])
 
 @app.route('/search-games', methods=["POST", "GET"])
-def search():
-    scavenger_hunts = get_game_list("public")
+def all_games():
+    return redirect(url_for('search', filter='all-games'))
+
+@app.route('/search-games/<string:filter>', methods=["POST", "GET"])
+def search(filter):
     code_error=""
     code_prompt="Alread have a game code? Enter to play."
+    if "keyword" in request.form:
+        keyword = request.form['keyword']
+        scavenger_hunts = get_game_list('keyword', keyword)
+        return render_template("search.html", scavenger_hunts=scavenger_hunts, code_error=code_error, code_prompt=code_prompt)
+    elif "location" in request.form:
+        location = request.form['location']
+        scavenger_hunts = get_game_list('location', location)
+        return render_template("search.html", scavenger_hunts=scavenger_hunts, code_error=code_error, code_prompt=code_prompt)
+    else:
+        scavenger_hunts = get_game_list(filter, "")
     if "load_game" in request.form:
         game = request.form.get("load_game")
         game_id = request.form.get("game_id")
