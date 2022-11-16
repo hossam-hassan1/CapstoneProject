@@ -19,10 +19,13 @@
     color: #f7e7ca;
     /* clue bubbles > play.html */  
     color: #f4cb6d;
+    color: #faf3b6;
     /* game progress bar */
     color: #eaecef;
     /* off white background color, nav bar */
     color: #FAF9F6;
+    /* card home page */
+    color: #095fd7
 
 }
 
@@ -45,15 +48,9 @@ body{
     font-family: Arial, Helvetica, sans-serif;
     background-color: #FAF9F6;
 }
-
-/* DIV Style https://www.geeksforgeeks.org/how-to-change-the-thickness-of-hr-tag-using-css/ */
-hr {
-    border: none;
-    border-radius: 4px 4px 4px 4px;
-    height: 8px;
-    background: #f1b675
+.center{
+    text-align: center;
 }
-
 /* Button Style */
 .btn-primary {
     background-color: #e76d36;
@@ -74,13 +71,18 @@ hr {
     bottom: 0;
     margin-bottom: -80px;
 }
+.error{
+    color: #dd4229;
+}
 /* Nav Style */
 #nav {
     color: #f1b675;
 }
-.error{
-    color: #dd4229;
-}
+#nav li {
+    display: inline;
+    padding-right: 20px;
+  }
 .navbar-nav a:hover { color: #f1b675 !important; }
+.links a:hover { color: #faf3b6 !important; }
 
 
