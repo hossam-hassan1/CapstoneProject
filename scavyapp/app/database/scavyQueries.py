@@ -1,7 +1,4 @@
 # -- Python function per page:
-
-
-from email import message
 import mysql.connector
 import random
 

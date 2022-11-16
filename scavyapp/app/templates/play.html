@@ -5,23 +5,29 @@
 {% block content %}
 
 
-
+<head>
+    <link rel="stylesheet" href="/static/css/play.css">
+</head>
 
 <div class="container-fluid mx-auto p-3">
     <!--  PAGE TITLE: -->
-    <div class="m-3">
+    <div class="m-3 play_title">
+
+        <!-- Displays current game title -->
+        {%  if clue_id != -2 %}
+        <h1>Welcome to {{game}}</h1>
+        <h3>Let the hunt begin!</h3>
+        {% endif %}
+
         <!-- If past final clue shows mission complete -->
         <!-- ID is automatically set to -1 at bottom after past final clue  -->
         {% if clue_id == -1 %}
             <h1>Mission Complete!</h1>
         {% else %}
         <!-- Otherwise display new game info -->
-            <h1>Let the hunt begin!</h1>
+            <!-- <h1>Let the hunt begin!</h1> -->
         {% endif %}
-        <!-- Displays current game title -->
-        {%  if clue_id != -2 %}
-        <h3>Game: {{game}}</h3>
-        {% endif %}
+
     </div>
 
     <!-- DIVIDER BAR -->
@@ -51,7 +57,7 @@
 
         <div class="card mx-auto m-3">
             <div class="card-body mx-auto m-5">
-                <h3 class="card-subtitle mb-2 text-muted">Clue #: {{ clue_id }}</h3>
+                <h3 class="card-subtitle card-subtitle-text mb-2 text-muted">Clue #: <span class="clue_id">{{ clue_id }}</span></h3>
                 <h3 class="card-title">{{ prompt }}</h3><br>
                 <h3 class="card-subtitle mb-2 text-muted">Find the location described in the clue above.</h3>
                 <!-- ADD PROMPT IMAGE -->
@@ -68,7 +74,7 @@
 
             <!-- Display if the user did not get the correct answer -->
             {% if message != ""%}
-                <h3>{{ message }}</h3>
+                <h3 class="error">{{ message }}</h3>
             {% endif %}
         </div>
             
@@ -78,7 +84,7 @@
                 <form class="form-inline" action="" method="post">
                     <div class="form-group mx-sm-3 mb-2">
                         <p>Enter the answer found at the clue.</p>
-                        <input type="text" name="answer_input"> 
+                        <input type="text" name="answer_input" onkeyup="letter_number_only(this)" required> 
                         <button type="submit" name="nextClue" class="btn btn-primary btn-lg">Next Clue</button>
                     </div>
                 </form>
@@ -129,9 +135,8 @@
 </div>
 {% endif %}
 
-<script>
 
-</script>
+
 {% endblock %}
 
 

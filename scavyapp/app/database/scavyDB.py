@@ -119,6 +119,7 @@ def buildDatabase():
 
         #create tables
         mycursor.execute(createUsers)
+        
         mycursor.execute(createGames)
         mycursor.execute(createLocations)
         mycursor.execute(createClues)
