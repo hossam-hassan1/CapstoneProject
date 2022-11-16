@@ -12,8 +12,8 @@
   }
 .card{
     border: none;
-    background-color:#f7e7ca;
-    color: white;
+    background-color:white;
+    color: black;
 }
 .card-subtitle-text{
     color: white;
