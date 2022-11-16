@@ -7,7 +7,7 @@ services:
       container_name: scavyapp
       restart: always
       environment:
-        - APP_NAME=MyFlaskApp
+        - APP_NAME=scavyapp
       expose:
         - 8080
       ports:
@@ -21,16 +21,16 @@ services:
         - "80:80"
 
     sql-db:
-      build: ./Database 
+      build: ./scavyapp/app/database 
       container_name: mysql-container-scavyapp
       image: mysql:latest
       command: mysqld --default-authentication-plugin=mysql_native_password
       restart: always
       environment:
-        MYSQL_ROOT_PASSWORD: root
-        MYSQL_DATABASE: test_db
-        MYSQL_USER: dbuser
-        MYSQL_PASSWORD: dbpass
+        MYSQL_ROOT_PASSWORD: pass
+        MYSQL_DATABASE: scavyDB
+        MYSQL_USER: root
+        MYSQL_PASSWORD: pass
       expose:
           - 3306
       ports:

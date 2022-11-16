@@ -1,7 +1,7 @@
 
 import mysql.connector
  
-dropDB = "DROP DATABASE scavyDB;"
+# dropDB = "DROP DATABASE scavyDB;"
 createDB = "CREATE DATABASE scavyDB;"
 
 useDB = "USE scavyDB;"
@@ -101,7 +101,7 @@ def buildDatabase():
         mydb = mysql.connector.connect(
             host="localhost",
             user="root",
-            passwd="pass",
+            passwd="password",
         )
 
 
@@ -109,7 +109,7 @@ def buildDatabase():
         mycursor = mydb.cursor()
 
         #drop database
-        mycursor.execute(dropDB)
+        # mycursor.execute(dropDB)
 
         #create database
         mycursor.execute(createDB)

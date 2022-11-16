@@ -1,4 +1,4 @@
-import rsa
+# import rsa
 
 # HASH PASSWORDS
 # -------------------------
@@ -18,7 +18,7 @@ import rsa
 
 # this is the string that we will be encrypting
 coordinate = "38.94200875265407, -92.32646834504295"
-publicKey, privateKey = rsa.newkeys(512)
+# publicKey, privateKey = rsa.newkeys(512)
 
 def separateCoordinates(coordinate):
     longitude = 0
@@ -38,8 +38,8 @@ def separateCoordinates(coordinate):
 def encryptData(data):
     #generate keys
     #encode message
-    encMessage = rsa.encrypt(data.encode(), publicKey)
-    decMessage = rsa.decrypt(encMessage, privateKey).decode()
+    # encMessage = rsa.encrypt(data.encode(), publicKey)
+    # decMessage = rsa.decrypt(encMessage, privateKey).decode()
     print("encrypted string: ", encMessage)
     print("decrypted string: ", decMessage)
     return encMessage

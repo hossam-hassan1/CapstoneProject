@@ -21,7 +21,7 @@ def create_query(query):
             host="localhost",
             database="scavyDB",
             user="root",
-            passwd="pass"
+            passwd="password"
         )
         mycursor = mydb.cursor()
         mycursor.execute(query)
@@ -38,7 +38,7 @@ def search_query(query):
             host="localhost",
             database="scavyDB",
             user="root",
-            passwd="pass"
+            passwd="password"
         )
         mycursor = mydb.cursor()
         mycursor.execute(query)
@@ -54,7 +54,7 @@ def search_one_query(query):
             host="localhost",
             database="scavyDB",
             user="root",
-            passwd="pass"
+            passwd="password"
         )
         mycursor = mydb.cursor()
         mycursor.execute(query)
@@ -70,7 +70,7 @@ def update_query(query):
             host="localhost",
             database="scavyDB",
             user="root",
-            passwd="pass"
+            passwd="password"
         )
         mycursor = mydb.cursor()
         mycursor.execute(query)
