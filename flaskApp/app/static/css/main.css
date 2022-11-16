@@ -5,7 +5,7 @@
     /* all font including headers */ 
     color: black;
     /* active page */ 
-    /* footer */ 
+    /* footer, nav hover */ 
     color: #f1b675;
     /* error messages */ 
     color: #dd4229;
@@ -21,6 +21,8 @@
     color: #f4cb6d;
     /* game progress bar */
     color: #eaecef;
+    /* off white background color, nav bar */
+    color: #FAF9F6;
 
 }
 
@@ -41,6 +43,7 @@
 body{
     font-size: 17px; 
     font-family: Arial, Helvetica, sans-serif;
+    background-color: #FAF9F6;
 }
 
 /* DIV Style https://www.geeksforgeeks.org/how-to-change-the-thickness-of-hr-tag-using-css/ */
@@ -48,7 +51,7 @@ hr {
     border: none;
     border-radius: 4px 4px 4px 4px;
     height: 8px;
-    background: #db9a03
+    background: #f1b675
 }
 
 /* Button Style */
@@ -64,14 +67,6 @@ hr {
   #content-wrap {
     padding-bottom: 2.5rem;    /* Footer height */
   }
-  /* #footer {
-    background-color: #f1b675;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    left: 0;
-    bottom: 0;
-  } */
 .over_ride{
     /* position: absolute; */
     width: 100%;
@@ -81,8 +76,11 @@ hr {
 }
 /* Nav Style */
 #nav {
-    color: black;
+    color: #f1b675;
 }
-
+.error{
+    color: #dd4229;
+}
+.navbar-nav a:hover { color: #f1b675 !important; }
 
 
