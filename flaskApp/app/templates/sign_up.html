@@ -26,19 +26,19 @@
                 <p class="left">Email</p>
                 <p><input type="email" name="email" required/></p>
                 <p class="left2">Create Username</p>
-                <p><input type="text" name="user" required onkeyup="letter_number_only(this)"/></p>
+                <p><input type="text" name="user" onkeyup="letter_number_only(this)" required/></p>
                 <p class="left2">Create Password</p>
-                <p><input type="password" name ="password" required onkeyup="letter_number_only(this)"/></p>
+                <p><input type="password" name ="password" onkeypress="password_val(input)" required/></p>
                 <p id="password">Password must contain 8 characters</p>
                 <p class="left2">Confirm Password</p>
-                <p><input type="password" name ="confirm_password" required onkeyup="letter_number_only(this)"/></p>
+                <p><input type="password" name ="confirm_password" onkeypress="password_val(input)" required/></p>
                 <p class="error">{{message}}</p>
                 {% if check == False %}
                 {% for line in validate %}
                 <p class="error">{{line}}</p>
                 {% endfor %}
                 {% endif %}
-                <p><input type="checkbox" name="terms"> I accept the <a href="/privacy-policy">Terms and Conditions</a></p>
+                <p><input type="checkbox" name="terms" required> I accept the <a href="/privacy-policy">Terms and Conditions</a></p>
                 <button href="/sign-up" type="submit" class="btn btn-primary btn-lg">Sign Up</button>
             </div>
      </form>

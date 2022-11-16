@@ -120,7 +120,14 @@
             <script>
                 function letter_number_only(input)
                 {
-                    var regex = /[^a-z0-9]/gi;
+                    var regex = /[^a-z 0-9]/gi;
+                    input.value = input.value.replace(regex, "");
+                    
+                }
+
+                function password_val(input)
+                {
+                    var regex = /[^a-z0-9!@#$%]/gi;
                     input.value = input.value.replace(regex, "");
                     
                 }
@@ -129,3 +136,4 @@
     </body>
     
 </html>
+

@@ -70,7 +70,7 @@
                 
                     <div class="form-group m-2">
                         <label for="answer">Text Answer:</label>
-                        <input type="text" class="form-control" id="answer " name="edit_answer" placeholder="{{clue[7]}}">
+                        <input type="text" class="form-control" id="answer " name="edit_answer" placeholder="{{clue[7]}}" onkeyup="letter_number_only(this)" required>
                     </div>
 
                     <button type="submit" name="edit_clue" value="{{ clue[0] }}" class="btn btn-primary btn-sm">Edit</button>

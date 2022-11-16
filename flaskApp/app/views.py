@@ -118,19 +118,19 @@ def privacy():
 
 # # renders the play page with no game loaded
 # #  clue_id = -2  -> no game
-# @app.route('/play', methods=["POST", "GET"])
-# def noGame():
-#     code_error=""
-#     code_prompt="Alread have a game code? Enter to play."
-#     if request.method == 'POST':
-#         game_code = request.form["game_code"]
-#         game = get_game_from_code(game_code)
-#         if game[0] == True:
-#             session[f'GAME{game[2]}'] = 0
-#             return redirect(url_for("play", game=game[1]))
-#         elif game[1] == False:
-#             return render_template("play.html", clue_id=-2, code_prompt=code_prompt, code_error=game[3]) 
-#     return render_template("play.html", code_error=code_error, code_prompt=code_prompt, clue_id=-2)
+@app.route('/play', methods=["POST", "GET"])
+def noGame():
+    code_error=""
+    code_prompt="Alread have a game code? Enter to play."
+    if request.method == 'POST':
+        game_code = request.form["game_code"]
+        game = get_game_from_code(game_code)
+        if game[0] == True:
+            session[f'GAME{game[2]}'] = 0
+            return redirect(url_for("play", game=game[1]))
+        elif game[1] == False:
+            return render_template("play.html", clue_id=-2, code_prompt=code_prompt, code_error=game[3]) 
+    return render_template("play.html", code_error=code_error, code_prompt=code_prompt, clue_id=-2)
 
 # renders a game with clues
 # https://pythonbasics.org/flask-sessions/
@@ -624,3 +624,4 @@ def not_found(e):
 # # if __name__ == "__main__":
 # #     # debug means that if there are errors it will display on the webserver
 # #     app.run(debug=True)
+
