@@ -86,7 +86,7 @@ def validatePassword(password, confirm_password):
         if number == False:
             error.append("Password is missing a number.")
         if special == False:
-            error.append("Password is missing a special character")
+            error.append("Password is missing a special character !, $, #, @, %, &.")
     message = [line for line in error]
     return check, message     
 

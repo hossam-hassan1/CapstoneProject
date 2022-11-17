@@ -29,8 +29,7 @@
                 <p><input type="text" name="user" required onkeyup="letter_number_only(this)"/></p>
                 <p class="left2">Create Password</p>
                 <p><input type="password" name ="password" required onkeyup="letter_number_only(this)"/></p>
-                <p id="password">Password must contain 8 characters</p>
-                <p class="left2">Confirm Password</p>
+                <p id="password">Password must contain 8 characters, a upper case letter, a number, and a special character !, $, #, @, %, &.
                 <p><input type="password" name ="confirm_password" required onkeyup="letter_number_only(this)"/></p>
                 <p class="error">{{message}}</p>
                 {% if check == False %}
