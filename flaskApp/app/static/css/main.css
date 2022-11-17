@@ -25,7 +25,9 @@
     /* off white background color, nav bar */
     color: #FAF9F6;
     /* card home page */
-    color: #095fd7
+    color: #095fd7;
+    /* card team images */
+    color: #f1eee6;
 
 }
 
@@ -33,6 +35,9 @@
 .h1{
     font-size: 29px; 
     font-family: Arial, Helvetica, sans-serif;
+}
+h2{
+    font-weight: 525;
 }
 .h3{
     font-size: 23px; 

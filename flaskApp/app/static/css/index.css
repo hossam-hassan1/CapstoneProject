@@ -16,16 +16,37 @@ hr {
     width: 400px;
     height: 500px;
 }
-.card{
+.cardHow{
     border: none;
     margin-top: 25px;
     margin-bottom: 150px;
     background-color: #faf3b6;
     color: black;
 }
+.cardTeam{
+    border: none;
+    margin-top: 25px;
+    margin-bottom: 150px;
+    background-color: #f1eee6;
+    color: black;
+    margin: 20px;
+}
+.card-img-top{
+    object-fit: cover;
+    height: 190px;
+    width: 100%;
+}
+.card-body{
+    border-left-width: 0px;
+}
+.card-text{
+    font-weight: 545;
+    text-align: center;
+}
 .rowMargin{
-    margin-top: 50px;
+    margin-top: 75px;
     margin-bottom: 50px;  
+    justify-content: center;
 }
 .FAQ{
     background-color: #f4cb6d;
