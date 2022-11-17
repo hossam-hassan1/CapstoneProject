@@ -15,24 +15,6 @@ from geopy import distance
 
 #distance properties from geopy.units, e.g.: km, m, meters, miles and so on.
 
-mizzouRec = (38.94200875265407, -92.32646834504295)
-ellisLibrary = (38.94438706705483, -92.32644003147516)
-jesseHall = (38.945311945553414, -92.32822378624653)
-stepsJesse = (38.945473, -92.328785)
-columns = (38.946655199979766, -92.32879005760252)
-shakespearePizza = (38.948637004293545, -92.32788402343294)
-
-recToLibrary = distance.distance(mizzouRec, ellisLibrary).feet
-libraryToJesse = distance.distance(ellisLibrary, jesseHall).feet
-jesseToSteps = distance.distance(jesseHall, stepsJesse).feet
-jesseToColumns = distance.distance(jesseHall, columns).feet
-columnsToShakespeare = distance.distance(columns, shakespearePizza).feet
-
-print("Rec to Library (in feet): " + str(recToLibrary))
-print("Library to Jesse (in feet): " + str(libraryToJesse))
-print("Jesse to Steps of Jesse (in feet): " + str(jesseToSteps))
-print("Jesse to Columns (in feet): " + str(jesseToColumns))
-print("Columns to Shakespeare (in feet): " + str(columnsToShakespeare))
 
 def displayGameLocation(coordinates):
 	# initialize Nominatim API
@@ -44,8 +26,7 @@ def displayGameLocation(coordinates):
 	return f'{city}, {state}'
 
 print()
-print('The columns are in ' + displayGameLocation(columns))
-print('Shakespeares is in ' + displayGameLocation(shakespearePizza))
+
 
 # FIND IF POINT WITHIN X OF OTHER POINT
 	 
@@ -89,7 +70,29 @@ def checkClueCoordinate(checkin, answer, length):
         # Some value other than the correct coordinate format
         return "\nSorry, there are difficulties with your check-in. Are you on another planet?"
 
+
+
+mizzouRec = (38.94200875265407, -92.32646834504295)
+ellisLibrary = (38.94438706705483, -92.32644003147516)
+jesseHall = (38.945311945553414, -92.32822378624653)
+stepsJesse = (38.945473, -92.328785)
 columns = (38.946283093377986, -92.32873990291804)
+shakespearePizza = (38.948637004293545, -92.32788402343294)
+
+recToLibrary = distance.distance(mizzouRec, ellisLibrary).feet
+libraryToJesse = distance.distance(ellisLibrary, jesseHall).feet
+jesseToSteps = distance.distance(jesseHall, stepsJesse).feet
+jesseToColumns = distance.distance(jesseHall, columns).feet
+columnsToShakespeare = distance.distance(columns, shakespearePizza).feet
+
+print("Rec to Library (in feet): " + str(recToLibrary))
+print("Library to Jesse (in feet): " + str(libraryToJesse))
+print("Jesse to Steps of Jesse (in feet): " + str(jesseToSteps))
+print("Jesse to Columns (in feet): " + str(jesseToColumns))
+print("Columns to Shakespeare (in feet): " + str(columnsToShakespeare))
+
+print('The columns are in ' + displayGameLocation(columns))
+print('Shakespeares is in ' + displayGameLocation(shakespearePizza))
 
 checkin45 = (38.94626223288014, -92.32876873666441)
 checkin55 = (38.946147903842935, -92.32879458546917)
@@ -99,7 +102,6 @@ checkin85 = (38.94606449057896, -92.32879615872548)
 checkin95 = (38.94602884647052, -92.32879519323663)
 stepsJesse = (38.945473, -92.328785)
 error = 'tacos'
-
 
 
 

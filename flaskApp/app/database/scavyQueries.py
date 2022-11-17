@@ -2,9 +2,8 @@
 import mysql.connector
 import random
 import os
-
-
-
+from geopy.geocoders import Nominatim
+from geopy import distance
 
 # -- sign_up.html
 def create_query(query):
@@ -184,8 +183,6 @@ def generate_game_code(game_title):
         if len(code_exists) == 0:
             generate = False
     return first + code
-code = generate_game_code("Miz")
-print(code)
 
 #  create_game() - an insert query into Games, Clues, and Locations Tables
 def create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required):
@@ -319,7 +316,7 @@ def get_game_location(game_description, privacy_level):
 
 #     -- get_game_details() - a get query to retrieve all game details based on game code from Games, Clues, and Locations Tables.
 def get_game_from_code(game):
-    game_details = f"SELECT * FROM Games WHERE game_code = SHA2('{game}', 256);"
+    game_details = f"SELECT * FROM Games WHERE game_code = {game};"
     code_message = ""
     exists = False
     result = search_query(game_details)
@@ -337,6 +334,7 @@ def get_game_from_code(game):
         game_id = False
         code_message = "Game code does not exist."
     return exists, name, game_id, code_message
+
 
 def get_games_from_user(user_id):
     user_games = f"SELECT * FROM Games WHERE user_id = {user_id};"
@@ -383,26 +381,59 @@ def getClue(clues, id, game):
         answer = ""
     return clue_id, prompt, prompt_link, prompt_image, answer_type, answer, 
 
-clues = get_clues(1)
-print(clues[1][7])
 
-def check_radius(radius):
-    pass
+def checkClueCoordinate(checkin, answer, length):
+    try:
+        currentDistance = distance.distance(checkin, answer).feet
+        # print("\n")
+        # print(currentDistance)
+        # 50 - 50 <= 50
+        if currentDistance <= length:
+            return True
+        # 60 - 50 <= 10
+        elif currentDistance - length <= (length*0.20):
+            return "On Fire"
+        # 70 - 50 <= 20
+        elif currentDistance - length <= (length*0.40):
+            return "Hotter"
+        # 80 - 50 <= 30
+        elif currentDistance - length <= (length*0.60):
+            return 'Hot'
+        # 90 - 50 <= 40
+        elif currentDistance - length <= (length*0.80):
+            return 'Cold'
+        # 95 - 50 = 45 <= 50
+        elif currentDistance - length <= length:
+            return 'Less Freezing'
+        # 100 - 50 > 50
+        elif currentDistance - length > length:
+            return 'Freezing'
+        # 100 - 50 <= 50
+    except:
+        # Some value other than the correct coordinate format
+        return "\nSorry, there are difficulties with your check-in. Please try again."
 
 def checkAnswer(clue, input):
     answer_type = clue[4]
+    print(answer_type)
     answer = clue[5]
     correct = False
     if answer_type == 'text':
         if answer.lower() == input.lower():
-            correct = True
+            return True
+        else:
+            return False
     elif answer_type == 'coordinates':
-        # input = javascrip check-in
-        # check_radius()
-        correct = True
-    return correct
-
-clue = [0,0, 'text', 'tacos']
+        answer = answer.split(", ")
+        answer = (float(answer[0]), float(answer[1]))
+        print(answer)
+        checkin = checkClueCoordinate(input, answer, 50)
+        if checkin == True:
+            return True
+        else:
+            return checkin
+    else:
+        return "Error with Check Answer"
 
 def checkProgress(clues, id):
     total = len(clues)
@@ -655,3 +686,31 @@ def change_publish(game_id):
     except:
         message = 'Publish status could not be changed.'
     return message
+
+
+columns = (38.946283093377986, -92.32873990291804)
+checkin45 = (38.94626223288014, -92.32876873666441)
+checkin55 = (38.946147903842935, -92.32879458546917)
+checkin65 = (38.946108599860345, -92.32878587093485)
+checkin75 = (38.946076115102315, -92.32879746998758)
+checkin85 = (38.94606449057896, -92.32879615872548)
+checkin95 = (38.94602884647052, -92.32879519323663)
+stepsJesse = (38.945473, -92.328785)
+
+
+
+
+# clue = get_clue(4)
+# answer = clue[7]
+# print(answer)
+# answer = answer.split(", ")
+# answer = (float(answer[0]), float(answer[1]))
+# print(answer)
+# print(columns)
+# verify = checkClueCoordinate(columns, columns, 50)
+
+# clue = [0, 0, 0, 0, 'coordinates',clue[7]]
+# answerCheck = checkAnswer(clue, checkin55)
+
+# print(answerCheck)
+

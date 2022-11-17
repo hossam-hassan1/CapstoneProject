@@ -117,11 +117,18 @@
                 <form class="form-inline" action="" method="post">
                     <div class="form-group mx-sm-3 mb-2">
                         <p>Check-In when you have found the clue to proceed.</p>
-                        <button type="submit" name="nextClue" class="btn btn-primary btn-lg">Check-In</button>
+                        <input type="hidden" name="answer_input" id="location"> 
+                        <button onclick="getLocation()" type="submit" name="nextClue" class="btn btn-primary btn-lg" id="location">Check-In</button>
                     </div>
                 </form>
             </div> 
+
+            <!-- <p><button onclick="getLocation()" class="btn btn-primary btn-lg">Grab current location</button></p>
+            <p id="demo"></p> -->
             {% endif %}
+
+        
+            
 
         <!-- IF mission is complete -->
         {% else %}
@@ -148,19 +155,38 @@
             <a href="/search-games" class="btn btn-primary btn-lg" role="button" aria-pressed="true">Find a new game</a>
         </div> 
         {% endif %}
+    
+{% endif %}
+
+    <!--  game play counter  -->
+    {% if clue_id == 1 %}
+    <div>
+        <p>This scavenger hunt has been played {{play_count}} time(s).</p>
     </div>
-{% endif %}
-
-<!--  game play counter  -->
-{% if clue_id == 1 %}
-<div>
-    <p>This scavenger hunt has been played {{play_count}} time(s).</p>
+    {% endif %}
 </div>
-{% endif %}
 
+<!-- https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition -->
 <script>
+    var x = document.getElementById("location");
+    
+    function success(pos) {
+        const crd = pos.coords;
+        x.value = `Latitude : ${crd}`;
+      }
 
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(success);
+            var coordindates = "38.94602884647052, -92.32879519323663";
+            x.value = coordindates;
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
 </script>
+
+
 {% endblock %}
 
 
