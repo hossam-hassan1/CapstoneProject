@@ -10,7 +10,18 @@ body{
 /* ul{
     text-align: center;      
 } */
-
+.delete{
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+.btn-outline-warning{
+    color:#dd4229;
+    border-color: #dd4229;
+}
+.btn :hover {
+    color: #dd4229 !important;
+    /* text-decoration: none; */
+    }
 .btn-primary {
     background-color: #e76d36;
     border: none;
@@ -20,3 +31,11 @@ body{
     justify-content: center;
     margin-right: -100;
 }
+.marginBottom{
+margin-bottom: 400px;
+}
+
+/* Expand column play */
+/* .play{
+margin-right: 100px;
+} */

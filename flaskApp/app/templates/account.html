@@ -19,76 +19,81 @@
 
 
 <!-- DIV 3 -->
+
 <div class="container-fluid mx-auto p-3"> 
-    <h1 id="header"> Your Games:</h1>
-    <div id="accordion">
-        <table class="table">
-            <thead>
-                <tr>
-                  <th scope="col">GAMES</th>
-                  <th scope="col">GAME CODE</th>
-                  <th scope="col">PUBLISHED</th>
-                  <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for game in scavenger_hunts %}
-                <div class="card">
+    <h1 id="header"> Your Games</h1>
+
+    <div class="card mx-auto m-3">
+        <div id="accordion">
+            <table class="table">
+                <thead>
                     <tr>
-                        <th scope="col">
-                            <button class="btn btn-link" data-toggle="collapse" data-target="#{{ game }}">
-                            {{ game[2] }}
-                            </button>
-                        </th>
-                        <td scope="col">{{ game[-2] }}</td>
-                        {% if game[-1] == 'true' %}
-                        <td scope="col">Published</td>
-                        {% else %}
-                        <td scope="col">Unpublished</td>
-                        {% endif %}
-                        <td scope="col">
-                            <form class="form-inline" action="" method="post">
-                                <input type="hidden" name="game_id" value="{{ game[0] }}">
-                                <input type="hidden" name="game_title" value="{{ game[2] }}">
-                                <input type="hidden" name="published" value="{{ game[-1] }}">
-                                <button type="submit" name="load_edit" value="{{ game[2] }}" class="btn btn-primary btn-sm">Edit</button>
-                                <button type="submit" name="delete_game" value="{{ game[2] }}" class="btn btn-primary btn-sm">Delete</button>
-                                {% if game[-1] == 'true' %}
-                                <button type="submit" name="change_publish" value="{{ game[0] }}" class="btn btn-primary btn-sm">Unpublish</button>
-                                {% else %}
-                                <button type="submit" name="change_publish" value="{{ game[0] }}" class="btn btn-primary btn-sm">Publish</button>
-                                {% endif %}
-                                
-                                
-                            </form>
-                        </td>
+                    <th scope="col">GAMES</th>
+                    <th scope="col">GAME CODE</th>
+                    <th scope="col">PUBLISHED</th>
+                    <th scope="col"></th>
                     </tr>
-                    <tr id="{{ game }}" class="collapse out">
-                        <td>
-                            <div>
-                                <p>Description: {{ game[3] }}</p>
-                                <div class="col-">GPS Required: {{ game[6] }}</div>
-                                <div class="col-">Camera Required: {{ game[7] }}</div>
-                                <div class="col-">Created On: {{ game[8] }}</div>
-                                <div class="col-">Play Count: {{ game[9] }}</div>
-                                <div class="col-">Game Code: {{ game[-2] }}</div>
-                            </div>
-                        </td>
-                    </tr>
-                </div>
-            {% endfor %}
-        </table>
+                </thead>
+                <tbody>
+                {% for game in scavenger_hunts %}
+                    <div class="card">
+                        <tr>
+                            <th scope="col">
+                                <button class="btn btn-link" data-toggle="collapse" data-target="#{{ game }}">
+                                {{ game[2] }}
+                                </button>
+                            </th>
+                            <td scope="col">{{ game[-2] }}</td>
+                            {% if game[-1] == 'true' %}
+                            <td scope="col">Published</td>
+                            {% else %}
+                            <td scope="col">Unpublished</td>
+                            {% endif %}
+                            <td scope="col">
+                                <form class="form-inline" action="" method="post">
+                                    <input type="hidden" name="game_id" value="{{ game[0] }}">
+                                    <input type="hidden" name="game_title" value="{{ game[2] }}">
+                                    <input type="hidden" name="published" value="{{ game[-1] }}">
+                                    <button type="submit" name="load_edit" value="{{ game[2] }}" class="btn btn-primary btn-sm">Edit</button>
+                                    <button type="submit" name="delete_game" value="{{ game[2] }}" class="btn btn-primary btn-sm">Delete</button>
+                                    {% if game[-1] == 'true' %}
+                                    <button type="submit" name="change_publish" value="{{ game[0] }}" class="btn btn-primary btn-sm">Unpublish</button>
+                                    {% else %}
+                                    <button type="submit" name="change_publish" value="{{ game[0] }}" class="btn btn-primary btn-sm">Publish</button>
+                                    {% endif %}
+                                    
+                                    
+                                </form>
+                            </td>
+                        </tr>
+                        <tr id="{{ game }}" class="collapse out">
+                            <td>
+                                <div>
+                                    <p>Description: {{ game[3] }}</p>
+                                    <div class="col-">GPS Required: {{ game[6] }}</div>
+                                    <div class="col-">Camera Required: {{ game[7] }}</div>
+                                    <div class="col-">Created On: {{ game[8] }}</div>
+                                    <div class="col-">Play Count: {{ game[9] }}</div>
+                                    <div class="col-">Game Code: {{ game[-2] }}</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </div>
+                {% endfor %}
+            </table>
+        </div>
     </div>
+
       
 
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#exampleModal">Delete Account</button>
+<button type="button" class="delete btn btn-outline-warning" data-toggle="modal" data-target="#exampleModal">Delete Account</button>
     
 
   
   <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">

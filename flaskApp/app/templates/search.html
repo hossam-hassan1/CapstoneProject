@@ -12,6 +12,7 @@
 </head>
 
 <!-- DIV 1 -->
+<br>
 <div>
     <h1 id="header">Play a Game!</h1>
 </div>
@@ -36,6 +37,7 @@
                 <input type="text" name='keyword' placeholder="Keywords" onkeyup="letter_number_only(this)">
                 <input type="submit" style="display: none" />
             </form>
+
             <div class="col-2">
                 <div class="dropdown">
                     <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -51,60 +53,65 @@
                     </div>
                 </div>
             </div>
+
         </div><br>
     </div>
-    <div class="d-flex justify-content-center">
+
+
+    <div class="d-flex justify-content-center marginBottom">
         <div id="accordion row">
-            <div class="table-responsive mx-auto">
-                <table class="table" id="table" style="display:block">
-                    <thead>
-                        <tr>
-                        <th scope="col">GAMES</th>
-                        <th scope="col">LOCATION</th>
-                        <th scope="col">PLAY COUNT</th>
-                        <th scope="col">CAMERA REQUIRED</th>
-                        <th scope="col">GPS REQUIRED</th>
-                        <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for game in scavenger_hunts %}
-                        <div class="card">
+            <div class="card mx-auto m-3">
+                <div class="table-responsive mx-auto">
+                    <table class="table" id="table" style="display:block">
+                        <thead>
                             <tr>
-                                <th scope="col">
-                                    <button class="btn btn-link" data-toggle="collapse" data-target="#{{ game }}">
-                                    {{ game[2] }}
-                                    </button>
-                                </th>
-                                <td scope="col">{{ game[4] }}</td>
-                                <td scope="col">{{ game[9] }}</td>
-                                <td scope="col"> 
-                                    {% if game[5] == 'true' %}*{% endif %}
-                                </td>
-                                <td scope="col">
-                                    {% if game[6] == 'true' %}*{% endif %}
-                                </td>
-                                <td scope="col">
-                                    <form class="form-inline" action="" method="post">
-                                        <input type="hidden" name="game_id" value="{{ game[0] }}">
-                                        <button type="submit" name="load_game" value="{{ game[2] }}" class="btn btn-primary btn-sm">Play</button>
-                                    </form>
-                                </td>
+                            <th scope="col">GAMES</th>
+                            <th scope="col">LOCATION</th>
+                            <th scope="col">PLAY COUNT</th>
+                            <th scope="col">CAMERA REQUIRED</th>
+                            <th scope="col">GPS REQUIRED</th>
+                            <th scope="col"></th>
                             </tr>
-                            <tr id="{{ game }}" class="collapse out">
-                                <td>
-                                    <div>
-                                        <p>Description: {{ game[3] }}</p>
-                                        <div class="col-">GPS Required: {{ game[6] }}</div>
-                                        <div class="col-">Camera Required: {{ game[7] }}</div>
-                                        <div class="col-">Created On: {{ game[8] }}</div>
-                                        <div class="col-">Play Count: {{ game[9] }}</div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </div>
-                    {% endfor %}
-                </table>
+                        </thead>
+                        <tbody>
+                        {% for game in scavenger_hunts %}
+                            <div class="card">
+                                <tr>
+                                    <th scope="col">
+                                        <button class="btn btn-link" data-toggle="collapse" data-target="#{{ game }}">
+                                        {{ game[2] }}
+                                        </button>
+                                    </th>
+                                    <td scope="col">{{ game[4] }}</td>
+                                    <td scope="col">{{ game[9] }}</td>
+                                    <td scope="col"> 
+                                        {% if game[5] == 'true' %}*{% endif %}
+                                    </td>
+                                    <td scope="col">
+                                        {% if game[6] == 'true' %}*{% endif %}
+                                    </td>
+                                    <td scope="col">
+                                        <form class="form-inline" action="" method="post">
+                                            <input type="hidden" name="game_id" value="{{ game[0] }}">
+                                            <button type="submit" name="load_game" value="{{ game[2] }}" class="btn btn-primary btn-sm">Play</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <tr id="{{ game }}" class="collapse out">
+                                    <td>
+                                        <div>
+                                            <p>Description: {{ game[3] }}</p>
+                                            <div class="col-">GPS Required: {{ game[6] }}</div>
+                                            <div class="col-">Camera Required: {{ game[7] }}</div>
+                                            <div class="col-">Created On: {{ game[8] }}</div>
+                                            <div class="col-">Play Count: {{ game[9] }}</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </div>
+                        {% endfor %}
+                    </table>
+                </div>
             </div>
         </div>
     </div>

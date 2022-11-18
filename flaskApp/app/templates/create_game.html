@@ -11,9 +11,6 @@
 
 <link rel="stylesheet" href="/static/css/create_game.css">
 <link rel="stylesheet" href="static/css/geolocation.css">
-<!-- Google API
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQUZWzt9YimeoO7S7BfOhiihKWVtBewtw&libraries=places&callback=initAutocomplete" async defer></script>
-<script>document.body.appendChild(clearButton)</script> -->
 
 {% endblock %}
 {% block content %}
@@ -35,8 +32,6 @@
 <div class="container-fluid mx-auto p-3">
     <div class="mx-auto m-3">
         <div class="mx-auto m-5">
-            <!-- <h3 class="card-subtitle mb-2 text-muted">Would you like to make Scavenger Hunts?</h3>
-            <p class="card-title">You need to login or create an account to get started.</p><br> -->
             <div class="m-2">
                 {% include 'login_form.html' %}
             </div> 
@@ -45,6 +40,7 @@
 </div>
 
 {% else %}
+
 <!-- DIV 1 -->
 <div>
     {% if mode == 'edit' %}
@@ -55,8 +51,7 @@
 </div>
 
 <!-- DIV 2 -->
-
-<div class="container-fluid mx-auto p-3">
+<div class="container-fluid mx-auto p-3 marginBottom">
     <div class="row">
         <div class="col-sm">
             <div class="card mx-auto m-3">
@@ -198,8 +193,6 @@
         {% endif %}
         
     </div>
-
-
 </div>
 
 
@@ -220,18 +213,7 @@
           text.style.display = "none";
         }
       }
-
-    // document.getElementById("public").addEventListener('click',function(){
-    // alert('Public games and associated data will be accessible to all. Please refer to Scavy Apps Privacy Policy for more information.');})
-
-    // document.getElementById("private").addEventListener('click',function(){
-    // alert('Private games and associated data will only be accessible to those with a game code or private game link. Please refer to Scavy Apps Privacy Policy for more information.');})
-
-    // document.getElementById("gps_required").addEventListener('click',function(){
-    // alert('GPS access allows Scavy App to collect user coordinates. Please refer to Scavy Apps Privacy Policy for more information.');})
-
-    // document.getElementById("camera_required").addEventListener('click',function(){
-    // alert('Camera access allows Scavy App to capture photos from users. Please refer to Scavy Apps Privacy Policy for more information.');})
+      
 </script>
 
 {% endblock %}
