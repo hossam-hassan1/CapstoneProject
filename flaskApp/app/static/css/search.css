@@ -1,15 +1,22 @@
+body{
+    background-color: #FAF9F6;
+}
 #header{
     text-align: center;
 }
 .center{
     text-align: center;  
 }
-ul{
+/* ul{
     text-align: center;      
-}
+} */
 
 .btn-primary {
     background-color: #e76d36;
     border: none;
 
+}
+.filter{
+    justify-content: center;
+    margin-right: -100;
 }
