@@ -366,7 +366,13 @@ def game_edit(game):
 def geolocation():
     return render_template("geolocation.html")
 
-
+@app.route('/test', methods=["POST", "GET"])
+def test():
+    location = ""
+    if "nextClue" in request.form:
+        location = request.form.get("answer_input")
+        print("Location: " + str(location))
+    return render_template("text.html", location = location)
 
 # https://www.geeksforgeeks.org/python-404-error-handling-in-flask/#:~:text=A%20404%20Error%20is%20showed,the%20default%20Ugly%20Error%20page.
 @app.errorhandler(404)

@@ -24,6 +24,8 @@ CREATE TABLE Games (
     created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     play_count int DEFAULT 0,
     game_code char(255) UNIQUE NOT NULL,
+    published ENUM('true', 'false') DEFAULT 'false',
+    FULLTEXT(game_title,game_description),
     PRIMARY KEY (game_id)
 );
 
@@ -52,15 +54,16 @@ CREATE TABLE Clues (
 
 -- Test User
     INSERT INTO Users (email, username, password)
-    VALUES ('test@gmail.com', 'test', SHA2('test', 256));
+    VALUES ('test@gmail.com', 'scavyApp', SHA2('scavyApp1!', 256));
 
 -- Test Games
-    INSERT INTO Games (user_id, game_title, game_description, geo_location, privacy_level, gps_required, camera_required, game_code)
+    INSERT INTO Games (user_id, game_title, game_description, geo_location, privacy_level, gps_required, camera_required, game_code, published)
     VALUES 
-    (1, "Mizzou Quest", "New to the University of Missouri? Try MizzouQuest to discover some favorite spots on campus.", "Columbia, MO", "public", "true", "false", SHA2('1776', 256)),
-    (1, "Hannibal Hunt", "Discover these cool Hannibal Landmarks with this fun scavenger hunt!", "Hannibal, MO", "public", "true", "false", SHA2('1942', 256)),
-    (1, "Private Test", "private", "private", "private", "true", "false", SHA2('private', 256)),
-    (2, "Other User Game", "private", "private", "private", "true", "false", SHA2('other', 256));
+    (1, "Mizzou Quest", "New to the University of Missouri? Try MizzouQuest to discover some favorite spots on campus.", "Columbia, MO", "public", "true", "false", '1776', 'false'),
+    (1, "Hannibal Hunt", "Discover these cool Hannibal, Missouri Landmarks with this fun scavenger hunt!", "Hannibal, MO", "public", "true", "false", '1942', 'true'),
+    (1, "Hannibal Hunt Geolocation", "Discover these cool Hannibal, Missouri Landmarks with this fun scavenger hunt!", "Hannibal, MO", "public", "true", "false", 'Hann1942', 'true'),
+    (1, "Private Test", "private", "private", "private", "true", "false", 'private', 'true'),
+    (2, "Other User Game", "private", "private", "public", "true", "false", 'other,', 'false');
 
 -- Test Clues
 
@@ -78,6 +81,12 @@ CREATE TABLE Clues (
     (2, 3, '"...Now and then we had a hope that if we lived and were good, God would permit us to be pirates. These ambitions faded out, each in its turn; but the ambition to be a steamboatman always remained." \n- Life on the Mississippi, Mark Twain \nFind Mark Twain as a steamboatman. What does he say is his profession?', 'text', 'Steamboat Pilot'),
     (2, 4, 'Hannibal has over a dozen public murals. Some are over 30 feet tall! One features a woman about to board a train. What color is her dress?', 'text', 'Green'),
     (2, 5, 'Did you know that the light house in Hannibal is strictly decorative? Riverboats do not need it. But when it was installed in 1935 President FDR pushed a button a the White House to light it for the first time. How many steps is it to the lighthouse from Main Street?', 'text', '244'),
+     -- Hannibal Hunt Geolocation
+    (3, 1, 'Hannibals oldest, family restaurant has been serving the downtown for four generations. They have an iconic sign spinning mug in their parking lot. What do they serve out of their mug?', 'coordinates', '39.71207977376028, -91.35859090451727'),
+    (3, 2, 'Does a boy get a chance to whitewash a fence every day? Enter the last word on the sign located here.', 'coordinates', '39.71195081958449, -91.35780176501078'),
+    (3, 3, '"...Now and then we had a hope that if we lived and were good, God would permit us to be pirates. These ambitions faded out, each in its turn; but the ambition to be a steamboatman always remained." \n- Life on the Mississippi, Mark Twain \nFind Mark Twain as a steamboatman. What does he say is his profession?', 'coordinates', '39.71253188272878, -91.35528171488045'),
+    (3, 4, 'Hannibal has over a dozen public murals. Some are over 30 feet tall! One features a woman about to board a train. What color is her dress?', 'coordinates', '39.71074090151194, -91.35611319952365'),
+    (3, 5, 'Did you know that the light house in Hannibal is strictly decorative? Riverboats do not need it. But when it was installed in 1935 President FDR pushed a button a the White House to light it for the first time. How many steps is it to the lighthouse from Main Street?', 'coordinates', '39.714603033439445, -91.35896606556047'),
     -- Private Test Game
     (3, 1, 'private test','text', 'private');
 
