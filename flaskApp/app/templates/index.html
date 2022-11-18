@@ -28,7 +28,13 @@
     <div class="row m-2">
       <div class="col-sm col-sm mx-auto m-2">
               <p> Scavy is an online platform that helps you create interactive scavenger hunts and experiences.</p>
+              {% if 'login' not in session %}
               <a class="btn btn-primary btn-lg" href="/sign-up" role="button">Get Started</a>
+              {% elif session['login'] == True %}
+              <a class="btn btn-primary btn-lg" href="/account" role="button">View Your Games</a>
+              {% else %}
+              <a class="btn btn-primary btn-lg" href="/log-in" role="button">Log In</a>
+              {% endif %}
               <br>
               <br>
       </div>

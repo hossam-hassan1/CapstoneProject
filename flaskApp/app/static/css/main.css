@@ -81,6 +81,7 @@ body{
 }
 /* Nav Style */
 #nav {
+<<<<<<< HEAD
     color: #f1b675;
 }
 #nav li {
@@ -91,3 +92,7 @@ body{
 .links a:hover { color: #faf3b6 !important; }
 
 
+=======
+    color: black;
+}
+>>>>>>> Kenna

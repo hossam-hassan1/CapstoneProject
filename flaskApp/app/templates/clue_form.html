@@ -1,33 +1,59 @@
-<form class="row m-2 mx-auto" action="" method="post">
+<form class="row m-2 mx-auto" action="" method="post" enctype=multipart/form-data>
     <div class="form-group m-2">
-        <label for="prompt_text">Clue Prompt:</label>
+        <label for="prompt_text">Clue Prompt Text:</label>
         <textarea type="text" class="form-control" id="prompt_text" name="prompt_text"></textarea>
     </div>
 
     <div class="form-group m-2">
+        <label for="prompt_link">Clue Prompt Link:</label>
+        <input type="text" class="form-control" id="prompt_link" name="prompt_link">
+    </div>
+
+    <div class="form-group m-2">
+        <label for="prompt_image">Upload a Prompt Image (visual hint):</label>
+        <input type="file" class="form-control-file" id="prompt_image" name="prompt_image">
+    </div>
+
+    <div class="form-group m-2">
         <label>Answer Type:</label>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" id="coordinates" name="answer_type" value="coordinates">
+        
+        {% if gps_box == 'checked' %}
+        <div class="coordinates">
+            <input onclick="displayInput('gps_input', 'text_input')" class="form-check-input" type="radio" id="coordinates" name="answer_type" value="coordinates">
             <label class="form-check-label" for="coordinates">GPS Check-In</label><br> 
         </div>
+        {% endif %}
         <div class="form-check">
-            <input class="form-check-input" type="radio" id="text" name="answer_type" value="text">
+            <input onclick="displayInput('text_input', 'gps_input')" class="form-check-input" type="radio" id="text" name="answer_type" value="text">
             <label class="form-check-label" for="text">Text Answer</label><br> 
         </div>  
-    </div>
+
+        <!-- IF ANSWER TYPE == COORDINATES -->
+        <div id='gps_input'>
+            PUT COORDINATE SELECTOR HERE
+        </div>
 
     <div class="form-group m-2">
         <label for="answer">Text Answer:</label>
         <input type="text" class="form-control" id="answer "name="answer" onkeyup="letter_number_only(this)" required>
     </div>
-
-
-    <!-- IF ANSWER TYPE == COORDINATES -->
-    <!-- display ___ -->
-
     
     <!-- <p>{{message}}</p> -->
     <p>{{clue_error}}</p>
     <input type="hidden"  name="game_id" value="{{game_id}}">
     <button type="submit" value="Add Clue" name="add_clue" class="btn btn-primary btn-sm">Add Clue</button>
 </form>
+
+
+<!-- https://www.w3schools.com/howto/howto_js_toggle_hide_show.asp -->
+<script>
+
+    function displayInput(open, close) {
+        var x = document.getElementById(open);
+        var y = document.getElementById(close);
+        x.style.display = "block";
+        y.style.display = "none";
+        y.style.display = "none";
+        }
+
+</script>

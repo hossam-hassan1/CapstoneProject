@@ -1,14 +1,20 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for, session
+from werkzeug.utils import secure_filename
 from flask_session import Session
 # from app.helper import getClue, scavenger_hunts
-from app.database.scavyQueries import get_game_list, get_game_from_code, delete_game, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game, get_games_from_user, check_privacy, get_game_by_id, edit_game, load_edit_form, save_game_form, get_game_by_title, add_clue, delete_clue, move_clue, get_clue, edit_clue, delete_account, find_play_count, log_play_count
+from app.database.scavyQueries import get_game_list, get_game_from_code, delete_game, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game, get_games_from_user, check_privacy, get_game_by_id, edit_game, load_edit_form, save_game_form, get_game_by_title, add_clue, delete_clue, move_clue, get_clue, delete_account, find_play_count, log_play_count, edit_prompt_image, is_game_published, change_publish
 from app.security import validatePassword
 from app import app
 
+UPLOAD_FOLDER = '/Users/kennabogue/Documents/MIZZOU/22_FALL/INFOTC_4970_Capstone/CapstoneProject/flaskApp/app/static/prompt_image_uploads'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 # app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.secret_key = 'super secret key'
 Session(app)
 
 # url string of class(route)
@@ -94,9 +100,9 @@ def account():
         pass
     message = ''
     if 'confirm_delete_account' in request.form:
-        user_id = request.form["user_id"]
-        delete_account(game_id)
-        return redirect(url_for("index"))
+        user_id = session['user_id']
+        delete = delete_account(user_id)
+        return redirect(url_for("logout"))
     if 'delete_game' in request.form:
         user_id = session["user_id"]
         message = delete_game(game_id)
@@ -106,6 +112,9 @@ def account():
         name = game[2].replace(" ", "_")
         return redirect(url_for("game_edit", game=name))
         # return render_template("create_game.html", mode='edit', read='readonly', disabled='disabled', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id)
+    if 'change_publish' in request.form:
+        game_id = request.form["game_id"]
+        message = change_publish(game_id)
     username = session['username']
     user_id = session['user_id']
     scavenger_hunts = get_games_from_user(user_id)
@@ -141,12 +150,14 @@ def play(game):
     game_session = f'GAME{game_id}'
     message = ""
     game_privacy = check_privacy(game_id)
-
+    published = is_game_published(game_id)
     # game play counter 
     print("Game ID: ", game_id)
     play_count = find_play_count(game_id)
     print("play count: ", play_count)
 
+    if published == 'false':
+        return render_template("play.html", game=game, clue_id=-3, progress=0, published=published)
     if game_privacy == "public":
         pass
     elif game_privacy == 'private':
@@ -168,12 +179,6 @@ def play(game):
     # checks input name='nextClue' to go to next clue in play.html
     if game_session in session:
         print(True)
-        
-        total_count = play_count + 1
-        print("total count: ", total_count)
-
-        log_play_count(total_count, game_id)
-
         if "nextClue" in request.form:
             id = session[game_session]
             #  get clues from database
@@ -181,12 +186,23 @@ def play(game):
             # get the clue the page is currently on
             clue = getClue(clues, id, game)
             input = request.form.get("answer_input")
+            print("." + input)
             verify = checkAnswer(clue, input)
             print(verify)
             if verify == True:
+                # if clue == clues[0]:
+                total_count = play_count + 1
+                print("total count: ", total_count)
+                log_play_count(total_count, game_id)
                 session[game_session] += 1
             else:
-                message = "Sorry, try again!"
+                answer_type = clue[4]
+                if answer_type == 'text':
+                    message = "Sorry, try again!"
+                elif answer_type == 'coordinates':
+                    message = verify
+                else:
+                    message = 'Sorry, ScavyApp has an error!'
         # when nextClue is out of range (past final clue)
         # reset input in game complete automatically runs in play.html
         elif "reset" in request.form:
@@ -204,13 +220,26 @@ def play(game):
     clue = getClue(clues, id, game)
     # renders template with info needed to play game
     progress = checkProgress(clues, id)
-    return render_template("play.html", game=game, id=id, clue_id=clue[0], prompt=clue[1], answer_type=clue[2], answer=clue[3], message=message, progress=progress, play_count=play_count)
+    return render_template("play.html", game=game, id=id, clue_id=clue[0], prompt=clue[1], prompt_link=clue[2], prompt_image=clue[3], answer_type=clue[4], answer=clue[5], message=message, progress=progress, play_count=play_count, published=game[-1])
 
 @app.route('/search-games', methods=["POST", "GET"])
-def search():
-    scavenger_hunts = get_game_list("public")
+def all_games():
+    return redirect(url_for('search', filter='all-games'))
+
+@app.route('/search-games/<string:filter>', methods=["POST", "GET"])
+def search(filter):
     code_error=""
     code_prompt="Alread have a game code? Enter to play."
+    if "keyword" in request.form:
+        keyword = request.form['keyword']
+        scavenger_hunts = get_game_list('keyword', keyword)
+        return render_template("search.html", scavenger_hunts=scavenger_hunts, code_error=code_error, code_prompt=code_prompt)
+    elif "location" in request.form:
+        location = request.form['location']
+        scavenger_hunts = get_game_list('location', location)
+        return render_template("search.html", scavenger_hunts=scavenger_hunts, code_error=code_error, code_prompt=code_prompt)
+    else:
+        scavenger_hunts = get_game_list(filter, "")
     if "load_game" in request.form:
         game = request.form.get("load_game")
         game_id = request.form.get("game_id")
@@ -249,6 +278,23 @@ def game_create():
             message = game[1]
     return render_template("create_game.html", mode='create', read='', message=message, disabled='', title_placeholder='What is your game called?', description_placeholder='Tell us about your game.', public_radio='', private_radio='checked', gps_box='', camera_box='')
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+
+def upload_image(file, clue_id, game_id):
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        filename = os.path.splitext(filename)
+        filename = f'{str(game_id)}_{str(clue_id)}' + filename[1]
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    else:
+        return False
+    return filename
+
+
 @app.route('/edit-game/<game>', methods=["POST", "GET"])
 def game_edit(game):
     game_id = get_game_by_title(game.replace("_", " "))
@@ -270,23 +316,36 @@ def game_edit(game):
     if 'add_clue' in request.form:
         prompt_text = request.form["prompt_text"]
         answer_type = request.form["answer_type"]
+        prompt_link = request.form["prompt_link"]
+        file = request.files['prompt_image']
         answer = request.form["answer"]
-        clue = add_clue(game_id, prompt_text, answer_type, answer)
+        if file.filename == '':
+            clue = add_clue(game_id, prompt_text, prompt_link, answer_type, answer)
+        elif not allowed_file(file.filename):
+            clue_message = 'Not permitted file type. Try again.'
+            clue = [False, clue_message]
+        else:
+            clue = add_clue(game_id, prompt_text, prompt_link, answer_type, answer)
+            filename = upload_image(file, clue[2], game_id) 
+            add_file = edit_prompt_image(clue[2], filename)
         if clue[0] != False:   
             return redirect(url_for("game_edit", game=game[0]))   
         else:
             clue_message = clue[1]
-    if 'edit_clue' in request.form:
-        clue_id = request.form["edit_clue"]
-        clue = get_clue(clue_id)
-        prompt_text = request.form["edit_prompt_text"]
-        if prompt_text == '':
-            prompt_text = clue[3]
-        answer_type = request.form["edit_answer_type"]
-        answer = request.form["edit_answer"]
-        if answer == '':
-            answer = clue[7]
-        clue = edit_clue(clue_id, prompt_text, answer_type, answer)
+    # if 'edit_clue' in request.form:
+    #     clue_id = request.form["edit_clue"]
+    #     clue = get_clue(clue_id)
+    #     prompt_text = request.form["edit_prompt_text"]
+    #     if prompt_text == '':
+    #         prompt_text = clue[3]
+    #     prompt_link = request.form["edit_prompt_link"]
+    #     if prompt_link == '':
+    #         prompt_link = clue[4]
+    #     answer_type = request.form["edit_answer_type"]
+    #     answer = request.form["edit_answer"]
+    #     if answer == '':
+    #         answer = clue[7]
+    #     clue = edit_clue(clue_id, prompt_text, prompt_link, answer_type, answer)
         return redirect(url_for("game_edit", game=game[0])) 
     if 'delete_clue' in request.form:
         clue_id = request.form["delete_clue"]

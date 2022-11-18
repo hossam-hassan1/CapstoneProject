@@ -4,3 +4,15 @@
 .center{
     text-align: center;  
 }
+
+#text_input {
+    display: none;
+}
+
+#gps_input {
+    display: none;
+}
+
+#game_gps_input {
+    display: none;
+}
