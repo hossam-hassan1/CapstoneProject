@@ -1,19 +1,22 @@
 <!-- CREATE GAME PAGE -->
 
+
+
 <!-- BASE TEMPLATE -->
 {% extends "base.html" %}
 
 {% block title %}Create a Game{% endblock %}
 
-{% block content %}
+{% block head %}
 
-<head>
-    <link rel="stylesheet" href="/static/css/create_game.css">
-   
-    <!-- Google API
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQUZWzt9YimeoO7S7BfOhiihKWVtBewtw&libraries=places&callback=initAutocomplete" async defer></script>
-    <script>document.body.appendChild(clearButton)</script> -->
-</head>
+<link rel="stylesheet" href="/static/css/create_game.css">
+<link rel="stylesheet" href="static/css/geolocation.css">
+<!-- Google API
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQUZWzt9YimeoO7S7BfOhiihKWVtBewtw&libraries=places&callback=initAutocomplete" async defer></script>
+<script>document.body.appendChild(clearButton)</script> -->
+
+{% endblock %}
+{% block content %}
 
 {% if user_creator == false %}
 <div class="container-fluid mx-auto p-3">
@@ -149,7 +152,10 @@
                         <div class="form-group m-2" id="game_gps_input">
                             <label for="game_code">Game Location</label>
                             <!-- PUT GAME LOCATION SELECTOR HERE -->
-                            <p>PUT LOCATION SELECTOR HERE</p>
+                            <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+                            <div id="map"></div>
+                            <script src="{{url_for('static',filename='js/placeLibary.js')}}"></script>
+                            <script>document.body.appendChild(clearButton)</script>
                         </div>
                             
                         <div class="form-check">
@@ -203,9 +209,9 @@
 {% endif %}
 
 
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQUZWzt9YimeoO7S7BfOhiihKWVtBewtw&libraries=places&callback=initAutocomplete" async defer></script>
 <script>
-
+    
     function displayFromBox(box, expose_field) {
         // Get the checkbox
         var checkBox = document.getElementById(box);
