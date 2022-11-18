@@ -79,7 +79,9 @@ var map = new google.maps.Map(document.getElementById('map'),options)
 
     // Reload map (remove markers)
     clearButton.addEventListener('click', () => {
-      reload()
+      markersArray = [];
+      map = null;
+      initAutocomplete();
     })
     // google.maps.event.addListener(map, 'e', function( event ){
     //   reload()
@@ -87,6 +89,7 @@ var map = new google.maps.Map(document.getElementById('map'),options)
     
     
     // Add marker functions
+    var marker;
     function addMarker(props)
     {
         var marker = new google.maps.Marker({
@@ -94,9 +97,10 @@ var map = new google.maps.Map(document.getElementById('map'),options)
             position: props.coords,
             // Add markers to this map
             map: map
+            
         });
     }
-
+    // map.setMap(map)
     // Geolocation
     infoWindow = new google.maps.InfoWindow();
     
@@ -155,4 +159,3 @@ const clearButton = document.createElement("button")
 clearButton.innerHTML = "Clear Map"
 
 document.body.appendChild(clearButton)
-

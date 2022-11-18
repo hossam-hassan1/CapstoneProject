@@ -120,7 +120,7 @@
             <script>
                 function letter_number_only(input)
                 {
-                    var regex = /[^a-z 0-9]/gi;
+                    var regex = /[^a-z @/_.0-9]/gi;
                     input.value = input.value.replace(regex, "");
                     
                 }
