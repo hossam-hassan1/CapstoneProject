@@ -34,7 +34,10 @@ body{
 .marginBottom{
 margin-bottom: 400px;
 }
-
+.color{
+    color:#e76d36;
+    font-weight: 550;
+}
 /* Expand column play */
 /* .play{
 margin-right: 100px;

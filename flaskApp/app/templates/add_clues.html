@@ -4,10 +4,23 @@
 
 {% block content %}
 
+<style>
+  body{
+    background-color: #FAF9F6;
+  }
+</style>
+
 <!-- DIV 2 -->
+
+<div>
+     
+     <p class="center" style="color:#e76d36; font-size: large;"><b>Add clues to your scavenger hunt!</b></p>
+
     <div class="card mx-auto m-3">
         <div class="card-header">
+        <b>
             2. Edit Clues
+        </b>
         </div>
 
         <p>{{clue_message}}</p>
@@ -17,7 +30,7 @@
           <!-- ADD CLUES -->
           <div class="accordion-item">
             <h2 class="accordion-header" id="headingThree">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+              <button style="background-color: #e76d36; color:white;" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                 Add Clue
               </button>
             </h2>
@@ -100,6 +113,6 @@
             {% endfor %}
             
         </div>
-
-
+      </div>
 {% endblock %}
+

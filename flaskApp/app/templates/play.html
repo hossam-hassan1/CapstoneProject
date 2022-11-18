@@ -61,7 +61,7 @@
                 <h3 class="card-subtitle mb-2 text-muted">Find the location described in the clue</h3><br>
 
                 <!-- PROMPT TEXT -->
-                <h3 class="card-subtitle mb-2 text-muted">Clue{{ clue_id }}</h3>
+                <h3 class="card-subtitle mb-2 text-muted">Clue {{ clue_id }}</h3>
                 <h3 class="card-title">{{ prompt }}</h3><br>
                 
                 
@@ -140,6 +140,9 @@
                         <div class="form-group mx-sm-3 mb-2">
                             <p>Would you like to play again?</p>
                             <button type="submit" name="restart" class="btn btn-primary btn-lg">Restart</button>
+
+                            <a href="/search-games"  class="btn btn-primary btn-lg" role="button" aria-pressed="true">Find a new game</a>
+
                         </div>
                     </form>
                 </div> 
@@ -150,9 +153,7 @@
         <form action="" method="post">
             <input type="hidden" name="reset">
         </form>
-        <div class="m-2">
-            <a href="/search-games" class="btn btn-primary btn-lg" role="button" aria-pressed="true">Find a new game</a>
-        </div> 
+
         {% endif %}
     
 {% endif %}
