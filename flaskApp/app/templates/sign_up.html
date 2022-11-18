@@ -24,12 +24,15 @@
     <form onsubmit="return checkForm(this);" action="" method="post">
             <div class="credentials">
                 <p class="left">Email</p>
-                <p><input type="email" name="email" required/></p>
+                <!-- change -->
+                <p><input type="email" name="email" required oninvalid="this.setCustomValidity('Enter Valid Email')"
+                  oninput="this.setCustomValidity('')"/></p>
                 <p class="left2">Create Username</p>
                 <p><input type="text" name="user" onkeyup="letter_number_only(this)" required/></p>
                 <p class="left2">Create Password</p>
                 <p><input type="password" name ="password" onkeypress="password_val(input)" required/></p>
                 <p id="password">Password must contain 8 characters, a upper case letter, a number, and a special character !, $, #, @, %, &.
+                <p class="left2">Confirm Password</p>
                 <p><input type="password" name ="confirm_password" onkeypress="password_val(input)" required/></p>
                 <p class="error">{{message}}</p>
                 {% if check == False %}
@@ -52,9 +55,9 @@
       if(!form.terms.checked) {
         alert("Please indicate that you accept the Terms and Conditions");
         form.terms.focus();
+        event.preventDefault();
         return false;
       }
       return true;
     }
-  
   </script>

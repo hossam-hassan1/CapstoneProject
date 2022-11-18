@@ -17,9 +17,9 @@
         <form action="" method="POST">
         <div class="credentials">
             <p class="left">Username</p>
-            <p><input type="text" name = "user" onkeypress="letter_number_only(input)" required/></p>
+            <p><input type="text" name = "user" onkeypress="letter_number_only(this)" required/></p>
             <p class="left2">Password</p>
-            <p><input type="password" name = "password" onkeypress="password_val(input)" required/></p>
+            <p><input type="password" name = "password" onkeypress="password_val(this)" required/></p>
             <p class="error">{{error}}</p>
             <button href="/login" type="submit" name = "login" class="btn btn-primary btn-lg">Log in</button>
         </div>

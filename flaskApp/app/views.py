@@ -104,7 +104,7 @@ def account():
         delete = delete_account(user_id)
         return redirect(url_for("logout"))
     if 'delete_game' in request.form:
-        user_id = session["user_id"]
+        game_id = request.form["game_id"]
         message = delete_game(game_id)
     if 'load_edit' in request.form:
         game_id = request.form["game_id"]
@@ -129,17 +129,7 @@ def privacy():
 # #  clue_id = -2  -> no game
 @app.route('/play', methods=["POST", "GET"])
 def noGame():
-    code_error=""
-    code_prompt="Alread have a game code? Enter to play."
-    if request.method == 'POST':
-        game_code = request.form["game_code"]
-        game = get_game_from_code(game_code)
-        if game[0] == True:
-            session[f'GAME{game[2]}'] = 0
-            return redirect(url_for("play", game=game[1]))
-        elif game[1] == False:
-            return render_template("play.html", clue_id=-2, code_prompt=code_prompt, code_error=game[3]) 
-    return render_template("play.html", code_error=code_error, code_prompt=code_prompt, clue_id=-2)
+    return redirect(url_for('search', filter='all-games'))
 
 # renders a game with clues
 # https://pythonbasics.org/flask-sessions/
@@ -276,7 +266,7 @@ def game_create():
             return redirect(url_for("game_edit", game=game[0]))
         else:
             message = game[1]
-    return render_template("create_game.html", mode='create', read='', message=message, disabled='', title_placeholder='What is your game called?', description_placeholder='Tell us about your game.', public_radio='', private_radio='checked', gps_box='', camera_box='')
+    return render_template("create_game.html", mode='create', read='', message=message, disabled='', title_placeholder='What is your game called?', description_placeholder='Tell us about your game.', public_radio='', private_radio='checked', gps_box='', camera_box='', required='required')
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -317,6 +307,7 @@ def game_edit(game):
         prompt_text = request.form["prompt_text"]
         answer_type = request.form["answer_type"]
         prompt_link = request.form["prompt_link"]
+        prompt_link = "https://" + prompt_link
         file = request.files['prompt_image']
         answer = request.form["answer"]
         if file.filename == '':
@@ -367,8 +358,8 @@ def game_edit(game):
     if 'edit_game' in request.form:
         mode = 'edit'
         game_id = request.form["game_id"]
-        return render_template("create_game.html", clues=clues, mode='save', read='', disabled='', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id)
-    return render_template("create_game.html", clue_message=clue_message, clues=clues, mode='edit', read='readonly', disabled='disabled', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id)
+        return render_template("create_game.html", clues=clues, mode='save', read='', disabled='', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id, required='')
+    return render_template("create_game.html", clue_message=clue_message, clues=clues, mode='edit', read='readonly', disabled='disabled', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id, required='')
 
 
 @app.route('/geolocation')

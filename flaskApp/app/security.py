@@ -70,7 +70,7 @@ def validatePassword(password, confirm_password):
             lower = True
         elif letter in ["0","1","2","3","4","5","6","7","8","9"]:
             number = True
-        elif letter in ["!", "$", "#", "@", "%", "&"]:
+        elif letter in ["!", "$", "#", "@", "%", "&", "-"]:
             special = True
         else:
             error.append(f"'{letter}' is an invalid character.")
