@@ -152,7 +152,7 @@ function reload(){
   console.log("Refreshed"); 
 }
 const clearButton = document.createElement("button")
-    clearButton.innerHTML = "Clear Map"
-    
-    document.body.appendChild(clearButton)
+clearButton.innerHTML = "Clear Map"
+
+document.body.appendChild(clearButton)
 
