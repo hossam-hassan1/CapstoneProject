@@ -1,21 +1,25 @@
 <form class="row m-2 mx-auto" action="" method="post" enctype=multipart/form-data>
     <div class="form-group m-2">
-        <label for="prompt_text">Clue Prompt Text:</label>
+        <label for="prompt_text"><b>Clue Description:</b></label>
+        <p></p>
         <textarea type="text" class="form-control" id="prompt_text" name="prompt_text"></textarea>
     </div>
 
     <div class="form-group m-2">
-        <label for="prompt_link">Clue Prompt Link:</label>
+        <label for="prompt_link"><b>Clue Link:</b></label>
+        <p style="font-size: 11px;">Do not include https://www</p>
         <input type="text" class="form-control" id="prompt_link" name="prompt_link">
     </div>
 
     <div class="form-group m-2">
-        <label for="prompt_image">Upload a Prompt Image (visual hint):</label>
+        <label for="prompt_image"><b>Upload an Image:</b></label>
+        <p style="font-size: 11px;">Visual hint</p>
         <input type="file" class="form-control-file" id="prompt_image" name="prompt_image">
     </div>
 
     <div class="form-group m-2">
-        <label>Answer Type:</label>
+        <label><b>Answer Type:</b></label>
+        <p></p>
         
         {% if gps_box == 'checked' %}
         <div class="coordinates">
@@ -30,11 +34,11 @@
 
         <!-- IF ANSWER TYPE == COORDINATES -->
         <div id='gps_input'>
-            PUT COORDINATE SELECTOR HERE
+            <!-- PUT COORDINATE SELECTOR HERE -->
         </div>
 
     <div class="form-group m-2">
-        <label for="answer">Text Answer:</label>
+        <label for="answer"><b>Text Answer:</b></label>
         <input type="text" class="form-control" id="answer "name="answer" onkeyup="letter_number_only(this)" required>
     </div>
     

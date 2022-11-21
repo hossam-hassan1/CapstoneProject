@@ -1,6 +1,9 @@
 /* body{
     background-color: #f7e7ca;
 } */
+.center{
+    text-align: center;
+}
 .play_title{
     text-align: center;
 }
@@ -20,4 +23,7 @@
 }
 .clue_id{
     color:#e99040;
+}
+.marginBottom{
+    margin-bottom: 200px;
 }
