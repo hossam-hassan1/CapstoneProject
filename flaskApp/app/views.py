@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from werkzeug.utils import secure_filename
 from flask_session import Session
 # from app.helper import getClue, scavenger_hunts
@@ -169,7 +169,7 @@ def play(game):
     # checks input name='nextClue' to go to next clue in play.html
     if game_session in session:
         print(True)
-        if "nextClue" in request.form:
+        if request.method == "POST":
             id = session[game_session]
             #  get clues from database
             clues = get_clues(game_id)
@@ -369,8 +369,10 @@ def geolocation():
 @app.route('/test', methods=["POST", "GET"])
 def test():
     location = ""
-    if "nextClue" in request.form:
-        location = request.form.get("answer_input")
+    if request.method == 'POST':
+        content = request.json
+        coords = content["location"]
+        print(coords)
         print("Location: " + str(location))
     return render_template("text.html", location = location)
 
