@@ -111,13 +111,10 @@
 
             {% elif answer_type == 'coordinates' %}
             <div class="m-2">
-                <form class="form-inline" action="" method="post">
-                    <div class="form-group mx-sm-3 mb-2">
-                        <p>Check-In when you have found the clue to proceed</p>
-                        <input type="hidden" name="answer_input" id="location"> 
-                        <button onclick="getLocation()" type="submit" name="nextClue" class="btn btn-primary btn-lg" id="location">Check-In</button>
-                    </div>
-                </form>
+                <div class="mx-sm-3 mb-2">
+                    <p>Check-In when you have found the clue to proceed</p>
+                    <button onclick="getLocation()" type="submit" name="nextClue" class="btn btn-primary btn-lg" id="location">Check-In</button>
+                </div>
             </div> 
 
         </div>
@@ -168,22 +165,45 @@
 
 <!-- https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition -->
 <script>
-    var x = document.getElementById("location");
-    
-    function success(pos) {
-        const crd = pos.coords;
-        x.value = `Latitude : ${crd}`;
-      }
+    var x = document.getElementById("demo");
+    var input = document.getElementById("answer_input");
+    var latitude = 0;
+    var longitude = 0;
+
 
     function getLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(success);
-            var coordindates = "38.94602884647052, -92.32879519323663";
-            x.value = coordindates;
-        } else {
-            x.innerHTML = "Geolocation is not supported by this browser.";
-        }
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function () {}, function () {}, {});
+        navigator.geolocation.getCurrentPosition(showPosition);
+      } else { 
+        x.innerHTML = "Geolocation is not supported by this browser.";
+      }
     }
+
+    function showPosition(position) {
+        let latitude = position.coords.latitude;
+        let longitude = position.coords.longitude;
+        let location = '('+latitude+', '+longitude+')';
+        console.log(location);
+        const url = {{ request.url|tojson }}
+        console.log(url)
+        let game_url = `${url}`
+        fetch(game_url, {
+          method: 'POST',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ location })
+        })
+        .then(response => response.json())
+        .then(response => console.log(JSON.stringify(response)))
+        return location
+    }
+
+   
+
+    input.value = "("+latitude+", "+longitude+")";
 </script>
 
 

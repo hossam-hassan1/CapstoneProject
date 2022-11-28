@@ -175,7 +175,16 @@ def play(game):
             clues = get_clues(game_id)
             # get the clue the page is currently on
             clue = getClue(clues, id, game)
-            input = request.form.get("answer_input")
+            answer_type = clue[4]
+            if answer_type == 'text':
+                input = request.form.get("answer_input")
+            elif answer_type == 'coordinates':
+                content = request.json
+                coords = content["location"]
+                input = coords
+                print(coords)
+            else:
+                input = False
             print("." + input)
             verify = checkAnswer(clue, input)
             print(verify)
@@ -186,7 +195,7 @@ def play(game):
                 log_play_count(total_count, game_id)
                 session[game_session] += 1
             else:
-                answer_type = clue[4]
+                
                 if answer_type == 'text':
                     message = "Sorry, try again!"
                 elif answer_type == 'coordinates':
