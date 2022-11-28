@@ -182,7 +182,6 @@ def play(game):
                 content = request.json
                 coords = content["location"]
                 input = coords
-                print(coords)
             else:
                 input = False
             print("." + input)
