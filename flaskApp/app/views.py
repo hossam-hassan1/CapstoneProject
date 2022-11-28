@@ -204,11 +204,12 @@ def play(game):
                 log_play_count(total_count, game_id)
                 session[game_session] += 1
             else:
-                
                 if answer_type == 'text':
                     message = "Sorry, try again!"
                 elif answer_type == 'coordinates':
                     message = verify
+
+                
                 else:
                     message = 'Sorry, ScavyApp has an error!'
         # when nextClue is out of range (past final clue)
