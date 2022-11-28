@@ -434,7 +434,7 @@ def checkAnswer(clue, input):
     elif answer_type == 'coordinates':
         answer = answer.split(", ")
         answer = (float(answer[0]), float(answer[1]))
-        checkin = checkClueCoordinate(input, answer, 50)
+        checkin = checkClueCoordinate(input, answer, 100)
         if checkin == True:
             return True
         else:
@@ -720,3 +720,9 @@ stepsJesse = (38.945473, -92.328785)
 # answerCheck = checkAnswer(clue, checkin55)
 
 # print(answerCheck)
+
+
+checkin = "(39.7118892, -91.3585702)"
+answer = (39.7118892, -91.3585702)
+length = 100
+print(checkClueCoordinate(checkin, answer, length))

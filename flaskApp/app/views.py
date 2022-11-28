@@ -131,6 +131,15 @@ def privacy():
 def noGame():
     return redirect(url_for('search', filter='all-games'))
 
+def stringToCoords(str_coords):
+    removeParatheses = str_coords.strip("()")
+    removeSpaces = removeParatheses.split(", ")
+    list = []
+    for i in removeSpaces:
+        list.append(float(i))
+    coords = tuple(list)
+    return coords
+
 # renders a game with clues
 # https://pythonbasics.org/flask-sessions/
 @app.route('/play/<game>', methods=["POST", "GET"])
@@ -181,10 +190,11 @@ def play(game):
             elif answer_type == 'coordinates':
                 content = request.json
                 coords = content["location"]
-                input = coords
+                input = stringToCoords(coords)
             else:
                 input = False
-            print("." + input)
+            print(type(input))
+            print(input)
             verify = checkAnswer(clue, input)
             print(verify)
             if verify == True:
