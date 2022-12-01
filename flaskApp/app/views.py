@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+import os
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from werkzeug.utils import secure_filename
 from flask_session import Session
 # from app.helper import getClue, scavenger_hunts
 from app.database.scavyQueries import get_game_list, get_game_from_code, delete_game, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game, get_games_from_user, check_privacy, get_game_by_id, edit_game, load_edit_form, save_game_form, get_game_by_title, add_clue, delete_clue, move_clue, get_clue, edit_clue, delete_account, find_play_count, log_play_count
@@ -168,13 +170,7 @@ def play(game):
     # checks input name='nextClue' to go to next clue in play.html
     if game_session in session:
         print(True)
-        
-        total_count = play_count + 1
-        print("total count: ", total_count)
-
-        log_play_count(total_count, game_id)
-
-        if "nextClue" in request.form:
+        if request.method == "POST":
             id = session[game_session]
             #  get clues from database
             clues = get_clues(game_id)
@@ -316,7 +312,15 @@ def game_edit(game):
 def geolocation():
     return render_template("geolocation.html")
 
-
+@app.route('/test', methods=["POST", "GET"])
+def test():
+    location = ""
+    if request.method == 'POST':
+        content = request.json
+        coords = content["location"]
+        print(coords)
+        print("Location: " + str(location))
+    return render_template("text.html", location = location)
 
 # https://www.geeksforgeeks.org/python-404-error-handling-in-flask/#:~:text=A%20404%20Error%20is%20showed,the%20default%20Ugly%20Error%20page.
 @app.errorhandler(404)

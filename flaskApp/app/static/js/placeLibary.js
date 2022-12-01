@@ -77,83 +77,86 @@ function initAutocomplete() {
     
     var markersArray = [];
 
-      // Reload map (remove markers)
-      clearButton.addEventListener('click', () => {
-        reload()
-      })
-      // google.maps.event.addListener(map, 'e', function( event ){
-      //   reload()
-      // });
+    // Reload map (remove markers)
+    clearButton.addEventListener('click', () => {
+      initAutocomplete();
       
-      
-      // Add marker functions
-      function addMarker(props)
-      {
-          var marker = new google.maps.Marker({
-               
-              position: props.coords,
-              // Add markers to this map
-              map: map
-          });
-      }
-  
-      // Geolocation
-      infoWindow = new google.maps.InfoWindow();
-      
-      const locationButton = document.createElement("button");
-  
-      locationButton.textContent = "Pan to Current Location";
-      //document.getElementById("locationButton").style.color = "red";
-      locationButton.classList.add("custom-map-control-button");
-      map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
-      locationButton.addEventListener("click", () => {
-          // Try HTML5 geolocation.
-          if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-              (position) => {
-              const pos = {
-                  lat: position.coords.latitude,
-                  lng: position.coords.longitude,
-              };
-  
-              infoWindow.setPosition(pos);
-              infoWindow.setContent("Location found.");
-              infoWindow.open(map);
-              map.setCenter(pos);
-              },
-              () => {
-              handleLocationError(true, infoWindow, map.getCenter());
-              }
-          );
-          } else {
-          // Browser doesn't support Geolocation
-          handleLocationError(false, infoWindow, map.getCenter());
-          }
-      });
-  }
-  // This function promps the user that location is disabled
-  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-    window.alert("Location service is disabled")
-    infoWindow.setPosition(pos);
-    infoWindow.setContent(
-        browserHasGeolocation
-        ? "Error: The Geolocation service failed."
-        : "Error: Your browser doesn't support geolocation."
-    )
-  infoWindow.open(map);
-  }
-  // Function that reloads the map (removes marker)
-  // const url = 'http://127.0.0.1:5000/geolocation';
-  function reload(){
-  //   dynamicMap.innerHTML = await (await fetch(url)).text();
-    location.reload()
+    })
+    // google.maps.event.addListener(map, 'e', function( event ){
+    //   reload()
+    // });
     
-   //this line is to watch the result in console , you can remove it later	
-    console.log("Refreshed"); 
+    
+    // Add marker functions
+    function addMarker(props)
+    {
+        var marker = new google.maps.Marker({
+             
+            position: props.coords,
+            // Add markers to this map
+            map: map
+        });
+    }
+
+    // Geolocation
+    infoWindow = new google.maps.InfoWindow();
+    
+    const locationButton = document.createElement("button");
+
+    locationButton.textContent = "Pan to Current Location";
+    //document.getElementById("locationButton").style.color = "red";
+    locationButton.classList.add("custom-map-control-button");
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+    locationButton.addEventListener("click", () => {
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+            const pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+            };
+
+            infoWindow.setPosition(pos);
+            infoWindow.setContent("Location found.");
+            infoWindow.open(map);
+            map.setCenter(pos);
+            },
+            () => {
+            handleLocationError(true, infoWindow, map.getCenter());
+            }
+        );
+        } else {
+        // Browser doesn't support Geolocation
+        handleLocationError(false, infoWindow, map.getCenter());
+        }
+    });
+}
+// This function promps the user that location is disabled
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+  window.alert("Location service is disabled")
+  infoWindow.setPosition(pos);
+  infoWindow.setContent(
+      browserHasGeolocation
+      ? "Error: The Geolocation service failed."
+      : "Error: Your browser doesn't support geolocation."
+  )
+infoWindow.open(map);
+}
+// Function that reloads the map (removes marker)
+// const url = 'http://127.0.0.1:5000/geolocation';
+function reload(){
+//   dynamicMap.innerHTML = await (await fetch(url)).text();
+  location.reload()
+  
+ //this line is to watch the result in console , you can remove it later	
+  console.log("Refreshed"); 
 }
 const clearButton = document.createElement("button")
-      clearButton.innerHTML = "Clear Map"
-      
-      document.body.appendChild(clearButton)
+clearButton.innerHTML = "Clear Map"
+
+document.body.appendChild(clearButton);
+document.getElementById("clearButtonMap");
+
 
   
