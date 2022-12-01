@@ -79,7 +79,8 @@ var map = new google.maps.Map(document.getElementById('map'),options)
 
     // Reload map (remove markers)
     clearButton.addEventListener('click', () => {
-      reload()
+      initAutocomplete();
+      
     })
     // google.maps.event.addListener(map, 'e', function( event ){
     //   reload()
@@ -154,5 +155,7 @@ function reload(){
 const clearButton = document.createElement("button")
 clearButton.innerHTML = "Clear Map"
 
-document.body.appendChild(clearButton)
+document.body.appendChild(clearButton);
+document.getElementById("clearButtonMap");
+
 
