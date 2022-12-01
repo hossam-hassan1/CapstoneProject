@@ -9,9 +9,35 @@
 
 <head>
     <link rel="stylesheet" href="/static/css/sign_up.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
 </head>
 
 <body>
+  <style>
+    form i {
+      margin-left: -30px;
+      cursor: pointer;
+    }
+  </style>
+<script>
+  const togglePassword = document.querySelector("#togglePassword");
+    const password = document.querySelector("#password");
+
+    togglePassword.addEventListener("click", function () {
+        // toggle the type attribute
+        const type = password.getAttribute("type") === "password" ? "text" : "password";
+        password.setAttribute("type", type);
+        
+        // toggle the icon
+        this.classList.toggle("bi-eye");
+    });
+
+    // prevent form submit
+    const form = document.querySelector("form");
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+    });
+</script>
 
     <!-- DIV 1 -->
     <div>
@@ -20,7 +46,7 @@
     </div>
 
     <!-- DIV 2 -->
-    <div>
+    <!-- <div>
     <form onsubmit="return checkForm(this);" action="" method="post">
             <div class="credentials">
                 <p>Email:</p>
@@ -41,12 +67,46 @@
                 <button href="/sign-up" type="submit" class="btn btn-primary btn-lg">Sign Up</button>
             </div>
      </form>
-    </div>
-
+    </div> -->
+    <!-- DIV 3 -->
+    <div>
+      <div class="container">
+        <h1>Sign Up</h1>
+        <form onsubmit="return checkForm(this);" action="" method="post">
+                <div class="credentials">
+                    <p>
+                      <label for="email">Enter email:</label>
+                      <input type="text" name="email" id="email" required>
+                    </p>
+                    <p>
+                      <label for="user">Create a username:</label>
+                      <input type="text" name="user" id="username" required onkeyup="letter_number_only(this)">
+                    </p>
+                    <p>
+                      <label for="password">Password:</label>
+                      <input type="password" name="password" id="password" required onkeyup="letter_number_only(this)">
+                      <i class="bi bi-eye-slash" id="togglePassword"></i>
+                    </p>
+                    <p>
+                      <label for="confirm_password">Confirm Password:</label>
+                      <input type="password" name="confirm_password" id="confirm_password" required onkeyup="letter_number_only(this)">
+                      <!-- <i class="bi bi-eye-slash" id="togglePassword2"></i> -->
+                    </p>
+                    <p>{{message}}</p>
+                    {% if check == False %}
+                    {% for line in validate %}
+                    <p>{{line}}</p>
+                    {% endfor %}
+                    {% endif %}
+                    <p><input type="checkbox" name="terms"> I accept the <a href="/privacy-policy">Terms and Conditions</a></p>
+                    <button href="/sign-up" type="submit" class="btn btn-primary btn-lg">Sign Up</button>
+                </div>
+        </form>
+        </div>
+      </div>
 {% endblock %}
 
 <script>
-
     function checkForm(form)
     {
       if(!form.terms.checked) {
@@ -56,5 +116,4 @@
       }
       return true;
     }
-  
-  </script>
+</script>
