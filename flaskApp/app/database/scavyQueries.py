@@ -316,7 +316,7 @@ def get_game_location(game_description, privacy_level):
 
 #     -- get_game_details() - a get query to retrieve all game details based on game code from Games, Clues, and Locations Tables.
 def get_game_from_code(game):
-    game_details = f"SELECT * FROM Games WHERE game_code = {game};"
+    game_details = f"SELECT * FROM Games WHERE game_code = '{game}';"
     code_message = ""
     exists = False
     try:
@@ -336,8 +336,8 @@ def get_game_from_code(game):
         code_message = "Game code does not exist."
     return exists, name, game_id, code_message
 
-# print(get_game_from_code(1776))
-# print(get_game_from_code("sdfasdf"))
+print(get_game_from_code(1776))
+print(get_game_from_code("Hann1942"))
 
 def get_games_from_user(user_id):
     user_games = f"SELECT * FROM Games WHERE user_id = {user_id};"
