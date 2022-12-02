@@ -319,22 +319,25 @@ def get_game_from_code(game):
     game_details = f"SELECT * FROM Games WHERE game_code = {game};"
     code_message = ""
     exists = False
-    result = search_query(game_details)
-    if len(result) == 1:
-        exists = True
-        game = []
-        for record in result:
-            game.append(record)
-        game_id = game[0][0]
-        name = game[0][2]
-        name = name.replace(" ", "_")
-    else:
+    try:
+        result = search_query(game_details)
+        if len(result) == 1:
+            exists = True
+            game = []
+            for record in result:
+                game.append(record)
+            game_id = game[0][0]
+            name = game[0][2]
+            name = name.replace(" ", "_")
+    except:
         exists = False
         name = False
         game_id = False
         code_message = "Game code does not exist."
     return exists, name, game_id, code_message
 
+# print(get_game_from_code(1776))
+# print(get_game_from_code("sdfasdf"))
 
 def get_games_from_user(user_id):
     user_games = f"SELECT * FROM Games WHERE user_id = {user_id};"
@@ -427,7 +430,7 @@ def checkAnswer(clue, input):
         answer = answer.split(", ")
         answer = (float(answer[0]), float(answer[1]))
         print(answer)
-        checkin = checkClueCoordinate(input, answer, 50)
+        checkin = checkClueCoordinate(input, answer, 10000)
         if checkin == True:
             return True
         else:

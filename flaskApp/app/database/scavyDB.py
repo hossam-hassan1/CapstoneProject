@@ -93,7 +93,7 @@ testClues = """INSERT INTO Clues (game_id, clue_order, prompt_text, answer_type,
     (3, 4, 'Hannibal has over a dozen public murals. Some are over 30 feet tall! One features a woman about to board a train. What color is her dress?', 'coordinates', '39.71074090151194, -91.35611319952365'),
     (3, 5, 'Did you know that the light house in Hannibal is strictly decorative? Riverboats do not need it. But when it was installed in 1935 President FDR pushed a button a the White House to light it for the first time. How many steps is it to the lighthouse from Main Street?', 'coordinates', '39.714603033439445, -91.35896606556047'),
     -- Private Test Game
-    (3, 1, 'private test','text', 'private');
+    (4, 1, 'private test','text', 'private');
 """
 
 testLocations = """INSERT INTO Locations (game_id, geo_location)

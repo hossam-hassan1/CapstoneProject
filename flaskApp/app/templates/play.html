@@ -169,16 +169,21 @@
     var input = document.getElementById("answer_input");
     var latitude = 0;
     var longitude = 0;
-
+    
 
     function getLocation() {
-      if (navigator.geolocation) {
+        if (!navigator.geolocation) {
+            return;
+        }
+        navigator.geolocation.getCurrentPosition(function () {}, function () {}, {});
         navigator.geolocation.getCurrentPosition(function () {}, function () {}, {});
         navigator.geolocation.getCurrentPosition(showPosition);
-      } else { 
-        x.innerHTML = "Geolocation is not supported by this browser.";
-      }
+        setTimeout(() => {
+            window.location.reload();
+          }, 3000);
+        window.location.reload();
     }
+
 
     function showPosition(position) {
         let latitude = position.coords.latitude;

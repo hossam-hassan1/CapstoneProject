@@ -177,8 +177,11 @@ def play(game):
     # if there is an id in the game session continue
     # checks input name='nextClue' to go to next clue in play.html
     if game_session in session:
-        print(True)
-        if request.method == "POST":
+        if "restart" in request.form:
+            session[game_session] = 0
+        elif "reset" in request.form:
+            session[game_session] = -1
+        elif request.method == "POST":
             id = session[game_session]
             #  get clues from database
             clues = get_clues(game_id)
@@ -196,28 +199,26 @@ def play(game):
             print(type(input))
             print(input)
             verify = checkAnswer(clue, input)
-            print(verify)
             if verify == True:
+                print("true: " + str(verify))
                 # if clue == clues[0]:
                 total_count = play_count + 1
                 print("total count: ", total_count)
                 log_play_count(total_count, game_id)
                 session[game_session] += 1
+                return redirect(url_for("play", game=game))
             else:
+                print("false: " + str(verify))
                 if answer_type == 'text':
                     message = "Sorry, try again!"
                 elif answer_type == 'coordinates':
                     message = verify
-
-                
+                    progress = checkProgress(clues, id)
+                    return render_template("play.html", game=game, id=id, clue_id=clue[0], prompt=clue[1], prompt_link=clue[2], prompt_image=clue[3], answer_type=clue[4], answer=clue[5], message=message, progress=progress, play_count=play_count, published=game[-1])
                 else:
                     message = 'Sorry, ScavyApp has an error!'
         # when nextClue is out of range (past final clue)
         # reset input in game complete automatically runs in play.html
-        elif "reset" in request.form:
-            session[game_session] = -1
-        elif "restart" in request.form:
-            session[game_session] = 0
     # otherwise game loads at the beginning
     else:
         session[game_session] = 0 
@@ -257,12 +258,12 @@ def search(filter):
         return redirect(url_for("play", game=game))
     elif request.method == 'POST':
         game_code = request.form["game_code"]
-        game = get_game_from_code(game_code)
-        if game[0] == True:
-            session[f'GAME{game[2]}'] = 0
-            return redirect(url_for("play", game=game[1]))
-        elif game[1] == False:
-            return render_template("search.html", scavenger_hunts=scavenger_hunts, code_error=game[3], code_prompt=code_prompt)
+        load_game = get_game_from_code(game_code)
+        if load_game[0] == True:
+            session[f'GAME{load_game[2]}'] = 0
+            return redirect(url_for("play", game=load_game[1]))
+        elif load_game[1] == False:
+            return render_template("search.html", scavenger_hunts=scavenger_hunts, code_error=load_game[3], code_prompt=code_prompt)
     return render_template("search.html", scavenger_hunts=scavenger_hunts, code_error=code_error, code_prompt=code_prompt)
 
 # create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required)
@@ -387,13 +388,13 @@ def geolocation():
 
 @app.route('/test', methods=["POST", "GET"])
 def test():
-    location = ""
+    coords = ""
     if request.method == 'POST':
         content = request.json
         coords = content["location"]
         print(coords)
-        print("Location: " + str(location))
-    return render_template("text.html", location = location)
+        print("Location: " + str(coords))
+    return render_template("text.html", location = coords)
 
 # https://www.geeksforgeeks.org/python-404-error-handling-in-flask/#:~:text=A%20404%20Error%20is%20showed,the%20default%20Ugly%20Error%20page.
 @app.errorhandler(404)
