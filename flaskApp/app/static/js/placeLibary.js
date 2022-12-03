@@ -75,7 +75,7 @@ var map = new google.maps.Map(document.getElementById('map'),options)
     }
   });
   
-  var markersArray = [];
+  var markersArray = ["inside the array: ", ];
 
     // Reload map (remove markers)
     clearButton.addEventListener('click', () => {
@@ -147,15 +147,16 @@ infoWindow.open(map);
 // const url = 'http://127.0.0.1:5000/geolocation';
 function reload(){
 //   dynamicMap.innerHTML = await (await fetch(url)).text();
-  location.reload()
-  
+  // document.getElementById("map").contentWindow.location.reload(true);
+  hideMarkers();
+  markersArray = [];
  //this line is to watch the result in console , you can remove it later	
   console.log("Refreshed"); 
 }
 const clearButton = document.createElement("button")
 clearButton.innerHTML = "Clear Map"
 
-document.body.appendChild(clearButton);
-document.getElementById("clearButtonMap");
+clearButton.appendChild(clearButton);
+document.getElementById("clearButtonDiv").appendChild(clearButton);
 
 

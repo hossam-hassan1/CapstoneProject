@@ -187,8 +187,9 @@ def generate_game_code(game_title):
 #  create_game() - an insert query into Games, Clues, and Locations Tables
 def create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required):
     game_code = generate_game_code(game_title)
+    # add cords into insert and values    188,192,193
     insert = f"""
-    INSERT INTO Games (user_id, game_title, game_description, privacy_level, gps_required, camera_required, game_code)
+    INSERT INTO Games (user_id, game_title, game_description, privacy_level, gps_required, camera_required, game_code) 
     VALUES ({user_id}, "{game_title}", "{game_description}", "{privacy_level}", "{gps_required}", "{camera_required}", "{game_code}");
     """
     message = ''
@@ -476,6 +477,7 @@ def load_edit_form(game_id):
 
 def save_game_form(game_id, user_id, request, mode):
     message = ''
+    
     game_title = request.form["game_title"]
     game_description = request.form["game_description"]
     privacy_level = request.form["privacy_level"]
@@ -485,8 +487,10 @@ def save_game_form(game_id, user_id, request, mode):
         camera_required = 'false'
     try:
         gps_required = request.form["gps_required"]
+        # coordinates = request.form["game_gps_input"]
     except:
         gps_required = 'false'
+        # coordinates = "virtual"
     boxes = check_form_boxes(privacy_level, camera_required, gps_required)
     public_radio = boxes[0]
     private_radio = boxes[1]
