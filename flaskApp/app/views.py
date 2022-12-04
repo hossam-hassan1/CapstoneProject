@@ -150,10 +150,10 @@ def play(game):
     message = ""
     game_privacy = check_privacy(game_id)
     published = is_game_published(game_id)
-    # game play counter 
-    print("Game ID: ", game_id)
+    
+    # print("Game ID: ", game_id)
     play_count = find_play_count(game_id)
-    print("play count: ", play_count)
+    # print("play count: ", play_count)
 
     if published == 'false':
         return render_template("play.html", game=game, clue_id=-3, progress=0, published=published)
@@ -201,10 +201,11 @@ def play(game):
             verify = checkAnswer(clue, input)
             if verify == True:
                 print("true: " + str(verify))
-                # if clue == clues[0]:
-                total_count = play_count + 1
-                print("total count: ", total_count)
-                log_play_count(total_count, game_id)
+                # game play counter 
+                if session[game_session] == 0:
+                    total_count = play_count + 1
+                    print("total count: ", total_count)
+                    log_play_count(total_count, game_id)
                 session[game_session] += 1
                 return redirect(url_for("play", game=game))
             else:
