@@ -2,6 +2,8 @@
 
 {% block title %}Play Game{% endblock %}
 
+
+
 {% block content %}
 
 
@@ -90,11 +92,18 @@
         <div class="card center mx-auto m-3">
             
             <div class="m-2">
-
+                {% autoescape false %}
+                {% if message == 'You reached the next clue!' %}
                 <!-- Display if the user did not get the correct answer -->
-                {% if message != ""%}
+                    <h3 class="success">{{ message }}</h3>
+                {% elif 'Freezing' in message or 'Cold' in message %}
+                    <h3 class="cold">{{ message }}</h3>
+                {% elif 'Hot' in message or 'Fire' in message %}
+                    <h3 class="hot">{{ message }}</h3>
+                {% else %}
                     <h3 class="error">{{ message }}</h3>
                 {% endif %}
+                {% endautoescape %}
             </div>
             
             {% if answer_type == 'text' %}
@@ -111,13 +120,15 @@
 
             {% elif answer_type == 'coordinates' %}
             <div class="m-2">
-                <form class="form-inline" action="" method="post">
-                    <div class="form-group mx-sm-3 mb-2">
-                        <p>Check-In when you have found the clue to proceed</p>
-                        <input type="hidden" name="answer_input" id="location"> 
-                        <button onclick="getLocation()" type="submit" name="nextClue" class="btn btn-primary btn-lg" id="location">Check-In</button>
-                    </div>
-                </form>
+                <div class="mx-sm-3 mb-2">
+                    <p>Check-In when you have found the clue to proceed</p>
+                    <button onclick="getLocation()" type="submit" name="nextClue" id="answer_input" class="btn btn-primary btn-lg">Check-In</button>
+                    <button name="nextClue" type="submit" name="nextClue" id="spinner" class="btn btn-primary btn-lg" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Checking Position...
+                    </button>
+                </div>
+                <!-- <span style='font-size:100px;'>&#128293;</span> -->
             </div> 
 
         </div>
@@ -168,24 +179,71 @@
 
 <!-- https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition -->
 <script>
-    var x = document.getElementById("location");
     
-    function success(pos) {
-        const crd = pos.coords;
-        x.value = `Latitude : ${crd}`;
-      }
+    // window.onload = function() {
+       // if(!window.location.hash) {
+         //   window.location = window.location + '#loaded';
+           // window.location.reload();
+       // } 
+    //}
 
+    document.getElementById("spinner").style.display = "none";
     function getLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(success);
-            var coordindates = "38.94602884647052, -92.32879519323663";
-            x.value = coordindates;
+        document.getElementById("answer_input").style.display = "none";
+        document.getElementById("spinner").style.display = "block";
+        if (!navigator.geolocation) {
+            return;
         } else {
-            x.innerHTML = "Geolocation is not supported by this browser.";
+            navigator.geolocation.getCurrentPosition(attempt);
+
+            navigator.geolocation.getCurrentPosition(showPosition);
+            // if(response.json()){
+            //    window.location.reload();
+            //} else {
+             //   navigator.geolocation.getCurrentPosition(showPosition);
+            //}
         }
     }
+
+    function attempt(position) {
+        let latitude = position.coords.latitude;
+        let longitude = position.coords.longitude;
+    }
+
+    function showPosition(position) {
+        let latitude = position.coords.latitude;
+        let longitude = position.coords.longitude;
+        let location = '('+latitude+', '+longitude+')';
+        //let location = '{coordinates: ('+latitude+', '+longitude+')}';
+        console.log(location)
+        const url = {{ request.url|tojson }}
+        let game_url = `${url}`
+        fetch(game_url, {
+          method: 'POST',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ location })
+        })
+        .then((response)=>{         
+            if(response.redirected){
+                window.location.href = response.url;
+            }
+        })           
+        .catch(function(e){
+            
+        })
+        //.then(() => {
+          //  window.location.reload();
+        //})
+        return location
+    }
+
+
 </script>
 
+<!-- https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch -->
 
 {% endblock %}
 

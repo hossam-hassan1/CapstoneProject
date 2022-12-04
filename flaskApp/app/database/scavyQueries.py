@@ -317,25 +317,28 @@ def get_game_location(game_description, privacy_level):
 
 #     -- get_game_details() - a get query to retrieve all game details based on game code from Games, Clues, and Locations Tables.
 def get_game_from_code(game):
-    game_details = f"SELECT * FROM Games WHERE game_code = {game};"
+    game_details = f"SELECT * FROM Games WHERE game_code = '{game}';"
     code_message = ""
     exists = False
-    result = search_query(game_details)
-    if len(result) == 1:
-        exists = True
-        game = []
-        for record in result:
-            game.append(record)
-        game_id = game[0][0]
-        name = game[0][2]
-        name = name.replace(" ", "_")
-    else:
+    try:
+        result = search_query(game_details)
+        if len(result) == 1:
+            exists = True
+            game = []
+            for record in result:
+                game.append(record)
+            game_id = game[0][0]
+            name = game[0][2]
+            name = name.replace(" ", "_")
+    except:
         exists = False
         name = False
         game_id = False
         code_message = "Game code does not exist."
     return exists, name, game_id, code_message
 
+print(get_game_from_code(1776))
+print(get_game_from_code("Hann1942"))
 
 def get_games_from_user(user_id):
     user_games = f"SELECT * FROM Games WHERE user_id = {user_id};"
@@ -393,22 +396,22 @@ def checkClueCoordinate(checkin, answer, length):
             return True
         # 60 - 50 <= 10
         elif currentDistance - length <= (length*0.20):
-            return "On Fire"
+            return "On Fire<br>\U0001F525 \U0001F525 \U0001F525"
         # 70 - 50 <= 20
         elif currentDistance - length <= (length*0.40):
-            return "Hotter"
+            return "Hotter<br>\U0001F525 \U0001F525"
         # 80 - 50 <= 30
         elif currentDistance - length <= (length*0.60):
-            return 'Hot'
+            return 'Hot<br>\U0001F525'
         # 90 - 50 <= 40
         elif currentDistance - length <= (length*0.80):
-            return 'Cold'
+            return 'Cold<br>\U0001F976'
         # 95 - 50 = 45 <= 50
         elif currentDistance - length <= length:
-            return 'Less Freezing'
+            return 'Less Freezing<br>\U0001F976 \U0001F976'
         # 100 - 50 > 50
         elif currentDistance - length > length:
-            return 'Freezing'
+            return 'Freezing<br>\U0001F976 \U0001F976 \U0001F976'
         # 100 - 50 <= 50
     except:
         # Some value other than the correct coordinate format
@@ -418,7 +421,6 @@ def checkAnswer(clue, input):
     answer_type = clue[4]
     print(answer_type)
     answer = clue[5]
-    correct = False
     if answer_type == 'text':
         if answer.lower() == input.lower():
             return True
@@ -428,7 +430,7 @@ def checkAnswer(clue, input):
         answer = answer.split(", ")
         answer = (float(answer[0]), float(answer[1]))
         print(answer)
-        checkin = checkClueCoordinate(input, answer, 50)
+        checkin = checkClueCoordinate(input, answer, 100)
         if checkin == True:
             return True
         else:

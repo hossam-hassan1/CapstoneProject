@@ -12,7 +12,16 @@
 }
 .error{
     color: #dd4229;
-  }
+}
+.hot{
+    color: #e99040;
+}
+.cold{
+    color: #2277ff;
+}
+.success{
+    color: #1cd922;
+}
 .card{
     border: none;
     background-color:white;
@@ -27,3 +36,6 @@
 .marginBottom{
     margin-bottom: 200px;
 }
+
+
+

@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify, flash
 from werkzeug.utils import secure_filename
 from flask_session import Session
 # from app.helper import getClue, scavenger_hunts
@@ -131,21 +131,28 @@ def privacy():
 def noGame():
     return redirect(url_for('search', filter='all-games'))
 
+def stringToCoords(str_coords):
+    removeParatheses = str_coords.strip("()")
+    removeSpaces = removeParatheses.split(", ")
+    list = []
+    for i in removeSpaces:
+        list.append(float(i))
+    coords = tuple(list)
+    return coords
+
 # renders a game with clues
 # https://pythonbasics.org/flask-sessions/
+@app.route('/play/<game>/<message>', methods=["POST", "GET"])
 @app.route('/play/<game>', methods=["POST", "GET"])
-def play(game):
+def play(game, message=''):
     game = game.replace("_", " ")
     game_id = get_game_by_title(game)
     game_session = f'GAME{game_id}'
-    message = ""
     game_privacy = check_privacy(game_id)
     published = is_game_published(game_id)
-    # game play counter 
-    print("Game ID: ", game_id)
+    # print("Game ID: ", game_id)
     play_count = find_play_count(game_id)
-    print("play count: ", play_count)
-
+    # print("play count: ", play_count)
     if published == 'false':
         return render_template("play.html", game=game, clue_id=-3, progress=0, published=published)
     if game_privacy == "public":
@@ -168,37 +175,48 @@ def play(game):
     # if there is an id in the game session continue
     # checks input name='nextClue' to go to next clue in play.html
     if game_session in session:
-        print(True)
-        if request.method == "POST":
+        if "restart" in request.form:
+            session[game_session] = 0
+        elif "reset" in request.form:
+            session[game_session] = -1
+        elif request.method == "POST":
             id = session[game_session]
             #  get clues from database
             clues = get_clues(game_id)
             # get the clue the page is currently on
             clue = getClue(clues, id, game)
-            input = request.form.get("answer_input")
-            print("." + input)
-            verify = checkAnswer(clue, input)
-            print(verify)
-            if verify == True:
-                # if clue == clues[0]:
-                total_count = play_count + 1
-                print("total count: ", total_count)
-                log_play_count(total_count, game_id)
-                session[game_session] += 1
+            answer_type = clue[4]
+            if answer_type == 'text':
+                input = request.form.get("answer_input")
+            elif answer_type == 'coordinates':
+                content = request.json
+                coords = content["location"]
+                input = stringToCoords(coords)
             else:
-                answer_type = clue[4]
+                input = False
+            print(type(input))
+            print(input)
+            verify = checkAnswer(clue, input)
+            if verify == True:
+                print("true: " + str(verify))
+                # game play counter 
+                if session[game_session] == 0:
+                    total_count = play_count + 1
+                    print("total count: ", total_count)
+                    log_play_count(total_count, game_id)
+                session[game_session] += 1
+                return redirect(url_for("play", game=game, message='You reached the next clue!'))
+            else:
+                print("false: " + str(verify))
                 if answer_type == 'text':
                     message = "Sorry, try again!"
                 elif answer_type == 'coordinates':
                     message = verify
+                    return redirect(url_for("play", game=game, message=verify))
                 else:
                     message = 'Sorry, ScavyApp has an error!'
         # when nextClue is out of range (past final clue)
         # reset input in game complete automatically runs in play.html
-        elif "reset" in request.form:
-            session[game_session] = -1
-        elif "restart" in request.form:
-            session[game_session] = 0
     # otherwise game loads at the beginning
     else:
         session[game_session] = 0 
@@ -238,12 +256,12 @@ def search(filter):
         return redirect(url_for("play", game=game))
     elif request.method == 'POST':
         game_code = request.form["game_code"]
-        game = get_game_from_code(game_code)
-        if game[0] == True:
-            session[f'GAME{game[2]}'] = 0
-            return redirect(url_for("play", game=game[1]))
-        elif game[1] == False:
-            return render_template("search.html", scavenger_hunts=scavenger_hunts, code_error=game[3], code_prompt=code_prompt)
+        load_game = get_game_from_code(game_code)
+        if load_game[0] == True:
+            session[f'GAME{load_game[2]}'] = 0
+            return redirect(url_for("play", game=load_game[1]))
+        elif load_game[1] == False:
+            return render_template("search.html", scavenger_hunts=scavenger_hunts, code_error=load_game[3], code_prompt=code_prompt)
     return render_template("search.html", scavenger_hunts=scavenger_hunts, code_error=code_error, code_prompt=code_prompt)
 
 # create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required)
@@ -368,13 +386,13 @@ def geolocation():
 
 @app.route('/test', methods=["POST", "GET"])
 def test():
-    location = ""
+    coords = ""
     if request.method == 'POST':
         content = request.json
         coords = content["location"]
         print(coords)
-        print("Location: " + str(location))
-    return render_template("text.html", location = location)
+        print("Location: " + str(coords))
+    return render_template("text.html", location = coords)
 
 # https://www.geeksforgeeks.org/python-404-error-handling-in-flask/#:~:text=A%20404%20Error%20is%20showed,the%20default%20Ugly%20Error%20page.
 @app.errorhandler(404)
