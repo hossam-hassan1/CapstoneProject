@@ -75,7 +75,7 @@ var map = new google.maps.Map(document.getElementById('map'),options)
     }
   });
   
-  var markersArray = ["inside the array: ", ];
+  var markersArray = [];
 
     // Reload map (remove markers)
     clearButton.addEventListener('click', () => {
@@ -169,9 +169,11 @@ selectClearMap.addEventListener("click", reload);
 function showPosition(position) {
   let latitude = position.coords.latitude;
   let longitude = position.coords.longitude;
-  let location = '('+latitude+', '+longitude+')';
-  console.log(location);
-  fetch('http://127.0.0.1:8080/test', {
+  let location = '{coordinates: ('+latitude+', '+longitude+')}';
+  console.log(location)
+  const url = {{ request.url|tojson }}
+  let game_url = `${url}`
+  fetch(game_url, {
     method: 'POST',
     headers: {
         'Accept': 'application/json',
@@ -179,7 +181,57 @@ function showPosition(position) {
     },
     body: JSON.stringify({ location })
   })
-  .then(response => response.json())
-  .then(response => console.log(JSON.stringify(response)))
+  .then((response)=>{         
+      if(response.redirected){
+          window.location.href = response.url;
+      }
+  })           
+  .catch(function(e){
+      
+  })
+  .then(() => {
+     window.location.reload();
+  })
+  // console.log(location);
+  // fetch('http://127.0.0.1:8080/test', {
+  //   method: 'POST',
+  //   headers: {
+  //       'Accept': 'application/json',
+  //       'Content-Type': 'application/json'
+  //   },
+  //   body: JSON.stringify({ location })
+  // })
+  // .then(response => response.json())
+  // .then(response => console.log(JSON.stringify(response)))
+  return location
+}
+
+function showPosition(position) {
+  let latitude = position.coords.latitude;
+  let longitude = position.coords.longitude;
+  let location = '('+latitude+', '+longitude+')';
+  // let location = '{coordinates: ('+latitude+', '+longitude+')}';
+  // console.log(location)
+  // const url = {{ request.url|tojson }}
+  // let game_url = `${url}`
+  // fetch(game_url, {
+  //   method: 'POST',
+  //   headers: {
+  //       'Accept': 'application/json',
+  //       'Content-Type': 'application/json'
+  //   },
+  //   body: JSON.stringify({ location })
+  // })
+  // .then((response)=>{         
+  //     if(response.redirected){
+  //         window.location.href = response.url;
+  //     }
+  // })           
+  // .catch(function(e){
+      
+  // })
+  // .then(() => {
+  //    window.location.reload();
+  // })
   return location
 }
