@@ -158,21 +158,19 @@
                         <!-- geting game_gps_input -->
                         <div class="form-group m-2" id="game_gps_input">
                             <label for="game_code">Game Location</label>
+                            <!-- <button type="button" onclick="currentLocationButton()">Pin to Current Location</button> -->
                             {% include 'geolocation.html' %}
-                            
-                            <!-- <script>document.getElementById("clearButtonMap")</script> -->
-                            <!-- <script id="clearButtonMap">document.body.appendChild(clearButton)</script> -->
+                            <button type="button" id="clearButtonDiv" onclick="reload()">Clear Map</button>
                             <!-- PUT GAME LOCATION SELECTOR HERE -->
                             
-                            
-                            
                         </div>
+                        
                             
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="camera_required" name="camera_required" value="true" data-toggle="modal" data-target="#exampleModal4" {{disabled}} {{camera_box}}>
                             <label class="form-check-label" for="camera_required">Camera Access</label><br>
                         </div>
-
+                        
                         <!-- Modal Camera-->
                         <div class="modal fade" id="exampleModal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
@@ -204,6 +202,10 @@
                 </form>
             </div>
         </div>
+
+        <!-- <button onclick="reload()" id="clearButtonDiv" defer>Clear Map</button> -->
+
+
         {% if mode != 'create' %}
         <div class="col-sm bottom">
             {% include 'add_clues.html' %}
