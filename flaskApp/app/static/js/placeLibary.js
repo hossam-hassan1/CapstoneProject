@@ -101,7 +101,7 @@ var map = new google.maps.Map(document.getElementById('map'),options)
     infoWindow = new google.maps.InfoWindow();
     
     // locationButton being made
-    const locationButton = document.createElement("button");
+    // const locationButton = document.createElement("button");
 
     locationButton.textContent = "Pan to Current Location";
     //document.getElementById("locationButton").style.color = "red";
@@ -132,6 +132,7 @@ var map = new google.maps.Map(document.getElementById('map'),options)
         }
     });
 }
+
 
 // This function promps the user that location is disabled
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
