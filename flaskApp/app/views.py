@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, j
 from werkzeug.utils import secure_filename
 from flask_session import Session
 # from app.helper import getClue, scavenger_hunts
-from app.database.scavyQueries import get_game_list, get_game_from_code, delete_game, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game, get_games_from_user, check_privacy, get_game_by_id, edit_game, load_edit_form, save_game_form, get_game_by_title, add_clue, delete_clue, move_clue, get_clue, delete_account, find_play_count, log_play_count, edit_prompt_image, is_game_published, change_publish
+from app.database.scavyQueries import get_game_list, get_game_from_code, delete_game, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game, get_games_from_user, check_privacy, get_game_by_id, edit_game, load_edit_form, save_game_form, get_game_by_title, add_clue, delete_clue, move_clue, get_clue, delete_account, find_play_count, log_play_count, edit_prompt_image, is_game_published, change_publish, stringToCoords
 from app.security import validatePassword
 from app import app
 
@@ -131,14 +131,7 @@ def privacy():
 def noGame():
     return redirect(url_for('search', filter='all-games'))
 
-def stringToCoords(str_coords):
-    removeParatheses = str_coords.strip("()")
-    removeSpaces = removeParatheses.split(", ")
-    list = []
-    for i in removeSpaces:
-        list.append(float(i))
-    coords = tuple(list)
-    return coords
+
 
 # renders a game with clues
 # https://pythonbasics.org/flask-sessions/
