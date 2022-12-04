@@ -395,22 +395,22 @@ def checkClueCoordinate(checkin, answer, length):
             return True
         # 60 - 50 <= 10
         elif currentDistance - length <= (length*0.20):
-            return "On Fire"
+            return "On Fire<br>\U0001F525 \U0001F525 \U0001F525"
         # 70 - 50 <= 20
         elif currentDistance - length <= (length*0.40):
-            return "Hotter"
+            return "Hotter<br>\U0001F525 \U0001F525"
         # 80 - 50 <= 30
         elif currentDistance - length <= (length*0.60):
-            return 'Hot'
+            return 'Hot<br>\U0001F525'
         # 90 - 50 <= 40
         elif currentDistance - length <= (length*0.80):
-            return 'Cold'
+            return 'Cold<br>\U0001F976'
         # 95 - 50 = 45 <= 50
         elif currentDistance - length <= length:
-            return 'Less Freezing'
+            return 'Less Freezing<br>\U0001F976 \U0001F976'
         # 100 - 50 > 50
         elif currentDistance - length > length:
-            return 'Freezing'
+            return 'Freezing<br>\U0001F976 \U0001F976 \U0001F976'
         # 100 - 50 <= 50
     except:
         # Some value other than the correct coordinate format
@@ -420,7 +420,6 @@ def checkAnswer(clue, input):
     answer_type = clue[4]
     print(answer_type)
     answer = clue[5]
-    correct = False
     if answer_type == 'text':
         if answer.lower() == input.lower():
             return True
@@ -430,7 +429,7 @@ def checkAnswer(clue, input):
         answer = answer.split(", ")
         answer = (float(answer[0]), float(answer[1]))
         print(answer)
-        checkin = checkClueCoordinate(input, answer, 10000)
+        checkin = checkClueCoordinate(input, answer, 700)
         if checkin == True:
             return True
         else:

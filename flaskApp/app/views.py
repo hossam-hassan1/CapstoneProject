@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify, flash
 from werkzeug.utils import secure_filename
 from flask_session import Session
 # from app.helper import getClue, scavenger_hunts
@@ -142,19 +142,17 @@ def stringToCoords(str_coords):
 
 # renders a game with clues
 # https://pythonbasics.org/flask-sessions/
+@app.route('/play/<game>/<message>', methods=["POST", "GET"])
 @app.route('/play/<game>', methods=["POST", "GET"])
-def play(game):
+def play(game, message=''):
     game = game.replace("_", " ")
     game_id = get_game_by_title(game)
     game_session = f'GAME{game_id}'
-    message = ""
     game_privacy = check_privacy(game_id)
     published = is_game_published(game_id)
-    
     # print("Game ID: ", game_id)
     play_count = find_play_count(game_id)
     # print("play count: ", play_count)
-
     if published == 'false':
         return render_template("play.html", game=game, clue_id=-3, progress=0, published=published)
     if game_privacy == "public":
@@ -207,15 +205,14 @@ def play(game):
                     print("total count: ", total_count)
                     log_play_count(total_count, game_id)
                 session[game_session] += 1
-                return redirect(url_for("play", game=game))
+                return redirect(url_for("play", game=game, message='You reached the next clue!'))
             else:
                 print("false: " + str(verify))
                 if answer_type == 'text':
                     message = "Sorry, try again!"
                 elif answer_type == 'coordinates':
                     message = verify
-                    progress = checkProgress(clues, id)
-                    return render_template("play.html", game=game, id=id, clue_id=clue[0], prompt=clue[1], prompt_link=clue[2], prompt_image=clue[3], answer_type=clue[4], answer=clue[5], message=message, progress=progress, play_count=play_count, published=game[-1])
+                    return redirect(url_for("play", game=game, message=verify))
                 else:
                     message = 'Sorry, ScavyApp has an error!'
         # when nextClue is out of range (past final clue)

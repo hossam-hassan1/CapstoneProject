@@ -2,6 +2,8 @@
 
 {% block title %}Play Game{% endblock %}
 
+
+
 {% block content %}
 
 
@@ -90,11 +92,18 @@
         <div class="card center mx-auto m-3">
             
             <div class="m-2">
-
+                {% autoescape false %}
+                {% if message == 'You reached the next clue!' %}
                 <!-- Display if the user did not get the correct answer -->
-                {% if message != ""%}
+                    <h3 class="success">{{ message }}</h3>
+                {% elif 'Freezing' in message or 'Cold' in message %}
+                    <h3 class="cold">{{ message }}</h3>
+                {% elif 'Hot' in message or 'Fire' in message %}
+                    <h3 class="hot">{{ message }}</h3>
+                {% else %}
                     <h3 class="error">{{ message }}</h3>
                 {% endif %}
+                {% endautoescape %}
             </div>
             
             {% if answer_type == 'text' %}
@@ -119,6 +128,7 @@
                         Checking Position...
                     </button>
                 </div>
+                <!-- <span style='font-size:100px;'>&#128293;</span> -->
             </div> 
 
         </div>
@@ -187,11 +197,11 @@
             navigator.geolocation.getCurrentPosition(attempt);
 
             navigator.geolocation.getCurrentPosition(showPosition);
-            if(response.json()){
-                window.location.reload();
-            } else {
-                navigator.geolocation.getCurrentPosition(showPosition);
-            }
+            // if(response.json()){
+            //    window.location.reload();
+            //} else {
+             //   navigator.geolocation.getCurrentPosition(showPosition);
+            //}
         }
     }
 
@@ -216,12 +226,17 @@
           },
           body: JSON.stringify({ location })
         })
-        .then(() => {
-            window.location.reload();
+        .then((response)=>{         
+            if(response.redirected){
+                window.location.href = response.url;
+            }
+        })           
+        .catch(function(e){
+            
         })
-        //.then(response => response.json())
-        //.then(response => location.reload())
-        //.then(response => console.log(JSON.stringify(response)))
+        //.then(() => {
+          //  window.location.reload();
+        //})
         return location
     }
 
