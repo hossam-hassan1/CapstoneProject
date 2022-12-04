@@ -122,3 +122,13 @@ def checkClueCoordinate(checkin, answer, length):
 # print("Error: " + checkClueCoordinate(error, columns, 50))
 
 
+def stringToCoords(str_coords):
+    removeParatheses = str_coords.strip("()")
+    removeSpaces = removeParatheses.split(", ")
+    list = []
+    for i in removeSpaces:
+        list.append(float(i))
+    coords = tuple(list)
+    return coords
+
+print(stringToCoords('(38.94200875265407, -92.32646834504295)'))

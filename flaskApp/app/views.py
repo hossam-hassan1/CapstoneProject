@@ -316,11 +316,16 @@ def game_edit(game):
             return render_template("create_game.html", user_creator=user_creator)
     if 'add_clue' in request.form:
         prompt_text = request.form["prompt_text"]
-        answer_type = request.form["answer_type"]
         prompt_link = request.form["prompt_link"]
         prompt_link = "https://" + prompt_link
         file = request.files['prompt_image']
-        answer = request.form["answer"]
+        answer_type = request.form["answer_type"]
+        if answer_type == 'text':
+            answer = request.form["text"]
+        elif answer_type == 'coordinates':
+            answer = request.form["clue_coordinates"]
+            # print(answer)
+            answer = stringToCoords(answer)
         if file.filename == '':
             clue = add_clue(game_id, prompt_text, prompt_link, answer_type, answer)
         elif not allowed_file(file.filename):

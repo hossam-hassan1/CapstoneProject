@@ -181,6 +181,8 @@ def stringToCoords(str_coords):
     coords = tuple(list)
     return coords
 
+# print(stringToCoords('(38.94200875265407, -92.32646834504295)'))
+
 def generate_game_code(game_title):
     generate = True
     while(generate):
@@ -465,8 +467,9 @@ def checkAnswer(clue, input):
         else:
             return False
     elif answer_type == 'coordinates':
-        answer = answer.split(", ")
-        answer = (float(answer[0]), float(answer[1]))
+        answer = stringToCoords(answer)
+        # answer = answer.split(", ")
+        # answer = (float(answer[0]), float(answer[1]))
         print(answer)
         checkin = checkClueCoordinate(input, answer, 100)
         if checkin == True:
