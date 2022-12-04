@@ -75,17 +75,14 @@ var map = new google.maps.Map(document.getElementById('map'),options)
     }
   });
   
-  var markersArray = ["inside the array: ", ];
+  var markersArray = [];
 
     // Reload map (remove markers)
     clearButton.addEventListener('click', () => {
-      initAutocomplete();
+      console.log("clear Map");
       
     })
-    // google.maps.event.addListener(map, 'e', function( event ){
-    //   reload()
-    // });
-    
+ 
     
     // Add marker functions
     function addMarker(props)
@@ -95,12 +92,15 @@ var map = new google.maps.Map(document.getElementById('map'),options)
             position: props.coords,
             // Add markers to this map
             map: map
+            
         });
+        
     }
 
     // Geolocation
     infoWindow = new google.maps.InfoWindow();
     
+    // locationButton being made
     const locationButton = document.createElement("button");
 
     locationButton.textContent = "Pan to Current Location";
@@ -132,6 +132,7 @@ var map = new google.maps.Map(document.getElementById('map'),options)
         }
     });
 }
+
 // This function promps the user that location is disabled
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   window.alert("Location service is disabled")
@@ -145,18 +146,39 @@ infoWindow.open(map);
 }
 // Function that reloads the map (removes marker)
 // const url = 'http://127.0.0.1:5000/geolocation';
-function reload(){
-//   dynamicMap.innerHTML = await (await fetch(url)).text();
-  // document.getElementById("map").contentWindow.location.reload(true);
-  hideMarkers();
+// URL that helped with the clear map dom error
+function reload(map){
+
+  initAutocomplete();
   markersArray = [];
+
  //this line is to watch the result in console , you can remove it later	
   console.log("Refreshed"); 
 }
 const clearButton = document.createElement("button")
 clearButton.innerHTML = "Clear Map"
 
-clearButton.appendChild(clearButton);
-document.getElementById("clearButtonDiv").appendChild(clearButton);
+// clearButton.appendChild(clearButton);
+var selectClearMap = document.getElementById("clearButtonDiv");
 
+selectClearMap.addEventListener("click", reload);
+// selectClearMap.appendChild(clearButton);
 
+//fetch cords to database
+function showPosition(position) {
+  let latitude = position.coords.latitude;
+  let longitude = position.coords.longitude;
+  let location = '('+latitude+', '+longitude+')';
+  console.log(location);
+  fetch('http://127.0.0.1:8080/test', {
+    method: 'POST',
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ location })
+  })
+  .then(response => response.json())
+  .then(response => console.log(JSON.stringify(response)))
+  return location
+}
