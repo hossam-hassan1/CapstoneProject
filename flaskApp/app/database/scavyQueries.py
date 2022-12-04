@@ -4,6 +4,8 @@ import random
 import os
 from geopy.geocoders import Nominatim
 from geopy import distance
+from app.geolocation import displayGameLocation, checkGamesNearby, searchToCoords
+
 
 # -- sign_up.html
 def create_query(query):
@@ -170,6 +172,17 @@ def user_login(username, password):
 
 # create_game.html
 
+def stringToCoords(str_coords):
+    removeParatheses = str_coords.strip("()")
+    removeSpaces = removeParatheses.split(", ")
+    list = []
+    for i in removeSpaces:
+        list.append(float(i))
+    coords = tuple(list)
+    return coords
+
+# print(stringToCoords('(38.94200875265407, -92.32646834504295)'))
+
 def generate_game_code(game_title):
     generate = True
     while(generate):
@@ -185,12 +198,14 @@ def generate_game_code(game_title):
     return first + code
 
 #  create_game() - an insert query into Games, Clues, and Locations Tables
-def create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required):
+def create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required, geo_location):
     game_code = generate_game_code(game_title)
     # add cords into insert and values    188,192,193
+    coordinates = stringToCoords(geo_location)
+    location = displayGameLocation(coordinates)
     insert = f"""
-    INSERT INTO Games (user_id, game_title, game_description, privacy_level, gps_required, camera_required, game_code) 
-    VALUES ({user_id}, "{game_title}", "{game_description}", "{privacy_level}", "{gps_required}", "{camera_required}", "{game_code}");
+    INSERT INTO Games (user_id, game_title, game_description, privacy_level, gps_required, camera_required, game_code, geo_location)
+    VALUES ({user_id}, "{game_title}", "{game_description}", "{privacy_level}", "{gps_required}", "{camera_required}", "{game_code}", "{location}");
     """
     message = ''
     created = False
@@ -203,6 +218,7 @@ def create_game(user_id, game_title, game_description, privacy_level, gps_requir
     except:
         message = 'Game could not be created.'
     return created, message, game_id
+
 
 
 def edit_game(game_id, game_title, game_description, privacy_level, gps_required, camera_required):
@@ -265,7 +281,8 @@ def get_game_list(filter, input):
     elif filter == 'camera-required':
         additional_query = 'AND camera_required = "true"'
     elif filter == 'location':
-        additional_query = f'AND geo_location LIKE "%{input}%"'
+        if input.lower() == 'virtual': 
+            additional_query = 'AND geo_location = "Virtual"'
     elif filter == 'keyword':
         additional_query = f'''AND MATCH (game_title, game_description) 
                         AGAINST('{input}' IN NATURAL LANGUAGE MODE)'''
@@ -276,11 +293,34 @@ def get_game_list(filter, input):
                         {additional_query};'''
     result = search_query(list_all_games)
     games = []
+    
     for record in result:
         # items = []
         # for item in record:
         #     items.append(item)
         games.append(record)
+    if filter == 'location' and input == '':
+        pass
+    elif filter == 'location' and input.lower() != 'virtual':
+        location_search = []
+        print(input)
+        try:
+            input = searchToCoords(input)
+            print(input)
+            for game in games:
+                geo_location = searchToCoords(game[4])
+                try:
+                    check = checkGamesNearby(input, geo_location, 25)
+                    print(f'Geolocation: {geo_location} {check}')
+                    if check == True:
+                        location_search.append(game)
+                except:
+                    pass
+                    print("error")
+            return location_search
+        except:
+            print('Not valid location')
+            pass
     return games
 
 
@@ -427,8 +467,9 @@ def checkAnswer(clue, input):
         else:
             return False
     elif answer_type == 'coordinates':
-        answer = answer.split(", ")
-        answer = (float(answer[0]), float(answer[1]))
+        answer = stringToCoords(answer)
+        # answer = answer.split(", ")
+        # answer = (float(answer[0]), float(answer[1]))
         print(answer)
         checkin = checkClueCoordinate(input, answer, 100)
         if checkin == True:
@@ -479,7 +520,7 @@ def load_edit_form(game_id):
 
 def save_game_form(game_id, user_id, request, mode):
     message = ''
-    
+
     game_title = request.form["game_title"]
     game_description = request.form["game_description"]
     privacy_level = request.form["privacy_level"]
@@ -489,9 +530,12 @@ def save_game_form(game_id, user_id, request, mode):
         camera_required = 'false'
     try:
         gps_required = request.form["gps_required"]
-        # coordinates = request.form["game_gps_input"]
+        geo_location = request.form["coordinates"]
+        # HERE HERE HERE
+        # geo_location = displayGameLocation(geo_location)
     except:
         gps_required = 'false'
+        geo_location = 'Virtual'
         # coordinates = "virtual"
     boxes = check_form_boxes(privacy_level, camera_required, gps_required)
     public_radio = boxes[0]
@@ -500,7 +544,7 @@ def save_game_form(game_id, user_id, request, mode):
     gps_box = boxes[3]
     if mode == 'create':
         if game_title != '' and game_description != '':
-            game = create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required)
+            game = create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required, geo_location)
             game_id = game[2]
             message = game[1]
         else:
@@ -508,12 +552,12 @@ def save_game_form(game_id, user_id, request, mode):
             return False, message
     if mode == 'save':
         game = get_game_by_id(game_id)
-        if game_title == '': 
+        if game_title == '':
             game_title = game[2]
         if game_description == '':
             game_description = game[3]
         message = edit_game(game_id, game_title, game_description, privacy_level, gps_required, camera_required)
-    return game_title, game_description, public_radio, private_radio, gps_box, camera_box, message, game_id
+    return game_title, game_description, public_radio, private_radio, gps_box, camera_box, message, game_id, geo_location
 
 
 def add_clue_order(game_id):

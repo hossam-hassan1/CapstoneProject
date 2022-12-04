@@ -30,7 +30,7 @@
         <!-- https://getbootstrap.com/docs/4.0/components/dropdowns/ -->
         <div class="row">
             <form action="" method="POST" class="col-5">
-                <input type="text" name='location' placeholder="Location" onkeyup="letter_number_only(this)">
+                <input type="text" name='location' placeholder="Zip Code or City, State" onkeyup="letter_number_only(this)">
                 <input type="submit" style="display: none" />
             </form>
             <form action="" method="POST" class="col-5">
@@ -103,6 +103,7 @@
 
 
                                             <p><span class="color">Description: </span>{{ game[3] }}</p>
+                                            <div class="col-"><span class="color">Location: </span>{{ game[4] }}</div>
                                             <div class="col-"><span class="color">GPS Required: </span>{{ game[6] }}</div>
                                             <div class="col-"><span class="color">Camera Required: </span>{{ game[7] }}</div>
                                             <div class="col-"><span class="color">Created On: </span>{{ game[8] }}</div>

@@ -7,7 +7,7 @@
 
     <div class="form-group m-2">
         <label for="prompt_link"><b>Clue Link:</b></label>
-        <p style="font-size: 11px;">Do not include https://www</p>
+        <p style="font-size: 11px;">Do not include https://www.</p>
         <input type="text" class="form-control" id="prompt_link" name="prompt_link">
     </div>
 
@@ -21,27 +21,30 @@
         <label><b>Answer Type:</b></label>
         <p></p>
         
-        {% if gps_box == 'checked' %}
+
         <div class="coordinates">
-            <input onclick="displayInput('gps_input', 'text_input')" class="form-check-input" type="radio" id="coordinates" name="answer_type" value="coordinates">
+            <input onclick="displayInput('gps_input', 'text_input', 'clue_coordinates', 'text_answer')" class="form-check-input" type="radio" id="coordinates" name="answer_type" value="coordinates">
             <label class="form-check-label" for="coordinates">GPS Check-In</label><br> 
         </div>
-        {% endif %}
+
         <div class="form-check">
-            <input onclick="displayInput('text_input', 'gps_input')" class="form-check-input" type="radio" id="text" name="answer_type" value="text" required>
+            <input onclick="displayInput('text_input', 'gps_input', 'text_answer', 'clue_coordinates')" class="form-check-input" type="radio" id="text" name="answer_type" value="text" required>
             <label class="form-check-label" for="text">Text Answer</label><br> 
         </div>  
-
-        <!-- IF ANSWER TYPE == COORDINATES -->
-        <div id='gps_input'>
-            <!-- PUT COORDINATE SELECTOR HERE -->
-        </div>
-
-    <div class="form-group m-2">
-        <label for="answer"><b>Text Answer:</b></label>
-        <input type="text" class="form-control" id="answer "name="answer" onkeyup="letter_number_only(this)" required>
     </div>
-    
+
+    <!-- DISPLAY IF GPS REQUIRED -->
+    <!-- geting game_gps_input -->
+    <div class="form-group m-2" id="gps_input">
+        <label for="game_code">Clue Location</label>
+        <input type="hidden"  id="clue_coordinates" name="clue_coordinates" value="(38.94200875265407, -92.32646834504295)">
+    </div>
+
+    <div  id='text_input' class="form-group m-2">
+        <label for="answer"><b>Text Answer:</b></label>
+        <input type="text" class="form-control" id="text_answer" name="text" onkeyup="letter_number_only(this)">
+    </div>
+        
     <!-- <p>{{message}}</p> -->
     <p>{{clue_error}}</p>
     <input type="hidden"  name="game_id" value="{{game_id}}">
@@ -52,12 +55,16 @@
 <!-- https://www.w3schools.com/howto/howto_js_toggle_hide_show.asp -->
 <script>
 
-    function displayInput(open, close) {
+    function displayInput(open, close, required, not_req) {
         var x = document.getElementById(open);
         var y = document.getElementById(close);
+        const req = document.getElementById(required);
+        const not = document.getElementById(not_req);
+        not.removeAttribute('required');
         x.style.display = "block";
         y.style.display = "none";
         y.style.display = "none";
-        }
-
+        req.setAttribute('required', '');
+        not.removeAttribute('required');
+    }
 </script>

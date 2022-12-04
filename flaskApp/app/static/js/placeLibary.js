@@ -75,7 +75,7 @@ var map = new google.maps.Map(document.getElementById('map'),options)
     }
   });
   
-  var markersArray = [];
+  var markersArray = ["inside the array: ", ];
 
     // Reload map (remove markers)
     clearButton.addEventListener('click', () => {
