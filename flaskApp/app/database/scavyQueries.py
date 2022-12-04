@@ -429,7 +429,7 @@ def checkAnswer(clue, input):
         answer = answer.split(", ")
         answer = (float(answer[0]), float(answer[1]))
         print(answer)
-        checkin = checkClueCoordinate(input, answer, 700)
+        checkin = checkClueCoordinate(input, answer, 100)
         if checkin == True:
             return True
         else:
