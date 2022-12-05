@@ -87,11 +87,11 @@ body{
 
 
 /* Nav Style */
-nav li {
+/* nav li {
     display: inline;
-    padding-right: 25px;
-    padding-left: 25px;
-  }
+    padding-right: 15px;
+    padding-left: 15px;
+  } */
 
 /* nav li .home{
     display: inline;
@@ -100,10 +100,10 @@ nav li {
 .navbar-nav a:hover { color: #f1b675 !important; }
 .links a:hover { color: #faf3b6 !important; }
 
-@media (max-width:767px) {
+/* @media (max-width:767px) {
     nav li {
         display: inline;
         padding-right: 0px;
         padding-left: 0px;
       }
-}
+} */

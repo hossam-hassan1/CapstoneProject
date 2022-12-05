@@ -10,9 +10,12 @@ h1{
 .center{
     text-align: center;  
 }
-.delete{
+.delete{ 
     margin-top: 100px;
     margin-bottom: 100px;
+    display: block;
+    margin-left: auto;
+    margin-right: 25%;
 }
 .btn-outline-warning{
     color:#dd4229;
@@ -21,4 +24,25 @@ h1{
 .btn :hover {
     color: #dd4229 !important;
     /* text-decoration: none; */
+}
+
+.account{
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+@media (max-width:767px) {
+    .account{
+        margin-left: 0%;
+        margin-right: 0%;
+    }
+
+    .delete{
+        margin-top: 75px;
+        margin-bottom: 25px;
+        display: block;
+        margin-left: auto;
+        margin-right: 5%;
+    }
+
 }

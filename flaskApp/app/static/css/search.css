@@ -18,10 +18,22 @@ body{
     font-weight: 550;
 }
 .marginBottom{
-    margin-bottom: 100px;
+    margin-bottom: 300px;
 }
 
-.games{
-    margin-left: 500px;
-    /* margin-right: 100px; */
+.search{
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+@media (max-width:767px) {
+    .search{
+        margin-left: 0%;
+        margin-right: 0%;
+    }
+
+    .marginBottom{
+        margin-bottom: 100px;
+    }
+
 }
