@@ -56,22 +56,22 @@ def checkClueCoordinate(checkin, answer, length):
             return True
         # 60 - 50 <= 10
         elif currentDistance - length <= (length*0.20):
-            return "On Fire"
+            return "On Fire - you are very close to the location!"
         # 70 - 50 <= 20
         elif currentDistance - length <= (length*0.40):
-            return "Hotter"
+            return "Hotter - you are closer to the location"
         # 80 - 50 <= 30
         elif currentDistance - length <= (length*0.60):
-            return 'Hot'
+            return 'Hot - you are close to the location'
         # 90 - 50 <= 40
         elif currentDistance - length <= (length*0.80):
             return 'Cold'
         # 95 - 50 = 45 <= 50
         elif currentDistance - length <= length:
-            return 'Less Freezing'
+            return 'Less Freezing - you less far from the location'
         # 100 - 50 > 50
         elif currentDistance - length > length:
-            return 'Freezing'
+            return 'Freezing - you are far from the location'
         # 100 - 50 <= 50
     except:
         # Some value other than the correct coordinate format

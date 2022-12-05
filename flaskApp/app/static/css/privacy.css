@@ -1,9 +1,29 @@
 .card{
     border: none;
+    margin: auto;
+    background-color: #FAF9F6;
 }
 h1{
     font-weight: bold;
 }
 h3{
     font-weight: bold;
+}
+.security{
+    height: 300px;
+    width: 300px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+@media (max-width:767px) {
+    .security {
+        height: 200px;
+        width: 200px;
+        display: block;
+        margin-top: -90px;;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
 }

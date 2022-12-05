@@ -19,13 +19,16 @@
 
         <!-- Displays current game title -->
         {%  if clue_id != -2 %}
-        <h1>Welcome to Game: {{game}}</h1>
-        <h3>Let the hunt begin!</h3>
+        <br>
+        <h1>Welcome to Game -  {{game}}</h1>
+        <!-- <h3>Let the hunt begin!</h3> -->
         {% endif %}
         <!-- If past final clue shows mission complete -->
         <!-- ID is automatically set to -1 at bottom after past final clue  -->
         {% if clue_id == -1 %}
-            <h1>Mission Complete!</h1>
+            <br>
+            <h1 class="success">Mission Complete!</h1>
+            <br>
         {% else %}
         <!-- Otherwise display new game info -->
         {% endif %}
@@ -49,10 +52,13 @@
 <!-- Otherwise a game page is loaded with a clue or mission complete -->
 {% else %}
         <!-- IF clue is not set to mission complete -->
-
+        <br>
+        <br>
         <div class="progress">
             <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress }}%"></div>
         </div>
+        <br>
+        <br>
 
         {% if clue_id != -1 %}
 
@@ -60,6 +66,7 @@
 
         <div class="card mx-auto m-3">
             <div class="card-body mx-auto m-5">
+                <br>
                 <h3 class="card-subtitle mb-2 text-muted">Find the location described in the clue</h3><br>
 
                 <!-- PROMPT TEXT -->
@@ -121,7 +128,7 @@
             {% elif answer_type == 'coordinates' %}
             <div class="m-2">
                 <div class="mx-sm-3 mb-2">
-                    <p>Check-In when you have found the clue to proceed</p>
+                    <p>Check in when you have found the location of the clue</p>
                     <button onclick="getLocation()" type="submit" name="nextClue" id="answer_input" class="btn btn-primary btn-lg">Check-In</button>
                     <button name="nextClue" type="submit" name="nextClue" id="spinner" class="btn btn-primary btn-lg" disabled>
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -143,12 +150,12 @@
         <!-- IF mission is complete -->
         {% else %}
         <div class="card mx-auto m-3">
-            <div class="card-body mx-auto m-5">
-                <h3 class="card-title">Congrats!!!</h3>
-                <h3 class="card-title">You have completed {{game}}.</h3>
+            <div class="card-body mx-auto m-5 belowfooter">
+                <h3 class="card-title">Congrats! You have completed {{game}}</h3>
                 <div class="m-2">
                     <form class="form-inline" action="" method="post">
                         <div class="form-group mx-sm-3 mb-2">
+                            <br>
                             <p>Would you like to play again?</p>
                             <button type="submit" name="restart" class="btn btn-primary btn-lg">Restart</button>
 
