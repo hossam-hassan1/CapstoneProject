@@ -320,12 +320,13 @@ def game_edit(game):
         prompt_link = "https://" + prompt_link
         file = request.files['prompt_image']
         answer_type = request.form["answer_type"]
+        # print(answer_type)
         if answer_type == 'text':
             answer = request.form["text"]
         elif answer_type == 'coordinates':
             answer = request.form["clue_coordinates"]
-            # print(answer)
-            answer = stringToCoords(answer)
+            print(answer)
+            # answer = stringToCoords(answer)
         if file.filename == '':
             clue = add_clue(game_id, prompt_text, prompt_link, answer_type, answer)
         elif not allowed_file(file.filename):
@@ -382,15 +383,18 @@ def game_edit(game):
 def geolocation():
     return render_template("geolocation.html")
 
+@app.route('/clue_form')
+def clue_form():
+    return render_template("clue_form.html")
+
 @app.route('/test', methods=["POST", "GET"])
 def test():
     coords = ""
     if request.method == 'POST':
-        content = request.json
-        coords = content["location"]
-        print(coords)
-        print("Location: " + str(coords))
-    return render_template("text.html", location = coords)
+        location = request.form["coordinates"]
+        location = stringToCoords(location)
+        return render_template("text.html", coordinates = location)
+    return render_template("text.html", coordinates = coords)
 
 # https://www.geeksforgeeks.org/python-404-error-handling-in-flask/#:~:text=A%20404%20Error%20is%20showed,the%20default%20Ugly%20Error%20page.
 @app.errorhandler(404)

@@ -4,6 +4,22 @@
 
 {% block content %}   
 
+<form class="row m-2 mx-auto" action="" method="post">
+    <!-- DISPLAY IF GPS REQUIRED -->
+    <!-- geting game_gps_input -->
+    <div class="form-group m-2" id="gps_input">
+        <label for="game_code">Clue Location</label>
+        <input id="clue_coordinates" name="clue_coordinates" type="hidden" value="" />
+        <!-- <button type="button" onclick="currentLocationButton()">Pin to Current Location</button> -->
+        {% include 'geolocation.html' %}
+        <button type="button" id="clearButtonDiv" onclick="reload()">Clear Map</button>
+        <!-- <button type="submit" value="Add Clue" name="add_clue" class="btn btn-primary btn-sm">Add Clue</button> -->
+    </div>
+</form>  
+
+<p>{{coordinates}}</p>
+
+{% endblock %}   
 
 <!-- <div class="m-2">
     <form class="form-inline" action="" method="post" name="getCoords">
@@ -62,13 +78,13 @@ function initMap() {
 <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBr8V0XkaNFYkNXcP6eJc76b6YutvizwNw&callback=initMap"> -->
 <!-- </script> -->
 
-<p>Click the button to get your coordinates.</p>
+<!-- <p>Click the button to get your coordinates.</p>
 
 <button onclick="getLocation()" type="submit" name="nextClue" id="answer_input" >Try It</button>
 
 
-<div id="coordinates">{{coords}}</div>
-
+<div id="coordinates">{{coords}}</div> -->
+<!-- 
 <script>
     var x = document.getElementById("coordinates");
     var input = document.getElementById("answer_input");
@@ -106,8 +122,6 @@ function initMap() {
    
 
     input.value = "("+latitude+", "+longitude+")";
-</script>
-
-{% endblock %}
+</script> -->
 
 <!-- console.log("("+latitude+", "+longitude+")"); -->
