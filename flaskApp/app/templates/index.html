@@ -11,42 +11,44 @@
 
 <div class="container-fluid mx-auto p-3">
 
-  <div class="container">
-    <div class="m-3"> 
-      <h1>Create custom scavenger hunts for you and your friends!</h1>
-    </div>
-
-
-    <div class="row align-items-start">
-      <div class="col-6"><hr></div>
-      <div class="col-4"><hr></div>
-      <div class="col"><hr></div>
-    </div>
-  </div>  
-
   <div class="container containerMargin">
     <div class="row m-2">
       <div class="col-sm col-sm mx-auto m-2">
-              <p> Scavy is an online platform that helps you create interactive scavenger hunts and experiences.</p>
-              {% if 'login' not in session %}
-              <a class="btn btn-primary btn-lg" href="/sign-up" role="button">Get Started</a>
-              {% elif session['login'] == True %}
-              <a class="btn btn-primary btn-lg" href="/account" role="button">View Your Games</a>
-              {% else %}
-              <a class="btn btn-primary btn-lg" href="/log-in" role="button">Log In</a>
-              {% endif %}
-              <br>
-              <br>
+        <br>
+        <br>    
+
+        <h1 class="bold">Create custom scavenger hunts for you and your friends!</h1>
+
+        <div class="row align-items-start">
+          <div class="col-12"><hr></div>
+          <!-- <div class="col-4"><hr></div>
+          <div class="col-4"><hr></div> -->
+        </div>
+
+        <br>
+
+        <p> Scavy is an online platform that helps you create interactive scavenger hunts and experiences.</p>
+        {% if 'login' not in session %}
+        <a class="btn btn-primary btn-lg" href="/sign-up" role="button">Get Started</a>
+        {% elif session['login'] == True %}
+        <a class="btn btn-primary btn-lg" href="/account" role="button">View Your Games</a>
+        {% else %}
+        <a class="btn btn-primary btn-lg" href="/sign-up" role="button">Get Started</a>
+        {% endif %}
+        <br>
+        <br>
       </div>
       <div class="col-sm mx-auto m-2">
-          <p><img class="phone" src="/static/images/home.png"  alt="phone"></p>
+        <br>
+        <br> 
+        <p><img class="phone" src="/static/images/home.png"  alt="phone"></p>
       </div>
     </div>
   </div>
 
-  <h2 class="center">How people use Scavy App</h2>
+  <h2 class="center bold">How people use Scavy App</h2>
 
-  <div class="container card cardHow">
+  <div class="container card cardUse">
     <div class="row rowMargin">
       <div class="col-lg">
         <p class="center"><b>Team Building</b></p>
@@ -65,24 +67,51 @@
     </div>
   </div>
 
-  <!-- <div class="container containerMargin">
-    <h2>Getting started with Scavy App</h2>
-  </div> -->
+  <!-- FAQ -->
 
-  <!-- <div class="containerMargin FAQ">
-    <div class="row m-2">
-      <div class="col-sm col-sm mx-auto m-2">
-        <p>FAQ's</p>
-      </div>
-      <div class="col-sm col-sm mx-auto m-2">
-        <p>List</p>
+  <div class="container containerMargin">
+    <h2 class="center bold">Questions? We have answers.</h2>
+  </div>
+
+  <div class="accordion accordion-flush" id="accordionFlushExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="flush-headingOne">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+          Accordion Item #1
+        </button>
+      </h2>
+      <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+        <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
       </div>
     </div>
-  </div> -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="flush-headingTwo">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+          Accordion Item #2
+        </button>
+      </h2>
+      <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+        <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being filled with some actual content.</div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="flush-headingThree">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+          Accordion Item #3
+        </button>
+      </h2>
+      <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+        <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
+      </div>
+    </div>
+  </div>
+  
+
+<!-- DEVELOPMENT TEAM -->
 
   <div class="container">
     <div class="row rowMargin">
-      <h2 class="center">Hi! We're Scavy App Development Team</h2>
+      <h2 class="center bold">Hi! We're Scavy App Development Team</h2>
 
       <div class="card cardTeam" style="width: 13rem;">
         <img src="/static/images/kenna.png" class="card-img-top" alt="kenna">

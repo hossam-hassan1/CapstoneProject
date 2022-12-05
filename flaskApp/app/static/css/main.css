@@ -86,4 +86,7 @@ body{
   }
 .navbar-nav a:hover { color: #f1b675 !important; }
 .links a:hover { color: #faf3b6 !important; }
+.bold{
+    font-weight: 450;
+}
 
