@@ -214,10 +214,8 @@
         let latitude = position.coords.latitude;
         let longitude = position.coords.longitude;
         let location = '('+latitude+', '+longitude+')';
-        //let location = '{coordinates: ('+latitude+', '+longitude+')}';
         console.log(location)
-        const url = {{ request.url|tojson }}
-        let game_url = `${url}`
+        let game_url = window.location.href
         fetch(game_url, {
           method: 'POST',
           headers: {
@@ -226,6 +224,7 @@
           },
           body: JSON.stringify({ location })
         })
+        // console.log(JSON.stringify({ location }))
         .then((response)=>{         
             if(response.redirected){
                 window.location.href = response.url;

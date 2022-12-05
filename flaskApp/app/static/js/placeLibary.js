@@ -85,18 +85,40 @@ var map = new google.maps.Map(document.getElementById('map'),options)
  
     
     // Add marker functions
-    function addMarker(props)
-    {
+    function addMarker(props){
         var marker = new google.maps.Marker({
-             
             position: props.coords,
             // Add markers to this map
             map: map
-            
         });
-        
+        showPosition(props);    
     }
 
+    //fetch cords to database
+function showPosition(props) {
+  console.log(props.coords.lat);
+  let latitude = props.coords.lat;
+  let longitude = props.coords.lng;
+  let location = '('+latitude+', '+longitude+')';
+  console.log(location);
+  console.log(JSON.stringify({ location }))
+  const url = {{ request.url|tojson }}
+  let create_url = `${url}`
+  fetch(create_url, {
+    method: 'POST',
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ location })
+  })
+  .then((response)=>{         
+      if(response.redirected){
+          window.location.href = response.url;
+      }
+  })     
+}
+    
     // Geolocation
     infoWindow = new google.maps.InfoWindow();
     
@@ -165,73 +187,3 @@ var selectClearMap = document.getElementById("clearButtonDiv");
 selectClearMap.addEventListener("click", reload);
 // selectClearMap.appendChild(clearButton);
 
-//fetch cords to database
-function showPosition(position) {
-  let latitude = position.coords.latitude;
-  let longitude = position.coords.longitude;
-  let location = '{coordinates: ('+latitude+', '+longitude+')}';
-  console.log(location)
-  const url = {{ request.url|tojson }}
-  let game_url = `${url}`
-  fetch(game_url, {
-    method: 'POST',
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ location })
-  })
-  .then((response)=>{         
-      if(response.redirected){
-          window.location.href = response.url;
-      }
-  })           
-  .catch(function(e){
-      
-  })
-  .then(() => {
-     window.location.reload();
-  })
-  // console.log(location);
-  // fetch('http://127.0.0.1:8080/test', {
-  //   method: 'POST',
-  //   headers: {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json'
-  //   },
-  //   body: JSON.stringify({ location })
-  // })
-  // .then(response => response.json())
-  // .then(response => console.log(JSON.stringify(response)))
-  return location
-}
-
-function showPosition(position) {
-  let latitude = position.coords.latitude;
-  let longitude = position.coords.longitude;
-  let location = '('+latitude+', '+longitude+')';
-  // let location = '{coordinates: ('+latitude+', '+longitude+')}';
-  // console.log(location)
-  // const url = {{ request.url|tojson }}
-  // let game_url = `${url}`
-  // fetch(game_url, {
-  //   method: 'POST',
-  //   headers: {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json'
-  //   },
-  //   body: JSON.stringify({ location })
-  // })
-  // .then((response)=>{         
-  //     if(response.redirected){
-  //         window.location.href = response.url;
-  //     }
-  // })           
-  // .catch(function(e){
-      
-  // })
-  // .then(() => {
-  //    window.location.reload();
-  // })
-  return location
-}

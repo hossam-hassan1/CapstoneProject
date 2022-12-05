@@ -471,7 +471,7 @@ def checkAnswer(clue, input):
         # answer = answer.split(", ")
         # answer = (float(answer[0]), float(answer[1]))
         print(answer)
-        checkin = checkClueCoordinate(input, answer, 100)
+        checkin = checkClueCoordinate(input, answer, 50)
         if checkin == True:
             return True
         else:
@@ -530,12 +530,17 @@ def save_game_form(game_id, user_id, request, mode):
         camera_required = 'false'
     try:
         gps_required = request.form["gps_required"]
-        geo_location = request.form["coordinates"]
+        content = request.get_json(silent=True)
+        print('JSON: ' + str(content))
+        # geo_location = request.form["coordinates"]
+        coords = content["location"]
+        print(coords)
+        geo_location = stringToCoords(coords)
         # HERE HERE HERE
         # geo_location = displayGameLocation(geo_location)
     except:
         gps_required = 'false'
-        geo_location = 'Virtual'
+        geo_location = '(38.94200875265407, -92.32646834504295)'
         # coordinates = "virtual"
     boxes = check_form_boxes(privacy_level, camera_required, gps_required)
     public_radio = boxes[0]
