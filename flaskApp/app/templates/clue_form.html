@@ -1,9 +1,10 @@
 
 <form class="row m-2 mx-auto" action="" method="post" enctype=multipart/form-data>
+   
     <div class="form-group m-2">
-        <label for="prompt_text"><b>Clue Description:</b></label>
+        <label for="prompt_text"><b>Clue Prompt:</b></label>
         <p></p>
-        <textarea type="text" class="form-control" id="prompt_text" name="prompt_text"></textarea>
+        <textarea type="text" class="form-control" id="prompt_text" name="prompt_text" required></textarea>
     </div>
 
     <div class="form-group m-2">
@@ -38,7 +39,9 @@
     <!-- geting game_gps_input -->
     <div class="form-group m-2" id="gps_input">
         <label for="game_code">Clue Location</label>
-        <input type="hidden"  id="clue_coordinates" name="clue_coordinates" value="(38.94200875265407, -92.32646834504295)">
+        <input id="clue_coordinates" name="clue_coordinates" type="hidden" value=""/>
+        {% include 'clues_map.html' %}
+        <button type="button" id="clearButtonDiv" onclick="reload()">Clear Map</button>
     </div>
 
     <div  id='text_input' class="form-group m-2">
@@ -61,9 +64,7 @@
         var y = document.getElementById(close);
         const req = document.getElementById(required);
         const not = document.getElementById(not_req);
-        not.removeAttribute('required');
         x.style.display = "block";
-        y.style.display = "none";
         y.style.display = "none";
         req.setAttribute('required', '');
         not.removeAttribute('required');

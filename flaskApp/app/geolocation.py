@@ -17,14 +17,16 @@ geolocator = geolocator = Nominatim(user_agent="scavyApp")
 
 #distance properties from geopy.units, e.g.: km, m, meters, miles and so on.
 
-
 def displayGameLocation(coordinates):
-	# initialize Nominatim API
-	location = geolocator.reverse(coordinates)
-	address = location.raw['address']
-	city = address.get('city', '')
-	state = address.get('state', '')
-	return f'{city}, {state}'
+    # initialize Nominatim API
+    location = geolocator.reverse(coordinates)
+    address = location.raw['address']
+    city = address.get('city', '')
+    state = address.get('state', '')
+    if city == "":
+        county = address.get('county', '')
+        return f'{county}, {state}'
+    return f'{city}, {state}'
 
 # print()
 

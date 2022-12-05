@@ -201,8 +201,11 @@ def generate_game_code(game_title):
 def create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required, geo_location):
     game_code = generate_game_code(game_title)
     # add cords into insert and values    188,192,193
-    coordinates = stringToCoords(geo_location)
-    location = displayGameLocation(coordinates)
+    if geo_location == 'Virtual':
+        location = geo_location
+    else:
+        coordinates = stringToCoords(geo_location)
+        location = displayGameLocation(coordinates)
     insert = f"""
     INSERT INTO Games (user_id, game_title, game_description, privacy_level, gps_required, camera_required, game_code, geo_location)
     VALUES ({user_id}, "{game_title}", "{game_description}", "{privacy_level}", "{gps_required}", "{camera_required}", "{game_code}", "{location}");
@@ -530,18 +533,14 @@ def save_game_form(game_id, user_id, request, mode):
         camera_required = 'false'
     try:
         gps_required = request.form["gps_required"]
-        content = request.get_json(silent=True)
-        print('JSON: ' + str(content))
-        # geo_location = request.form["coordinates"]
-        coords = content["location"]
-        print(coords)
-        geo_location = stringToCoords(coords)
-        # HERE HERE HERE
+        geo_location = request.form["coordinates"]
+        # print(coords)
+        # geo_location = stringToCoords(geo_location)
         # geo_location = displayGameLocation(geo_location)
     except:
         gps_required = 'false'
-        geo_location = '(38.94200875265407, -92.32646834504295)'
-        # coordinates = "virtual"
+        # geo_location = '(38.94200875265407, -92.32646834504295)'
+        geo_location = "Virtual"
     boxes = check_form_boxes(privacy_level, camera_required, gps_required)
     public_radio = boxes[0]
     private_radio = boxes[1]
