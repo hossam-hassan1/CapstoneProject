@@ -1,3 +1,24 @@
+h1{
+    font-weight: 490;
+}
+.accountMargin{
+    margin-top: 200px;
+}
 .marginb{
     margin-bottom: 200px;
+}
+.center{
+    text-align: center;  
+}
+.delete{
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+.btn-outline-warning{
+    color:#dd4229;
+    border-color: #dd4229;
+}
+.btn :hover {
+    color: #dd4229 !important;
+    /* text-decoration: none; */
 }

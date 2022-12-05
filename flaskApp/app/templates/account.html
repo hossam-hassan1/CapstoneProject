@@ -8,81 +8,86 @@
 {% block content %}
 
 <head>
-    <link rel="stylesheet" href="/static/css/search.css">
+    <!-- <link rel="stylesheet" href="/static/css/search.css"> -->
     <link rel="stylesheet" href="/static/css/account.css">
 </head>
 
 <!-- DIV 1 -->
+<br>
 <div>
-    <h1 id="header"> Welcome {{username}}!</h1>
+    <h1 class="center"> Welcome {{username}}!</h1>
+    <br>
 </div>
 
+<h3 class="center"> Your Games</h3>
 
+<br>
+<br>
 
 <!-- DIV 3 -->
 
-<div class="container-fluid mx-auto p-3"> 
-    <h1 id="header"> Your Games</h1>
-
-    <div class="card mx-auto m-3">
+<div class="container-fluid mx-auto"> 
+    <div class="card">
         <div id="accordion">
-            <table class="table">
-                <thead>
-                    <tr>
-                    <th scope="col">GAMES</th>
-                    <th scope="col">GAME CODE</th>
-                    <th scope="col">PUBLISHED</th>
-                    <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for game in scavenger_hunts %}
-                    <div class="card">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
                         <tr>
-                            <th scope="col">
-                                <button class="btn btn-link" data-toggle="collapse" data-target="#{{ game }}">
-                                {{ game[2] }}
-                                </button>
-                            </th>
-                            <td scope="col">{{ game[-2] }}</td>
-                            {% if game[-1] == 'true' %}
-                            <td scope="col">Published</td>
-                            {% else %}
-                            <td scope="col">Unpublished</td>
-                            {% endif %}
-                            <td scope="col">
-                                <form class="form-inline" action="" method="post">
-                                    <input type="hidden" name="game_id" value="{{ game[0] }}">
-                                    <input type="hidden" name="game_title" value="{{ game[2] }}">
-                                    <input type="hidden" name="published" value="{{ game[-1] }}">
-                                    <button type="submit" name="load_edit" value="{{ game[2] }}" class="btn btn-primary btn-sm">Edit</button>
-                                    <button type="submit" name="delete_game" value="{{ game[2] }}" class="btn btn-primary btn-sm">Delete</button>
-                                    {% if game[-1] == 'true' %}
-                                    <button type="submit" name="change_publish" value="{{ game[0] }}" class="btn btn-primary btn-sm">Unpublish</button>
-                                    {% else %}
-                                    <button type="submit" name="change_publish" value="{{ game[0] }}" class="btn btn-primary btn-sm">Publish</button>
-                                    {% endif %}
-                                    
-                                    
-                                </form>
-                            </td>
+                        <th scope="col">GAMES</th>
+                        <th scope="col">GAME CODE</th>
+                        <th scope="col">PUBLISHED</th>
+                        <th scope="col"></th>
                         </tr>
-                        <tr id="{{ game }}" class="collapse out">
-                            <td>
-                                <div>
-                                    <p><span class="color">Description: </span>{{ game[3] }}</p>
-                                    <div class="col-"><span class="color">Location: </span>{{ game[4] }}</div>
-                                    <div class="col-"><span class="color">GPS Required: </span>{{ game[6] }}</div>
-                                    <div class="col-"><span class="color">Camera Required: </span>{{ game[7] }}</div>
-                                    <div class="col-"><span class="color">Created On: </span>{{ game[8] }}</div>
-                                    <div class="col-"><span class="color">Play Count: </span>{{ game[9] }}</div>
-                                    <div class="col-"><span class="color">Game Code: </span>{{ game[-2] }}</div>
-                                </div>
-                            </td>
-                        </tr>
-                    </div>
-                {% endfor %}
-            </table>
+                    </thead>
+                    <tbody>
+                    {% for game in scavenger_hunts %}
+                        <div class="card">
+                            <tr>
+                                <th scope="col">
+                                    <button class="btn btn-link" data-toggle="collapse" data-target="#{{ game }}">
+                                    {{ game[2] }}
+                                    </button>
+                                </th>
+                                <td scope="col">{{ game[-2] }}</td>
+                                {% if game[-1] == 'true' %}
+                                <td scope="col">Published</td>
+                                {% else %}
+                                <td scope="col">Unpublished</td>
+                                {% endif %}
+                                <td scope="col">
+                                    <form class="form-inline" action="" method="post">
+                                        <input type="hidden" name="game_id" value="{{ game[0] }}">
+                                        <input type="hidden" name="game_title" value="{{ game[2] }}">
+                                        <input type="hidden" name="published" value="{{ game[-1] }}">
+                                        <button type="submit" name="load_edit" value="{{ game[2] }}" class="btn btn-primary btn-sm">Edit</button>
+                                        <button type="submit" name="delete_game" value="{{ game[2] }}" class="btn btn-primary btn-sm">Delete</button>
+                                        {% if game[-1] == 'true' %}
+                                        <button type="submit" name="change_publish" value="{{ game[0] }}" class="btn btn-primary btn-sm">Unpublish</button>
+                                        {% else %}
+                                        <button type="submit" name="change_publish" value="{{ game[0] }}" class="btn btn-primary btn-sm">Publish</button>
+                                        {% endif %}
+                                        
+                                        <button type="submit" name="load_game" value="{{ game[2] }}" class="btn btn-primary btn-sm">Play</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr id="{{ game }}" class="collapse out">
+                                <td>
+                                    <div>
+                                        <p><span class="color">Description: </span>{{ game[3] }}</p>
+                                        <div class="col-"><span class="color">Location: </span>{{ game[4] }}</div>
+                                        <div class="col-"><span class="color">GPS Required: </span>{{ game[6] }}</div>
+                                        <div class="col-"><span class="color">Camera Required: </span>{{ game[7] }}</div>
+                                        <div class="col-"><span class="color">Created On: </span>{{ game[8] }}</div>
+                                        <div class="col-"><span class="color">Play Count: </span>{{ game[9] }}</div>
+                                        <div class="col-"><span class="color">Game Code: </span>{{ game[-2] }}</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </div>
+                    {% endfor %}
+                </table>
+            </div>
         </div>
     </div>
 

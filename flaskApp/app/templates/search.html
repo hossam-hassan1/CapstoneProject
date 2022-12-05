@@ -14,7 +14,8 @@
 <!-- DIV 1 -->
 <br>
 <div>
-    <h1 id="header">Play a Game!</h1>
+    <h1 class="center">Play a Game!</h1>
+    <br>
 </div>
 
 {% include 'game_code.html' %}
@@ -22,107 +23,108 @@
 <br>
 <br>
 
+<!-- DIV 2 -->
+    <!-- <div class="mx-auto container"> -->
+    <!-- https://getbootstrap.com/docs/4.0/components/dropdowns/ -->
 
-<!-- DIV 3 -->
-<div class="container-fluid mx-auto p-3"> 
-
-    <div class="mx-auto container">
-        <!-- https://getbootstrap.com/docs/4.0/components/dropdowns/ -->
-        <div class="row">
-            <form action="" method="POST" class="col-5">
-                <input type="text" name='location' placeholder="Zip Code or City, State" onkeyup="letter_number_only(this)">
-                <input type="submit" style="display: none" />
-            </form>
-            <form action="" method="POST" class="col-5">
-                <input type="text" name='keyword' placeholder="Keywords" onkeyup="letter_number_only(this)">
-                <input type="submit" class="btn btn-primary btn-lg"/>
-                <!-- <a class="btn btn-primary btn-lg" role="button">Get Started</a> -->
-            </form>
-
-            <div class="col-2">
-                <div class="dropdown">
-                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Filter
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      
-                      <a class="dropdown-item" href="./all-games">All Games</a>
-                      <a class="dropdown-item" href="./most_played">Most Played</a>
-                      <!-- query DB keyword from games game_title and game_description -->
-                      <a class="dropdown-item" href="./gps-required">GPS Required</a>
-                      <a class="dropdown-item" href="./camera-required">Camera Required</a>
-                    </div>
-                </div>
-            </div>
-
-        </div><br>
-    </div>
-
-
-    <div class="d-flex justify-content-center marginBottom">
-        <div id="accordion row">
-            <div class="card mx-auto m-3">
-                <div class="table-responsive mx-auto">
-                    <table class="table" id="table" style="display:block">
-                        <thead>
-                            <tr>
-                            <th scope="col">GAMES</th>
-                            <th scope="col">LOCATION</th>
-                            <th scope="col">PLAY COUNT</th>
-                            <th scope="col">CAMERA REQUIRED</th>
-                            <th scope="col">GPS REQUIRED</th>
-                            <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {% for game in scavenger_hunts %}
-                            <div class="card">
-                                <tr>
-                                    <th scope="col">
-                                        <button class="btn btn-link" data-toggle="collapse" data-target="#{{ game }}">
-                                        {{ game[2] }}
-                                        </button>
-                                    </th>
-                                    <td scope="col">{{ game[4] }}</td>
-                                    <td scope="col">{{ game[9] }}</td>
-                                    <td scope="col"> 
-                                        {% if game[5] == 'true' %}*{% endif %}
-                                    </td>
-                                    <td scope="col">
-                                        {% if game[6] == 'true' %}*{% endif %}
-                                    </td>
-                                    <td scope="col">
-                                        <form class="form-inline" action="" method="post">
-                                            <input type="hidden" name="game_id" value="{{ game[0] }}">
-                                            <button type="submit" name="load_game" value="{{ game[2] }}" class="btn btn-primary btn-sm">Play</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <tr id="{{ game }}" class="collapse out">
-                                    <td>
-                                        <div>
-
-
-                                            <p><span class="color">Description: </span>{{ game[3] }}</p>
-                                            <div class="col-"><span class="color">Location: </span>{{ game[4] }}</div>
-                                            <div class="col-"><span class="color">GPS Required: </span>{{ game[6] }}</div>
-                                            <div class="col-"><span class="color">Camera Required: </span>{{ game[7] }}</div>
-                                            <div class="col-"><span class="color">Created On: </span>{{ game[8] }}</div>
-                                            <div class="col-"><span class="color">Play Count: </span>{{ game[9] }}</div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </div>
-                        {% endfor %}
-                    </table>
+<div class="container">
+    <div class="row">
+        <div class="col center filter">
+            <div class="dropdown">
+                <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Filter
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    
+                    <a class="dropdown-item" href="./all-games">All Games</a>
+                    <a class="dropdown-item" href="./most_played">Most Played</a>
+                    <!-- query DB keyword from games game_title and game_description -->
+                    <a class="dropdown-item" href="./gps-required">GPS Required</a>
+                    <a class="dropdown-item" href="./camera-required">Camera Required</a>
                 </div>
             </div>
         </div>
-    </div>
-      
-        
 
-   
+        <div class="col center">
+            <form action="" method="POST">
+                <input type="text" name='location' placeholder="Zip Code or City, State" onkeyup="letter_number_only(this)">
+                <input type="submit" style="display: none" />
+                <!-- <input type="submit" class="btn btn-primary btn-lg"/> -->
+            </form>
+        </div>
+
+        <div class="col center">
+            <form action="" method="POST">
+                <input type="text" name='keyword' placeholder="Keywords" onkeyup="letter_number_only(this)">
+                <input type="submit" style="display: none" />
+                <!-- <input type="submit" class="btn btn-primary btn-lg"/> -->
+            </form>
+        </div>
+    </div>
+    <br>
+</div>
+
+<!-- DIV 3 -->
+
+<div class="container-fluid mx-auto marginBottom"> 
+    <div class="card">
+        <div id="accordion">
+            <div class="table-responsive">
+                <table class="table" id="table" style="display:block">
+                    <thead>
+                        <tr>
+                        <th scope="col">GAMES</th>
+                        <th scope="col">LOCATION</th>
+                        <th scope="col">PLAY COUNT</th>
+                        <th scope="col">CAMERA REQUIRED</th>
+                        <th scope="col">GPS REQUIRED</th>
+                        <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for game in scavenger_hunts %}
+                        <div class="card">
+                            <tr>
+                                <th scope="col">
+                                    <button class="btn btn-link" data-toggle="collapse" data-target="#{{ game }}">
+                                    {{ game[2] }}
+                                    </button>
+                                </th>
+                                <td scope="col">{{ game[4] }}</td>
+                                <td scope="col">{{ game[9] }}</td>
+                                <td scope="col"> 
+                                    {% if game[5] == 'true' %}*{% endif %}
+                                </td>
+                                <td scope="col">
+                                    {% if game[6] == 'true' %}*{% endif %}
+                                </td>
+                                <td scope="col">
+                                    <form class="form-inline" action="" method="post">
+                                        <input type="hidden" name="game_id" value="{{ game[0] }}">
+                                        <button type="submit" name="load_game" value="{{ game[2] }}" class="btn btn-primary btn-sm">Play</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr id="{{ game }}" class="collapse out">
+                                <td>
+                                    <div>
+
+
+                                        <p><span class="color">Description: </span>{{ game[3] }}</p>
+                                        <div class="col-"><span class="color">Location: </span>{{ game[4] }}</div>
+                                        <div class="col-"><span class="color">GPS Required: </span>{{ game[6] }}</div>
+                                        <div class="col-"><span class="color">Camera Required: </span>{{ game[7] }}</div>
+                                        <div class="col-"><span class="color">Created On: </span>{{ game[8] }}</div>
+                                        <div class="col-"><span class="color">Play Count: </span>{{ game[9] }}</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </div>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

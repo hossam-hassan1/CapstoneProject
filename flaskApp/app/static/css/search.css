@@ -1,27 +1,9 @@
 body{
     background-color: #FAF9F6;
 }
-#header{
-    text-align: center;
-}
 .center{
     text-align: center;  
 }
-/* ul{
-    text-align: center;      
-} */
-.delete{
-    margin-top: 100px;
-    margin-bottom: 100px;
-}
-.btn-outline-warning{
-    color:#dd4229;
-    border-color: #dd4229;
-}
-.btn :hover {
-    color: #dd4229 !important;
-    /* text-decoration: none; */
-    }
 .btn-primary {
     background-color: #e76d36;
     border: none;
@@ -31,14 +13,15 @@ body{
     justify-content: center;
     margin-right: -100;
 }
-.marginBottom{
-margin-bottom: 400px;
-}
 .color{
     color:#e76d36;
     font-weight: 550;
 }
-/* Expand column play */
-/* .play{
-margin-right: 100px;
-} */
+.marginBottom{
+    margin-bottom: 100px;
+}
+
+.games{
+    margin-left: 500px;
+    /* margin-right: 100px; */
+}
