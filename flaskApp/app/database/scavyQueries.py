@@ -241,7 +241,7 @@ def edit_game(game_id, game_title, game_description, privacy_level, gps_required
 
 def delete_game(game_id):
     delete_game = f"""
-        DELETE FROM GAMES WHERE game_id = {game_id};
+        DELETE FROM Games WHERE game_id = {game_id};
     """
     # try:
     try:
@@ -338,13 +338,13 @@ def get_game_by_title(game_title):
     return result[0][0]
 
 def get_game_by_id(game_id):
-    game = f"SELECT * FROM GAMES where game_id = '{game_id}';"
+    game = f"SELECT * FROM Games where game_id = '{game_id}';"
     result = search_query(game)
     return result[0]
 
 #     -- get_game_by_descr() - a get query to list a game by game description from Games Table
 def get_game_location(game_description, privacy_level):
-    games_by_description = f"SELECT game_title FROM GAMES where game_description = '{game_description}' AND privacy_level = '{privacy_level}';"
+    games_by_description = f"SELECT game_title FROM Games where game_description = '{game_description}' AND privacy_level = '{privacy_level}';"
     result = search_query(games_by_description)
     for game in result:
         print(game)
