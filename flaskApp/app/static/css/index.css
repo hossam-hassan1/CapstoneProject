@@ -62,6 +62,19 @@ hr {
     background-color: #faf3b6;
     color: black;
 }
+.cardGetStarted{
+    border: none;
+    margin-top: 25px;
+    margin-bottom: 150px;
+    background-color: #FAF9F6;
+}
+.tutorial{
+    border: none;
+    background-color: #f1eee6;
+    display: block;
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
 .cardTeam{
     border: none;
     margin-top: 25px;

@@ -474,6 +474,7 @@ def checkAnswer(clue, input):
         # answer = answer.split(", ")
         # answer = (float(answer[0]), float(answer[1]))
         print(answer)
+        # change 50 to large number for success
         checkin = checkClueCoordinate(input, answer, 50)
         if checkin == True:
             return True

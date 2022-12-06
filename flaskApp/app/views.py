@@ -7,10 +7,10 @@ from app.database.scavyQueries import get_game_list, get_game_from_code, delete_
 from app.security import validatePassword
 from app import app
 
-UPLOAD_FOLDER = '/Users/kennabogue/Documents/MIZZOU/22_FALL/INFOTC_4970_Capstone/CapstoneProject/flaskApp/app/static/prompt_image_uploads'
+UPLOAD_FOLDER = '/Users/kateclemens/Downloads/CapstoneProject/flaskApp/app/static/prompt_image_uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
-# app = Flask(__name__)
+# app = Flask(__name__)clear
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -99,6 +99,13 @@ def account():
     else:
         pass
     message = ''
+    if "load_game" in request.form:
+        game = request.form.get("load_game")
+        game_id = request.form.get("game_id")
+        session['load_game'] = game_id
+        game = game.replace(" ", "_")
+        return redirect(url_for("play", game=game))
+    
     if 'confirm_delete_account' in request.form:
         user_id = session['user_id']
         delete = delete_account(user_id)
