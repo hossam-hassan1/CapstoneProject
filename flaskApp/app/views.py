@@ -7,7 +7,9 @@ from app.database.scavyQueries import get_game_list, get_game_from_code, delete_
 from app.security import validatePassword
 from app import app
 
-UPLOAD_FOLDER = '/Users/kateclemens/Downloads/CapstoneProject/flaskApp/app/static/prompt_image_uploads'
+dirname = os.path.dirname(__file__)
+image_path = 'static/prompt_image_uploads'
+UPLOAD_FOLDER = os.path.join(dirname, image_path)
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 # app = Flask(__name__)clear
