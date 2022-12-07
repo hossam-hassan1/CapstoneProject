@@ -137,7 +137,11 @@
                         <div class="form-group m-2">
                             <label><b>Device Requirements:</b></label>
                             <div class="form-check">
+                                {% if mode == 'create' %}
                                 <input onclick="displayFromBox('gps_required')" class="form-check-input" type="checkbox" id="gps_required" name="gps_required" value="true" data-toggle="modal" data-target="#exampleModal3" {{disabled}} {{gps_box}}>
+                                {% else %}
+                                <input onclick="displayFromBox('gps_required')" class="form-check-input" type="checkbox" id="gps_required" name="gps_required" value="true" data-toggle="modal" data-target="#exampleModal3" disabled {{gps_box}}>
+                                {% endif %}
                                 <label class="form-check-label" for="gps_required">GPS Access</label><br>
                             </div>
 
@@ -187,12 +191,20 @@
                             <label><b>Location:</b></label>
 
                             <div class="form-check">
-                                <input onclick="displayFromBox('physical')" class="form-check-input" type="radio" id="physical" name="location" value="physical" {{disabled}} {{public_radio}}>
+                                {% if mode == 'create' %}
+                                <input onclick="displayFromBox('physical')" class="form-check-input" type="radio" id="physical" name="location" value="physical" {{disabled}} {{physical_radio}}>
+                                {% else %}
+                                <input onclick="displayFromBox('physical')" class="form-check-input" type="radio" id="physical" name="location" value="physical" disabled {{physical_radio}}>
+                                {% endif %}
                                 <label class="form-check-label" for="public">Physical / Specific-Location</label><br>
                             </div>
 
                             <div class="form-check" >
-                                <input onclick="displayFromBox('virtual')" class="form-check-input" type="radio" id="virtual" name="location" checked="checked" value="Virtual">
+                                {% if mode == 'create' %}
+                                <input onclick="displayFromBox('virtual')" class="form-check-input" type="radio" id="virtual" name="location" checked="checked" value="Virtual" {{virtual_radio}}>
+                                {% else %}
+                                <input onclick="displayFromBox('virtual')" class="form-check-input" type="radio" id="virtual" name="location" value="Virtual" disabled {{virtual_radio}}>
+                                {% endif %}
                                 <label class="form-check-label" for="private">Virtual / Anywhere</label><br>
                             </div>
 

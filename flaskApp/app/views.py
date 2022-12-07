@@ -309,6 +309,7 @@ def upload_image(file, clue_id, game_id):
 def game_edit(game):
     game_id = get_game_by_title(game.replace("_", " "))
     game = load_edit_form(game_id)
+    print(game)
     clues = get_clues(game_id)
     clue_message = ''
     if 'login' not in session or session['login'] == False:
@@ -384,8 +385,8 @@ def game_edit(game):
     if 'edit_game' in request.form:
         mode = 'edit'
         game_id = request.form["game_id"]
-        return render_template("create_game.html", clues=clues, mode='save', read='', disabled='', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id, required='')
-    return render_template("create_game.html", clue_message=clue_message, clues=clues, mode='edit', read='readonly', disabled='disabled', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id, required='')
+        return render_template("create_game.html", clues=clues, mode='save', read='', disabled='', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id, required='', physical_radio=game[-2], virtual_radio=game[-1])
+    return render_template("create_game.html", clue_message=clue_message, clues=clues, mode='edit', read='readonly', disabled='disabled', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id, required='', physical_radio=game[-2], virtual_radio=game[-1])
 
 
 @app.route('/geolocation')

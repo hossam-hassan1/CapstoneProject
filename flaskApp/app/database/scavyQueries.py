@@ -278,7 +278,7 @@ def get_game_list(filter, input):
     if filter == 'all-games':
         additional_query = ''
     elif filter == 'most-played':
-        additional_query = 'ORDER BY play_count desc LIMIT 10'
+        additional_query = ' AND play_count >= 1 ORDER BY play_count desc LIMIT 10'
     elif filter == 'gps-required':
         additional_query = 'AND gps_required = "true"'
     elif filter == 'camera-required':
@@ -292,7 +292,7 @@ def get_game_list(filter, input):
     else:
         pass
     list_all_games = f'''SELECT * FROM Games 
-                        WHERE privacy_level = 'public' AND published = 'true' 
+                        WHERE privacy_level = 'public' AND published = 'true'
                         {additional_query};'''
     result = search_query(list_all_games)
     games = []
@@ -374,6 +374,11 @@ def get_game_from_code(game):
             name = game[0][2]
             name = name.replace(" ", "_")
     except:
+        exists = False
+        name = False
+        game_id = False
+        code_message = "Game code does not exist."
+    else:
         exists = False
         name = False
         game_id = False
@@ -493,7 +498,7 @@ def checkProgress(clues, id):
     
 
 
-def check_form_boxes(privacy_level, camera_required, gps_required):
+def check_form_boxes(privacy_level, camera_required, gps_required, geolocation):
     if privacy_level == 'public':
         public_radio = 'checked'
         private_radio = ''
@@ -508,19 +513,33 @@ def check_form_boxes(privacy_level, camera_required, gps_required):
         gps_box = 'checked'
     else:
         gps_box = ''
-    return public_radio, private_radio, camera_box, gps_box
+    if geolocation == 'Virtual':
+        physical_radio = ''
+        virtual_radio = 'checked'
+    else: 
+        physical_radio = 'checked'
+        virtual_radio = ''
+    return public_radio, private_radio, camera_box, gps_box, physical_radio, virtual_radio
+
+
 
 def load_edit_form(game_id):
     game = get_game_by_id(game_id)
+    print(game)
     # print(game)
     game_title = game[2]
     game_description = game[3]
-    boxes = check_form_boxes(game[5], game[6], game[7])
+    boxes = check_form_boxes(game[5], game[7], game[6], game[4])
     public_radio = boxes[0]
     private_radio = boxes[1]
     camera_box = boxes[2]
     gps_box = boxes[3]
-    return game_title, game_description, public_radio, private_radio, gps_box, camera_box
+    physical_radio = boxes[4]
+    virtual_radio = boxes[5]
+    return game_title, game_description, public_radio, private_radio, gps_box, camera_box, physical_radio, virtual_radio
+
+print(load_edit_form(1))
+
 
 def save_game_form(game_id, user_id, request, mode):
     message = ''
@@ -542,7 +561,7 @@ def save_game_form(game_id, user_id, request, mode):
         gps_required = 'false'
         # geo_location = '(38.94200875265407, -92.32646834504295)'
         geo_location = "Virtual"
-    boxes = check_form_boxes(privacy_level, camera_required, gps_required)
+    boxes = check_form_boxes(privacy_level, camera_required, gps_required, geo_location)
     public_radio = boxes[0]
     private_radio = boxes[1]
     camera_box = boxes[2]
