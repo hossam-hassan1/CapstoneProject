@@ -46,9 +46,6 @@
 
 {% elif privacy == 'private' and game_session not in session or clue_id == -2%}
 {% include 'game_code.html' %}
-
-
-    
 <!-- Otherwise a game page is loaded with a clue or mission complete -->
 {% else %}
         <!-- IF clue is not set to mission complete -->
@@ -99,6 +96,7 @@
         <div class="card center mx-auto m-3">
             
             <div class="m-2">
+                <h3 class="error" id="error"></h3>
                 {% autoescape false %}
                 {% if message == 'You reached the next clue!' %}
                 <!-- Display if the user did not get the correct answer -->
@@ -195,14 +193,16 @@
        // } 
     //}
 
+    const x = document.getElementById("error");
+
     document.getElementById("spinner").style.display = "none";
     function getLocation() {
         document.getElementById("answer_input").style.display = "none";
         document.getElementById("spinner").style.display = "block";
         if (!navigator.geolocation) {
-            return;
+            x.innerHTML = "Please check your location privacy settings for this browser.";
         } else {
-            navigator.geolocation.getCurrentPosition(attempt);
+            navigator.geolocation.getCurrentPosition(attempt, handleError);
 
             navigator.geolocation.getCurrentPosition(showPosition);
             // if(response.json()){
@@ -212,6 +212,26 @@
             //}
         }
     }
+
+    function handleError(error) {
+        // Display error based on the error code.
+        console.error;
+        document.getElementById("answer_input").style.display = "block";
+        document.getElementById("spinner").style.display = "none";
+        const { code } = error;
+        switch (code) {
+          case GeolocationPositionError.TIMEOUT:
+            x.innerHTML = "It's taking us a while to find you. Please try again!";
+            break;
+          case GeolocationPositionError.PERMISSION_DENIED:
+            x.innerHTML = "We can't find you! Please check your location privacy settings for this browser.";
+            // User denied the request.
+            break;
+          case GeolocationPositionError.POSITION_UNAVAILABLE:
+            x.innerHTML = "We cannot currently find your position. Please try again!";
+            break;
+        }
+      }
 
     function attempt(position) {
         let latitude = position.coords.latitude;
