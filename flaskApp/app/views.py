@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, j
 from werkzeug.utils import secure_filename
 from flask_session import Session
 # from app.helper import getClue, scavenger_hunts
-from app.database.scavyQueries import get_game_list, get_game_from_code, delete_game, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game, get_games_from_user, check_privacy, get_game_by_id, edit_game, load_edit_form, save_game_form, get_game_by_title, add_clue, delete_clue, move_clue, get_clue, delete_account, find_play_count, log_play_count, edit_prompt_image, is_game_published, change_publish, stringToCoords
+from app.database.scavyQueries import get_game_list, get_game_from_code, delete_game, get_clues, getClue, checkAnswer, checkProgress, user_login, create_user, create_game, get_games_from_user, check_privacy, get_game_by_id, edit_game, load_edit_form, save_game_form, get_game_by_title, add_clue, delete_clue, move_clue, get_clue, delete_account, find_play_count, log_play_count, edit_prompt_image, is_game_published, change_publish, stringToCoords, checkCoordinateAnswerDistance
 from app.security import validatePassword
 from app import app
 
@@ -364,7 +364,7 @@ def game_edit(game):
     #     if answer == '':
     #         answer = clue[7]
     #     clue = edit_clue(clue_id, prompt_text, prompt_link, answer_type, answer)
-        return redirect(url_for("game_edit", game=game[0])) 
+        return render_template("create_game.html", clue_message=clue_message, clues=clues, mode='edit', read='readonly', disabled='disabled', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id, required='', physical_radio=game[-2], virtual_radio=game[-1])
     if 'delete_clue' in request.form:
         clue_id = request.form["delete_clue"]
         clue_message = delete_clue(clue_id, game_id)

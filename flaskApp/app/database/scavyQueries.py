@@ -4,7 +4,7 @@ import random
 import os
 from geopy.geocoders import Nominatim
 from geopy import distance
-from app.geolocation import displayGameLocation, checkGamesNearby, searchToCoords
+# from app.geolocation import displayGameLocation, checkGamesNearby, searchToCoords
 
 
 # -- sign_up.html
@@ -120,7 +120,7 @@ def get_user(username, password):
         print(result)
         return result
     else:
-        print("user does not exit")
+        print("user does not exist")
 
 def find_play_count(game_id):
     select_game = f"""
@@ -306,23 +306,23 @@ def get_game_list(filter, input):
         pass
     elif filter == 'location' and input.lower() != 'virtual':
         location_search = []
-        print(input)
+        # print(input)
         try:
             input = searchToCoords(input)
-            print(input)
+            # print(input)
             for game in games:
                 geo_location = searchToCoords(game[4])
                 try:
                     check = checkGamesNearby(input, geo_location, 25)
-                    print(f'Geolocation: {geo_location} {check}')
+                    # print(f'Geolocation: {geo_location} {check}')
                     if check == True:
                         location_search.append(game)
                 except:
                     pass
-                    print("error")
+                    # print("error")
             return location_search
         except:
-            print('Not valid location')
+            # print('Not valid location')
             pass
     return games
 
@@ -365,28 +365,29 @@ def get_game_from_code(game):
     exists = False
     try:
         result = search_query(game_details)
+        print(len(result))
         if len(result) == 1:
             exists = True
+            print(exists)
             game = []
             for record in result:
                 game.append(record)
             game_id = game[0][0]
+            print(game_id)
             name = game[0][2]
+            print(name)
             name = name.replace(" ", "_")
+        else:
+            exists = False
+            name = False
+            game_id = False
+            code_message = "Game code does not exist."
     except:
         exists = False
         name = False
         game_id = False
         code_message = "Game code does not exist."
-    else:
-        exists = False
-        name = False
-        game_id = False
-        code_message = "Game code does not exist."
     return exists, name, game_id, code_message
-
-print(get_game_from_code(1776))
-print(get_game_from_code("Hann1942"))
 
 def get_games_from_user(user_id):
     user_games = f"SELECT * FROM Games WHERE user_id = {user_id};"
@@ -478,7 +479,7 @@ def checkAnswer(clue, input):
         answer = stringToCoords(answer)
         # answer = answer.split(", ")
         # answer = (float(answer[0]), float(answer[1]))
-        print(answer)
+        # print(answer)
         # change 50 to large number for success
         checkin = checkClueCoordinate(input, answer, 50)
         if checkin == True:
@@ -525,7 +526,7 @@ def check_form_boxes(privacy_level, camera_required, gps_required, geolocation):
 
 def load_edit_form(game_id):
     game = get_game_by_id(game_id)
-    print(game)
+    # print(game)
     # print(game)
     game_title = game[2]
     game_description = game[3]
@@ -538,7 +539,7 @@ def load_edit_form(game_id):
     virtual_radio = boxes[5]
     return game_title, game_description, public_radio, private_radio, gps_box, camera_box, physical_radio, virtual_radio
 
-print(load_edit_form(1))
+# print(load_edit_form(1))
 
 
 def save_game_form(game_id, user_id, request, mode):
@@ -619,7 +620,23 @@ def get_clue(clue_id):
     clue = result
     return clue[0]
 
+
+def checkCoordinateAnswerDistance(answer, game_id):
+    game = get_game_by_id(game_id)
+    game_location = game[4]
+    game_location = searchToCoords(game_location)
+    answer = stringToCoords(answer)
+    check = checkGamesNearby(answer, game_location, 50)
+    if check == False:
+        return False, 'Wow! This clue is 50 miles away from the rest of your game. Try picking a coordinate closer to the base of your game.'
+    return True
+
 def add_clue(game_id, prompt_text, prompt_link, answer_type, answer):
+    if answer_type == 'coordinates':
+        checkDistance = checkCoordinateAnswerDistance(answer, game_id)
+        print(checkDistance)
+        if checkDistance != True:
+            return checkDistance
     clue_order = add_clue_order(game_id)
     insert = f"""
     INSERT INTO Clues (game_id, clue_order, prompt_text, prompt_link, answer_type, answer)
@@ -712,7 +729,6 @@ def delete_user_images(user_id):
         files.append(file[0])
     for file in files:
         filepath = f'{UPLOAD_FOLDER}/{file}'
-        print(filepath)
         if os.path.exists(filepath):
             os.remove(filepath)
         else:

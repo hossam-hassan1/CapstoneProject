@@ -64,16 +64,17 @@
     </div>
 
     <!-- DIV 2 -->
-    <div class="container-fluid mx-auto p-3 marginBottom">
+    <div class="container-fluid mx-auto p-3 marginBottom" >
         <div class="row">
             <div class="col-sm">
-                <div class="card mx-auto m-3">
+                <div class="card mx-auto m-3" >
                     <div class="card-header">
-                    <b>
-                        1. Game Details
-                    </b>
+                        <b>
+                            1. Game Details
+                        </b>
+                        <button onclick="hide('hide_game')" class="btn btn-primary btn-sm float-end">Hide Game</button>
                     </div>
-                    <form class="row m-2 mx-auto" action="" method="post">
+                    <form class="row m-2 mx-auto" action="" method="post" id="hide_game">
 
                         <div class="form-group m-2">
                             <label for="game_title"><b>Game Title:</b></label>
@@ -208,36 +209,38 @@
                                 <label class="form-check-label" for="private">Virtual / Anywhere</label><br>
                             </div>
 
+                            <!-- DISPLAY IF GPS REQUIRED -->
+                            <!-- geting game_gps_input -->
+                            
+                            <div class="form-group m-2" id="game_gps_input">
+                                {% if mode == 'create' %}
+                                <label for="game_code">Game Location</label>
+                                <!-- <input type="hidden"  name="coordinates" value="(38.94200875265407, -92.32646834504295)"> -->
+                                <input id="coordinates" name="coordinates" type="hidden" value="" />
+                                <!-- <button type="button" onclick="currentLocationButton()">Pin to Current Location</button> -->
+                                {% include 'geolocation.html' %}
+                                <button type="button" id="clearButtonDiv" onclick="reload()">Clear Map</button>
+                                <!-- PUT GAME LOCATION SELECTOR HERE -->
+                                {% endif %}
+                            </div> <!This end div is necessary for the button for some reason---->
+
+                            <div class="form-group m-2">
+                                <p>{{message}}</p>
+                                {% if mode == 'edit' %}
+                                <input type="hidden"  name="game_id" value="{{game_id}}">
+                                <button type="submit" value="Edit Game" name="edit_game" class="btn btn-primary btn-sm">Edit Game</button>
+                                {% elif mode == 'save' %}
+                                <input type="hidden"  name="game_id" value="{{game_id}}">
+                                <button type="submit" value="Save Game" name="save_game" class="btn btn-primary btn-sm">Save Game</button>
+                                {% elif mode == 'create' %}
+                                <input type="hidden" value="Create Game">
+                                <button type="submit" value="Create Game" name="create_game" class="btn btn-primary btn-sm">Create Game</button>
+                                {% endif %}
+                            </div>
+
                         </div>
 
-                                            <!-- DISPLAY IF GPS REQUIRED -->
-                        <!-- geting game_gps_input -->
-                        {% if mode == 'create' %}
-                        <div class="form-group m-2" id="game_gps_input">
-                            <label for="game_code">Game Location</label>
-                            <!-- <input type="hidden"  name="coordinates" value="(38.94200875265407, -92.32646834504295)"> -->
-                            <input id="coordinates" name="coordinates" type="hidden" value="" />
-                            <!-- <button type="button" onclick="currentLocationButton()">Pin to Current Location</button> -->
-                            {% include 'geolocation.html' %}
-                            <button type="button" id="clearButtonDiv" onclick="reload()">Clear Map</button>
-                            <!-- PUT GAME LOCATION SELECTOR HERE -->
-                        {% endif %}
 
-                        </div> <!This end div is necessary for the button for some reason---->
-
-                        <div class="form-group m-2">
-                            <p>{{message}}</p>
-                            {% if mode == 'edit' %}
-                            <input type="hidden"  name="game_id" value="{{game_id}}">
-                            <button type="submit" value="Edit Game" name="edit_game" class="btn btn-primary btn-sm">Edit Game</button>
-                            {% elif mode == 'save' %}
-                            <input type="hidden"  name="game_id" value="{{game_id}}">
-                            <button type="submit" value="Save Game" name="save_game" class="btn btn-primary btn-sm">Save Game</button>
-                            {% elif mode == 'create' %}
-                            <input type="hidden" value="Create Game">
-                            <button type="submit" value="Create Game" name="create_game" class="btn btn-primary btn-sm">Create Game</button>
-                            {% endif %}
-                        </div>
 
 
                     </form>
@@ -259,6 +262,16 @@
 </div>
 
 <script>
+
+    function hide(id) {
+        var clicked = document.getElementById(id);
+        if (clicked.style.display == "none") {
+            clicked.style.display = "block"
+        } else {
+            clicked.style.display = "none"
+        }
+        
+    }
 
     function displayFromBox(id) {
         var clicked = document.getElementById(id);

@@ -22,3 +22,6 @@ body{
 .marginBottom{
     margin-bottom: 230px;
 }
+.error{
+    color: #dd4229;
+}
