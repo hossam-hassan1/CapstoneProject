@@ -338,14 +338,22 @@ def game_edit(game):
             print(answer)
             # answer = stringToCoords(answer)
         if file.filename == '':
-            clue = add_clue(game_id, prompt_text, prompt_link, answer_type, answer)
+            if answer == '':
+                clue_message = 'Please add an answer for this clue.'
+                clue = [False, clue_message]
+            else:
+                clue = add_clue(game_id, prompt_text, prompt_link, answer_type, answer)
         elif not allowed_file(file.filename):
             clue_message = 'Not permitted file type. Try again.'
             clue = [False, clue_message]
         else:
-            clue = add_clue(game_id, prompt_text, prompt_link, answer_type, answer)
-            filename = upload_image(file, clue[2], game_id) 
-            add_file = edit_prompt_image(clue[2], filename)
+            if answer == '':
+                clue_message = 'Please add an answer for this clue.'
+                clue = [False, clue_message]
+            else:
+                clue = add_clue(game_id, prompt_text, prompt_link, answer_type, answer)
+                filename = upload_image(file, clue[2], game_id) 
+                add_file = edit_prompt_image(clue[2], filename)
         if clue[0] != False:   
             return redirect(url_for("game_edit", game=game[0]))   
         else:
