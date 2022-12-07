@@ -66,15 +66,22 @@ hr {
     border: none;
     margin-top: 25px;
     margin-bottom: 150px;
-    background-color: #FAF9F6;
+    background-color: #f1b675;;
 }
-.tutorial{
-    border: none;
-    background-color: #f1eee6;
+.rowHowTo{
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+.marg{
     display: block;
-    margin-top: 100px;
-    margin-bottom: 100px;
+    margin-top: auto;
+    margin-bottom: auto;
 }
+/* .list{
+    display: block;
+    margin-left: 250px;
+    margin-right: auto;
+} */
 .cardTeam{
     border: none;
     margin-top: 25px;
@@ -112,6 +119,20 @@ hr {
     background-color: #f4cb6d;
     justify-content: center;
     color: white;
+}
+
+/* how to steps > link hover */
+.howto a{
+    color: #faf3b6;
+    text-decoration: none;
+}
+.howto a:hover { color: white !important; }
+.video{
+    /* display: block;
+    margin-left: auto;
+    margin-right: auto; */
+    width: 100%;
+    height: 100%;
 }
 
 @media (max-width:767px) {

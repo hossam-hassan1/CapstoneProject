@@ -27,7 +27,17 @@
 
         <br>
 
-        <p> Scavy is an online platform that helps you create interactive scavenger hunts and experiences.</p>
+        <p> Scavy App is an online platform that helps you create interactive scavenger hunts and experiences.</p>
+        <br>
+
+        <p><b>Features</b></p>
+        <ul>
+          <li>Play scavenger hunt games from anywhere!</li>
+          <li>Add images and media links to clues to help guide your players</li>
+          <li>Use geocoordinate check-ins to create an interactive experience</li>
+        </ul>
+        <br>
+
         {% if 'login' not in session %}
         <a class="btn btn-primary btn-lg" href="/sign-up" role="button">Get Started</a>
         {% elif session['login'] == True %}
@@ -77,31 +87,34 @@
     </div>
   </div>
 
-  <!-- GETTING STARTED -->
-  <!-- <div class="container">
-    <h2 class="center bold">Scavy App Tutorial</h2>
+  <!-- HOW TO -->
+  <div class="container">
+    <h2 class="center bold">How to start creating with Scavy App</h2>
   </div>
 
   <div class="container card cardGetStarted">
-    <div class="row">
+    <div class="row rowHowTo">
 
-      <div class="col-lg">
-        <div class="container card tutorial">
-
-            <p class="center">Check out our Scavy App tutorial!</p>
-
-        </div>
+      <div class="col-lg marg">
+        <p class="center"><b>Getting Started</b></p>
+        <ul class="howto" style="list-style: none;">
+          <li>1. Create an <a href="/account">account</a></li>
+          <li>2. Build a scavenger hunt <a href="/create-game">game</a></li>
+          <li>3. Publish your completed game on your <a href="/account">account</a></li>
+          <li>4. <a href="/search-games">Play</a> and share your game code with friends!</li>
+        </ul>
+        <br>
       </div>
       
       <div class="col-lg">
-
-        <div class="embed-responsive embed-responsive-4by3">
-          <iframe width="560" height="315" src="https://www.youtube.com/embed/iTCLVGKX9TE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <!-- <p class="center"><b>Check out our Scavy App tutorial!</b></p> -->
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/VmRscRHzOpk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
       </div>
 
     </div>
-  </div> -->
+  </div>
 
   <!-- FAQ -->
   <div class="container">
@@ -147,7 +160,7 @@
             </button>
           </h2>
           <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
-            <div class="accordion-body">You can share your unique game code for private or public games.</div>
+            <div class="accordion-body">You can share your unique game code for private or public games. Find your game code on your account page & click your game name!</div>
           </div>
         </div>
         <div class="accordion-item">
