@@ -72,7 +72,7 @@
                         <b>
                             1. Game Details
                         </b>
-                        <button onclick="hide('hide_game')" class="btn btn-primary btn-sm float-end">Hide Game</button>
+                        <button onclick="hide('hide_game', 'hide_game_button')" id="hide_game_button" class="btn btn-primary btn-sm float-end">Hide Game</button>
                     </div>
                     <form class="row m-2 mx-auto" action="" method="post" id="hide_game">
 
@@ -263,12 +263,15 @@
 
 <script>
 
-    function hide(id) {
-        var clicked = document.getElementById(id);
+    function hide(div_id, button_id) {
+        var clicked = document.getElementById(div_id);
+        var button = document.getElementById(button_id);
         if (clicked.style.display == "none") {
             clicked.style.display = "block"
+            button.innerHTML = 'Hide Details'
         } else {
             clicked.style.display = "none"
+            button.innerHTML = 'Expose Details'
         }
         
     }

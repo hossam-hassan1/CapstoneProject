@@ -4,7 +4,7 @@ import random
 import os
 from geopy.geocoders import Nominatim
 from geopy import distance
-# from app.geolocation import displayGameLocation, checkGamesNearby, searchToCoords
+from app.geolocation import displayGameLocation, checkGamesNearby, searchToCoords
 
 
 # -- sign_up.html
@@ -122,6 +122,19 @@ def get_user(username, password):
     else:
         print("user does not exist")
 
+#     -- get_game_by_title() - a get query to list a game by game title from Games Table
+def get_game_by_title(game_title):
+    games_by_title = f"SELECT game_id FROM Games where game_title = '{game_title}';"
+    try:
+        result = search_query(games_by_title)   
+        # print(result)
+        if result[0] == []:
+            return result
+    except:
+        return result
+    return result[0][0]
+
+
 def find_play_count(game_id):
     select_game = f"""
         SELECT play_count FROM Games WHERE game_id = "{game_id}";
@@ -199,6 +212,8 @@ def generate_game_code(game_title):
 
 #  create_game() - an insert query into Games, Clues, and Locations Tables
 def create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required, geo_location):
+    game_id = get_game_by_title(game_title)
+    # print(f'Game ID: {game_id}')
     game_code = generate_game_code(game_title)
     # add cords into insert and values    188,192,193
     if geo_location == 'Virtual':
@@ -210,16 +225,18 @@ def create_game(user_id, game_title, game_description, privacy_level, gps_requir
     INSERT INTO Games (user_id, game_title, game_description, privacy_level, gps_required, camera_required, game_code, geo_location)
     VALUES ({user_id}, "{game_title}", "{game_description}", "{privacy_level}", "{gps_required}", "{camera_required}", "{game_code}", "{location}");
     """
-    message = ''
-    created = False
-    game_id = 0
     # try:
     try:
         game_id = create_query(insert)
         created = True
         message = f"Game: '{game_title}' has been created!"
     except:
-        message = 'Game could not be created.'
+        created = False
+        # print(game_id)
+        if game_id != []:
+            message = f"{game_title} already exists. Game titles are unique in ScavyApp and give each game their own link. Please try creating a game with a different title."
+        else:
+            message = 'Game could not be created.'
     return created, message, game_id
 
 
@@ -330,12 +347,6 @@ def get_game_list(filter, input):
 # games = get_game_list("public")
 # for game in games:
 #     print(game[2])
-
-#     -- get_game_by_title() - a get query to list a game by game title from Games Table
-def get_game_by_title(game_title):
-    games_by_title = f"SELECT game_id FROM Games where game_title = '{game_title}';"
-    result = search_query(games_by_title)
-    return result[0][0]
 
 def get_game_by_id(game_id):
     game = f"SELECT * FROM Games where game_id = '{game_id}';"
@@ -546,21 +557,21 @@ def save_game_form(game_id, user_id, request, mode):
     message = ''
 
     game_title = request.form["game_title"]
+    
     game_description = request.form["game_description"]
     privacy_level = request.form["privacy_level"]
+    geo_location = request.form["coordinates"]
     try:
         camera_required = request.form["camera_required"]
     except:
         camera_required = 'false'
     try:
         gps_required = request.form["gps_required"]
-        geo_location = request.form["coordinates"]
-        # print(coords)
-        # geo_location = stringToCoords(geo_location)
-        # geo_location = displayGameLocation(geo_location)
     except:
         gps_required = 'false'
-        # geo_location = '(38.94200875265407, -92.32646834504295)'
+    virtual = request.form["location"]
+    print(virtual)
+    if virtual == 'Virtual':
         geo_location = "Virtual"
     boxes = check_form_boxes(privacy_level, camera_required, gps_required, geo_location)
     public_radio = boxes[0]
@@ -570,10 +581,15 @@ def save_game_form(game_id, user_id, request, mode):
     if mode == 'create':
         if game_title != '' and game_description != '':
             game = create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required, geo_location)
+            print(game)
             game_id = game[2]
             message = game[1]
+            if game[0] == False:
+                return game[0], message
         else:
-            message = 'Please fill out missing form fields.'
+            message = 'Please fill out missing form fields. '
+            if geo_location == '':
+                message += 'Please enter coordinates for a geolocation game.'
             return False, message
     if mode == 'save':
         game = get_game_by_id(game_id)
@@ -583,7 +599,6 @@ def save_game_form(game_id, user_id, request, mode):
             game_description = game[3]
         message = edit_game(game_id, game_title, game_description, privacy_level, gps_required, camera_required)
     return game_title, game_description, public_radio, private_radio, gps_box, camera_box, message, game_id, geo_location
-
 
 def add_clue_order(game_id):
     clues = get_clues(game_id)

@@ -239,7 +239,7 @@ def all_games():
 @app.route('/search-games/<string:filter>', methods=["POST", "GET"])
 def search(filter):
     code_error=""
-    code_prompt="Alread have a game code? Enter to play."
+    code_prompt="Already have a game code? Enter to play."
     if "keyword" in request.form:
         keyword = request.form['keyword']
         scavenger_hunts = get_game_list('keyword', keyword)
