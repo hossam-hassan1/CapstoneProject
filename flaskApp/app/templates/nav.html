@@ -5,13 +5,7 @@
 <nav style="background-color: #FAF9F6;" class="navbar navbar-expand-lg navbar-light sticky-top">
     <div class="container-fluid">
 
-        <a class="navbar-brand sticky-top mx-auto" href="/">
-            <img src="/static/images/scavyLogo.png" class="img-fluid" width="100" alt="Bootstrap"> 
-        </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
 
         <div class="collapse navbar-collapse" id="navbarToggler">
             <ul class="navbar-nav">
@@ -20,10 +14,6 @@
                     <a class="nav-link home" href="/home">Home</a>
                 </li>
 
-                <!-- <li class="nav-item">
-                    <a class="nav-link" href="/play">Play</a>
-                </li> -->
-
                 <li class="nav-item">
                     <a class="nav-link" href="/create-game">Create</a>
                 </li>
@@ -31,10 +21,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/search-games">Play</a>
                 </li>
-
-                <!-- <li class="nav-item">
-                    <a class="nav-link" href="/privacy-policy">Privacy Policy</a>
-                </li> -->
 
                 {% if session['login'] == True %}
 
@@ -60,7 +46,13 @@
             
         </div>
 
+        <a class="navbar-brand sticky-top mx-auto" href="/">
+            <img src="/static/images/scavyLogo.png" class="img-fluid logo" width="100" alt="Bootstrap"> 
+        </a>
 
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
     </div>
 </nav>
