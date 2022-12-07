@@ -25,3 +25,12 @@ body{
 .error{
     color: #dd4229;
 }
+body{
+    background-color: #FAF9F6;
+}
+.bottom{
+    margin-bottom: 200px;
+}
+/* .marginBottom{
+    margin-bottom: 200px;
+} */

@@ -9,20 +9,15 @@
 
 {% block head %}
 
-<style>
-    body{
-      background-color: #FAF9F6;
-    }
-    .bottom{
-        margin-bottom: 200px;
-    }
-    .marginBottom{
-        margin-bottom: 200px;
-    }
-</style>
 
-<link rel="stylesheet" href="/static/css/create_game.css">
-<link rel="stylesheet" href="static/css/geolocation.css">
+<head>
+    <link rel="stylesheet" href="/static/css/create_game.css">
+    <link rel="stylesheet" href="static/css/geolocation.css">
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+
+
+
 
 {% endblock %}
 {% block content %}
@@ -55,7 +50,8 @@
     {% else %}
 
     <!-- DIV 1 -->
-    <div>
+    <div> 
+        <br>
         {% if mode == 'edit' %}
         <h1 id="header">Edit {{title_placeholder}}</h1>
         {% else %}

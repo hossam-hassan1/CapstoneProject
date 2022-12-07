@@ -84,26 +84,21 @@ body{
 .bold{
     font-weight: 400;
 }
+.logo{
+    display: block ;
+    margin-left: 0px;
+    margin-right: 770px;
 
+}
 
-/* Nav Style */
-/* nav li {
-    display: inline;
-    padding-right: 15px;
-    padding-left: 15px;
-  } */
-
-/* nav li .home{
-    display: inline;
-    padding-left: 50px;
-} */
 .navbar-nav a:hover { color: #f1b675 !important; }
 .links a:hover { color: #faf3b6 !important; }
 
-/* @media (max-width:767px) {
-    nav li {
-        display: inline;
-        padding-right: 0px;
-        padding-left: 0px;
-      }
-} */
+@media (max-width:767px) {
+    .logo {
+    display: block ;
+    margin-left: 35px;
+    margin-right: auto;
+    }
+
+}
