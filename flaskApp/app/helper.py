@@ -1,3 +1,7 @@
+import os
+dirname = os.path.dirname(__file__)
+image_path = 'static/prompt_image_uploads'
+UPLOAD_FOLDER = os.path.join(dirname, image_path)
 
 
 

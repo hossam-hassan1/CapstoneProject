@@ -2,8 +2,6 @@
 
 <!-- BASE TEMPLATE -->
 
-{% block content %}
-
 <style>
   body{
     background-color: #FAF9F6;
@@ -23,9 +21,9 @@
         </b>
         </div>
 
-        <p>{{clue_message}}</p>
+        <p class="error center">{{clue_message}}</p>
         
-        <div class="accordion card-body row m-2 mx-auto" id="cluesAccordion">
+        <div class="accordion accordion-flush card-body row m-2 mx-auto" id="cluesAccordion">
 
           <!-- ADD CLUES -->
           <div class="accordion-item">
@@ -69,7 +67,14 @@
                     <div class="form-group m-2">
                       {% if clue[5] != '' and clue[5] != None %}
                       <label for="prompt_image">Clue Image:</label>
-                      <img class="img-thumbnail" src="/static/prompt_image_uploads/{{clue[5]}}" alt="Card image cap">
+                      <div class="container-fluid row">
+                        <div class="col-2"></div>
+                        <div class="col-8">
+                          <img class="img-fluid" id="clueImage" src="/static/prompt_image_uploads/{{clue[5]}}" alt="Card image cap">
+                        </div>
+                        <div class="col-2"></div>
+                      </div>
+                      <div class="card">
                       {% else %}
                       <label for="prompt_image">Clue Image: No image uploaded.</label>
                       {% endif %}
@@ -114,5 +119,5 @@
             
         </div>
       </div>
-{% endblock %}
+
 
