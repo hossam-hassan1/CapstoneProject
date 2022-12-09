@@ -1,7 +1,7 @@
 #header{
     text-align: center;
 }
-.col-6 {
+.form_column {
     display: inline-block; 
     text-align: left;
 }
@@ -15,7 +15,7 @@
     color: #dd4229;
   }
 .password{
-    font-size: 11px;
+    font-size: 14px;
 }
 .left{
     margin-left: -150px;

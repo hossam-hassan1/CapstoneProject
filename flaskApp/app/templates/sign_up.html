@@ -18,14 +18,16 @@
     <form onsubmit="return checkForm(this);" action="" method="post">
             <div class="">
 
-                <div class="row center">
+                <div class="row center m-2">
 
                   <div>
                     <h1 id="header">Let's get started!</h1>
                     <p class="center">Begin creating custom scavenger hunts today. Already signed up? <a href="/log-in">Login</a></p>
                   </div>
 
-                  <div class="col-6 m-2">
+                  <div class="col-sm-2"></div>
+
+                  <div class="form_column col-sm-6">
                     <div class="form-group m-2 float-left">
                       <label>Email:</label>
                       <p><input class="form-control" type="email" id="enail" name="email" required oninvalid="this.setCustomValidity('Enter Valid Email')"
@@ -43,7 +45,7 @@
                     </div>
 
                     <div class="form-group m-2">
-                      <label>Confirm Password:></label>
+                      <label>Confirm Password:</label>
                       <p><input  class="form-control" type="password" name ="confirm_password" onkeypress="password_val(input)" required/></p>
                     </div>
                     
@@ -53,9 +55,9 @@
                       
                  
                   
-                  <div class="col">
+                  <div class="col-sm-2">
 
-                    <div class="card passwordCard">
+                    <div class="card passwordCard form_column">
                       <div class="password card-body">
                         <ul class="">Password must contain:
                           <li>8 characters</li>
@@ -77,6 +79,8 @@
                     <p><input type="checkbox" name="terms" required> I accept the <a href="/privacy-policy">Terms and Conditions</a></p>
                     <button href="/sign-up" type="submit" class="btn btn-primary btn-lg">Sign Up</button>
                   </div>
+
+                  <div class="col-sm-2"></div>
 
                 </div>
                
