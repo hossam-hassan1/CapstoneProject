@@ -1,6 +1,10 @@
 #header{
     text-align: center;
 }
+.col-6 {
+    display: inline-block; 
+    text-align: left;
+}
 .center{
     text-align: center; 
 }
@@ -10,7 +14,7 @@
 .error{
     color: #dd4229;
   }
-#password{
+.password{
     font-size: 11px;
 }
 .left{
@@ -23,4 +27,9 @@
 }
 .marginBottom{
     margin-bottom: 400px;
+}
+.passwordCard{
+    border: none;
+    background-color: #f1b675;;
+    margin: 10px;
 }

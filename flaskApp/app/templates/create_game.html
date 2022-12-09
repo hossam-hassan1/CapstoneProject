@@ -54,8 +54,27 @@
         <br>
         {% if mode == 'edit' %}
         <h1 id="header">Edit {{title_placeholder}}</h1>
+            {% if message != ''%}
+            <div class="card mx-auto  m-3">
+                <div class="card-header center">
+                    {% if 'Success' in message %}
+                    <label class="success"><b>{{message}}</b></label>
+                    {% else %}
+                    <label class="error"><b>{{message}}</b></label>
+                    <label class="error"><b>{{clue_message}}</b></label>
+                    {% endif %}
+                </div>  
+            </div>
+            {% endif %}
         {% else %}
         <h1 id="header">Create a Game!</h1>
+            {% if message != ''%}
+            <div class="card mx-auto  m-3">
+                <div class="card-header center">
+                    <label class="error"><b>{{message}}</b></label>
+                </div>  
+            </div>
+            {% endif %}
         {% endif %}
     </div>
 
@@ -133,6 +152,8 @@
 
                         <div class="form-group m-2">
                             <label><b>Device Requirements:</b></label>
+
+
                             <div class="form-check">
                                 {% if mode == 'create' %}
                                 <input onclick="displayFromBox('gps_required')" class="form-check-input" type="checkbox" id="gps_required" name="gps_required" value="true" data-toggle="modal" data-target="#exampleModal3" {{disabled}} {{gps_box}}>
@@ -220,14 +241,20 @@
                                 {% endif %}
                             </div> <!This end div is necessary for the button for some reason---->
 
+                            {% if mode == 'edit' %}
+                            <div class="form-group m-2">
+                                <input type="text" class="form-control" id="game_title "name="game_title" placeholder="{{geo_location}}" {{read}} onkeyup="letter_number_only(this)" {{required}}>
+                            </div>
+                            {% endif %}
+
                             <div class="form-group m-2">
                                 <p>{{message}}</p>
                                 {% if mode == 'edit' %}
-                                <input type="hidden"  name="game_id" value="{{game_id}}">
-                                <button type="submit" value="Edit Game" name="edit_game" class="btn btn-primary btn-sm">Edit Game</button>
+                                <!-- <input type="hidden"  name="game_id" value="{{game_id}}">
+                                <button type="submit" value="Edit Game" name="edit_game" class="btn btn-primary btn-sm">Edit Game</button> -->
                                 {% elif mode == 'save' %}
-                                <input type="hidden"  name="game_id" value="{{game_id}}">
-                                <button type="submit" value="Save Game" name="save_game" class="btn btn-primary btn-sm">Save Game</button>
+                                <!-- <input type="hidden"  name="game_id" value="{{game_id}}">
+                                <button type="submit" value="Save Game" name="save_game" class="btn btn-primary btn-sm">Save Game</button> -->
                                 {% elif mode == 'create' %}
                                 <input type="hidden" value="Create Game">
                                 <button type="submit" value="Create Game" name="create_game" class="btn btn-primary btn-sm">Create Game</button>

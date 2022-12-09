@@ -20,6 +20,7 @@
 
 <script>
 
+    
     function initAutocomplete() {
         var mapStartingLocation = {lat:38.85637240807301,lng: -90.31152627553638};
         var options = {
@@ -167,9 +168,10 @@
       // Function that reloads the map (removes marker)
       // const url = 'http://127.0.0.1:5000/geolocation';
       // URL that helped with the clear map dom error
-      function reload(map){
-      
-        initAutocomplete();
+
+      function reload(marker){
+        
+        initAutocomplete(marker);
         markersArray = [];
       
        //this line is to watch the result in console , you can remove it later	

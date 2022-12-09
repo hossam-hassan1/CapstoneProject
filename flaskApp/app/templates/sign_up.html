@@ -13,36 +13,75 @@
 
 <body>
 
-    <!-- DIV 1 -->
-    <br>
-    <div>
-        <h1 id="header">Let's get started!</h1>
-        <p class="center">Begin creating custom scavenger hunts today. Already signed up? <a href="/log-in">Login</a></p>
-    </div>
-
     <!-- DIV 2 -->
     <div>
     <form onsubmit="return checkForm(this);" action="" method="post">
-            <div class="credentials">
-                <p class="left">Email</p>
-                <!-- change -->
-                <p><input type="email" name="email" required oninvalid="this.setCustomValidity('Enter Valid Email')"
-                  oninput="this.setCustomValidity('')"/></p>
-                <p class="left2">Create Username</p>
-                <p><input type="text" name="user" onkeyup="letter_number_only(this)" required/></p>
-                <p class="left2">Create Password</p>
-                <p><input type="password" name ="password" onkeypress="password_val(input)" required/></p>
-                <p id="password">Password must contain 8 characters, a upper case letter, a number, and a special character !, $, #, @, %, &.
-                <p class="left2">Confirm Password</p>
-                <p><input type="password" name ="confirm_password" onkeypress="password_val(input)" required/></p>
-                <p class="error">{{message}}</p>
-                {% if check == False %}
-                {% for line in validate %}
-                <p class="error">{{line}}</p>
-                {% endfor %}
-                {% endif %}
-                <p><input type="checkbox" name="terms" required> I accept the <a href="/privacy-policy">Terms and Conditions</a></p>
-                <button href="/sign-up" type="submit" class="btn btn-primary btn-lg">Sign Up</button>
+            <div class="">
+
+                <div class="row center">
+
+                  <div>
+                    <h1 id="header">Let's get started!</h1>
+                    <p class="center">Begin creating custom scavenger hunts today. Already signed up? <a href="/log-in">Login</a></p>
+                  </div>
+
+                  <div class="col-6 m-2">
+                    <div class="form-group m-2 float-left">
+                      <label>Email:</label>
+                      <p><input class="form-control" type="email" id="enail" name="email" required oninvalid="this.setCustomValidity('Enter Valid Email')"
+                        oninput="this.setCustomValidity('')"/></p>
+                    </div>
+
+                    <div class="form-group m-2">
+                      <label>Username:</label>
+                      <p><input class="form-control" type="text" name="user" onkeyup="letter_number_only(this)" required/></p>
+                    </div>
+                      
+                    <div class="form-group m-2">
+                      <label>Create Password:</label>
+                      <p><input class="form-control" type="password" name ="password" onkeypress="password_val(input)" required/></p>
+                    </div>
+
+                    <div class="form-group m-2">
+                      <label>Confirm Password:></label>
+                      <p><input  class="form-control" type="password" name ="confirm_password" onkeypress="password_val(input)" required/></p>
+                    </div>
+                    
+                  </div>
+
+                    
+                      
+                 
+                  
+                  <div class="col">
+
+                    <div class="card passwordCard">
+                      <div class="password card-body">
+                        <ul class="">Password must contain:
+                          <li>8 characters</li>
+                          <li>upper case letter</li>
+                          <li>number</li>
+                          <li>special character !, $, #, @, %, &</li>
+                        </ul>
+                      </div>
+                    </div>
+
+
+
+                    <p class="error">{{message}}</p>
+                    {% if check == False %}
+                    {% for line in validate %}
+                    <p class="error">{{line}}</p>
+                    {% endfor %}
+                    {% endif %}
+                    <p><input type="checkbox" name="terms" required> I accept the <a href="/privacy-policy">Terms and Conditions</a></p>
+                    <button href="/sign-up" type="submit" class="btn btn-primary btn-lg">Sign Up</button>
+                  </div>
+
+                </div>
+               
+               
+               
             </div>
      </form>
     </div>

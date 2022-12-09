@@ -292,10 +292,12 @@ camera_required = 'SELECT * FROM Games WHERE camera_required = "true" AND privac
 #     -- get_game_list() - a get query to list all games from Games Tables
 def get_game_list(filter, input):
     additional_query = ''
+    extra_order = 'ORDER BY user_id=1 desc;'
     if filter == 'all-games':
         additional_query = ''
     elif filter == 'most-played':
         additional_query = ' AND play_count >= 1 ORDER BY play_count desc LIMIT 10'
+        extra_order = ''
     elif filter == 'gps-required':
         additional_query = 'AND gps_required = "true"'
     elif filter == 'camera-required':
@@ -310,7 +312,7 @@ def get_game_list(filter, input):
         pass
     list_all_games = f'''SELECT * FROM Games 
                         WHERE privacy_level = 'public' AND published = 'true'
-                        {additional_query};'''
+                        {additional_query} {extra_order};'''
     result = search_query(list_all_games)
     games = []
     
@@ -541,6 +543,7 @@ def load_edit_form(game_id):
     # print(game)
     game_title = game[2]
     game_description = game[3]
+    geo_location = game[4]
     boxes = check_form_boxes(game[5], game[7], game[6], game[4])
     public_radio = boxes[0]
     private_radio = boxes[1]
@@ -548,7 +551,7 @@ def load_edit_form(game_id):
     gps_box = boxes[3]
     physical_radio = boxes[4]
     virtual_radio = boxes[5]
-    return game_title, game_description, public_radio, private_radio, gps_box, camera_box, physical_radio, virtual_radio
+    return game_title, game_description, public_radio, private_radio, gps_box, camera_box, physical_radio, virtual_radio, geo_location
 
 # print(load_edit_form(1))
 
@@ -579,7 +582,7 @@ def save_game_form(game_id, user_id, request, mode):
     camera_box = boxes[2]
     gps_box = boxes[3]
     if mode == 'create':
-        if game_title != '' and game_description != '':
+        if game_title != '' and game_description != '' and geo_location != '':
             game = create_game(user_id, game_title, game_description, privacy_level, gps_required, camera_required, geo_location)
             print(game)
             game_id = game[2]
@@ -591,13 +594,13 @@ def save_game_form(game_id, user_id, request, mode):
             if geo_location == '':
                 message += 'Please enter coordinates for a geolocation game.'
             return False, message
-    if mode == 'save':
-        game = get_game_by_id(game_id)
-        if game_title == '':
-            game_title = game[2]
-        if game_description == '':
-            game_description = game[3]
-        message = edit_game(game_id, game_title, game_description, privacy_level, gps_required, camera_required)
+    # if mode == 'save':
+    #     game = get_game_by_id(game_id)
+    #     if game_title == '':
+    #         game_title = game[2]
+    #     if game_description == '':
+    #         game_description = game[3]
+    #     message = edit_game(game_id, game_title, game_description, privacy_level, gps_required, camera_required)
     return game_title, game_description, public_radio, private_radio, gps_box, camera_box, message, game_id, geo_location
 
 def add_clue_order(game_id):

@@ -283,7 +283,7 @@ def game_create():
         game = save_game_form(game_id, user_id, request, mode)
         print(game)
         if game[0] != False:
-            return redirect(url_for("game_edit", game=game[0]))
+            return redirect(url_for("game_edit", game=game[0], message='Success! You have created a game!'))
         else:
             message = game[1]
     return render_template("create_game.html", mode='create', read='', message=message, disabled='', title_placeholder='What is your game called?', description_placeholder='Tell us about your game.', public_radio='', private_radio='checked', gps_box='', camera_box='', required='required')
@@ -305,8 +305,11 @@ def upload_image(file, clue_id, game_id):
     return filename
 
 
+
+
+@app.route('/edit-game/<game>/<message>', methods=["POST", "GET"])
 @app.route('/edit-game/<game>', methods=["POST", "GET"])
-def game_edit(game):
+def game_edit(game, message=''):
     game_id = get_game_by_title(game.replace("_", " "))
     game = load_edit_form(game_id)
     print(game)
@@ -339,25 +342,25 @@ def game_edit(game):
             # answer = stringToCoords(answer)
         if file.filename == '':
             if answer == '':
-                clue_message = 'Please add an answer for this clue.'
-                clue = [False, clue_message]
+                message = 'Please add an answer for this clue.'
+                clue = [False, message]
             else:
                 clue = add_clue(game_id, prompt_text, prompt_link, answer_type, answer)
         elif not allowed_file(file.filename):
-            clue_message = 'Not permitted file type. Try again.'
-            clue = [False, clue_message]
+            message = 'Not permitted file type. Try again.'
+            clue = [False, message]
         else:
             if answer == '':
-                clue_message = 'Please add an answer for this clue.'
-                clue = [False, clue_message]
+                message = 'Please add an answer for this clue.'
+                clue = [False, message]
             else:
                 clue = add_clue(game_id, prompt_text, prompt_link, answer_type, answer)
                 filename = upload_image(file, clue[2], game_id) 
                 add_file = edit_prompt_image(clue[2], filename)
         if clue[0] != False:   
-            return redirect(url_for("game_edit", game=game[0]))   
+            return redirect(url_for("game_edit", game=game[0], message='Success! You have saved a clue.')) 
         else:
-            clue_message = clue[1]
+            message = clue[1]
     # if 'edit_clue' in request.form:
     #     clue_id = request.form["edit_clue"]
     #     clue = get_clue(clue_id)
@@ -372,29 +375,29 @@ def game_edit(game):
     #     if answer == '':
     #         answer = clue[7]
     #     clue = edit_clue(clue_id, prompt_text, prompt_link, answer_type, answer)
-        return render_template("create_game.html", clue_message=clue_message, clues=clues, mode='edit', read='readonly', disabled='disabled', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id, required='', physical_radio=game[-2], virtual_radio=game[-1])
+        return render_template("create_game.html", clues=clues, mode='edit', read='readonly', disabled='disabled', message=message, title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], geo_location = game[-1], game_id=game_id, required='', physical_radio=game[-2], virtual_radio=game[-1])
     if 'delete_clue' in request.form:
         clue_id = request.form["delete_clue"]
-        clue_message = delete_clue(clue_id, game_id)
-        return redirect(url_for("game_edit", game=game[0]))
+        message = delete_clue(clue_id, game_id)
+        return redirect(url_for("game_edit", game=game[0], message="Success! You have deleted a clue. Bye, bye clue."))
     if 'move_clue_up' in request.form:
         clue_id = request.form["move_clue_up"]
-        clue_message = move_clue(clue_id, game_id, 'up')
-        return redirect(url_for("game_edit", game=game[0]))
+        message = move_clue(clue_id, game_id, 'up')
+        return redirect(url_for("game_edit", game=game[0], message="Success! You have moved a clue up."))
     if 'move_clue_down' in request.form:
         clue_id = request.form["move_clue_down"]
-        clue_message = move_clue(clue_id, game_id, 'down')
-        return redirect(url_for("game_edit", game=game[0]))
+        message = move_clue(clue_id, game_id, 'down')
+        return redirect(url_for("game_edit", game=game[0], message="Success! You have moved a clue down."))
     if 'save_game' in request.form:
         mode = 'save'
         game_id = request.form["game_id"]
         game = save_game_form(game_id, user_id, request, mode)
-        return redirect(url_for("game_edit", game=game[0]))
+        return redirect(url_for("game_edit", game=game[0], message="Success! You have saved a game."))
     if 'edit_game' in request.form:
         mode = 'edit'
         game_id = request.form["game_id"]
-        return render_template("create_game.html", clues=clues, mode='save', read='', disabled='', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id, required='', physical_radio=game[-2], virtual_radio=game[-1])
-    return render_template("create_game.html", clue_message=clue_message, clues=clues, mode='edit', read='readonly', disabled='disabled', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id, required='', physical_radio=game[-2], virtual_radio=game[-1])
+        # return render_template("create_game.html", clues=clues, mode='save', read='', disabled='', message='', title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], game_id=game_id, required='', physical_radio=game[-2], virtual_radio=game[-1])
+    return render_template("create_game.html", clues=clues, mode='edit', read='readonly', disabled='disabled', message=message, title_placeholder=game[0], description_placeholder=game[1], public_radio=game[2], private_radio=game[3], gps_box=game[4], camera_box=game[5], geo_location = game[-1], game_id=game_id, required='', physical_radio=game[-2], virtual_radio=game[-1])
 
 
 @app.route('/geolocation')

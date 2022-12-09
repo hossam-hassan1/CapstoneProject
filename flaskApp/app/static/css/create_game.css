@@ -25,8 +25,8 @@ body{
 .error{
     color: #dd4229;
 }
-body{
-    background-color: #FAF9F6;
+.success{
+    color: #b3e59f;
 }
 .bottom{
     margin-bottom: 200px;
