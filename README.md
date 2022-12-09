@@ -1,5 +1,5 @@
 # ScavyApp
-Please visit [www.ScavyApp.come](https://www.ScavyApp.com).
+Please visit [www.ScavyApp.com](https://www.ScavyApp.com).
 ---------
 
 1. [Team](### ScavyApp Development Team:)
