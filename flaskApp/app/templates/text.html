@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block head %} <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> {% endblock %}
+
+{% block content %}   
+
+<form class="row m-2 mx-auto" action="" method="post">
+    <!-- DISPLAY IF GPS REQUIRED -->
+    <!-- geting game_gps_input -->
+    <div class="form-group m-2" id="gps_input">
+        <label for="game_code">Clue Location</label>
+        <input id="clue_coordinates" name="clue_coordinates" type="hidden" value="" />
+        <!-- <button type="button" onclick="currentLocationButton()">Pin to Current Location</button> -->
+        {% include 'geolocation.html' %}
+        <button type="button" id="clearButtonDiv" onclick="reload()">Clear Map</button>
+        <!-- <button type="submit" value="Add Clue" name="add_clue" class="btn btn-primary btn-sm">Add Clue</button> -->
+    </div>
+</form>  
+
+<p>{{coordinates}}</p>
+
+{% endblock %}   
+
+<!-- <div class="m-2">
+    <form class="form-inline" action="" method="post" name="getCoords">
+        <div class="form-group mx-sm-3 mb-2">
+            <p>Check-In when you have found the clue to proceed.</p>
+            <input type="hidden" name="answer_input" id="location"> 
+            <button onclick="getLocation()" type="button" name="nextClue" class="btn btn-primary btn-lg">Check-In</button>
+        </div>
+    </form>
+
+    <p>You are here: {{location}}</p>
+</div>  -->
+
+<!-- <div id="map"></div>
+
+<script>
+function initMap() {
+    var pos = {},
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: -34.397, lng: 150.644},
+            zoom: 6
+        }),
+        infoWindow = new google.maps.InfoWindow({map: map});
+
+    // Try HTML5 geolocation.
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+        pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+        };
+
+        infoWindow.setPosition(pos);
+        infoWindow.setContent('Smells like coffee...');
+        map.setCenter(pos);
+
+        
+
+        }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+        });
+    } else {
+        // Browser doesn't support Geolocation
+        handleLocationError(false, infoWindow, map.getCenter());
+    }
+} -->
+
+<!-- function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    infoWindow.setPosition(pos);
+    infoWindow.setContent(browserHasGeolocation ?
+    'Error: The Geolocation service failed.' :
+    'Error: Your browser doesn\'t support geolocation.');
+}
+
+</script> -->
+<!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBr8V0XkaNFYkNXcP6eJc76b6YutvizwNw&callback=initMap"> -->
+<!-- </script> -->
+
+<!-- <p>Click the button to get your coordinates.</p>
+
+<button onclick="getLocation()" type="submit" name="nextClue" id="answer_input" >Try It</button>
+
+
+<div id="coordinates">{{coords}}</div> -->
+<!-- 
+<script>
+    var x = document.getElementById("coordinates");
+    var input = document.getElementById("answer_input");
+    var latitude = 0;
+    var longitude = 0;
+
+
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function () {}, function () {}, {});
+        navigator.geolocation.getCurrentPosition(showPosition);
+      } else { 
+        x.innerHTML = "Geolocation is not supported by this browser.";
+      }
+    }
+
+    function showPosition(position) {
+        let latitude = position.coords.latitude;
+        let longitude = position.coords.longitude;
+        let location = '('+latitude+', '+longitude+')';
+        console.log(location);
+        fetch('http://127.0.0.1:8080/test', {
+          'method': 'POST',
+          'headers': {'Content-Type': 'application/json'},
+          'body': JSON.stringify({ location })
+        })
+        .then(response => response.json())
+        .then(response => response.text)
+        .then(text => x.innerHtml = text)
+        window.location.reload();
+        return location
+        
+    }
+
+   
+
+    input.value = "("+latitude+", "+longitude+")";
+</script> -->
+
+<!-- console.log("("+latitude+", "+longitude+")"); -->

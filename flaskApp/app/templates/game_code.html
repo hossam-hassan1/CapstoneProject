@@ -1,0 +1,16 @@
+{% block content %}
+
+<div class="container center">
+    <div class="mx-auto m-10">
+        <div class="card-body mx-auto m-2">
+            <p>{{code_prompt}}</p>
+            <form action="" method="POST">
+                <p><input type="text" name="game_code" onkeyup="letter_number_only(this)"/></p>
+                <p class="error">{{code_error}}</p>
+                <p><button href="/" type="submit" class="btn btn-primary btn-lg">Submit</button></p>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

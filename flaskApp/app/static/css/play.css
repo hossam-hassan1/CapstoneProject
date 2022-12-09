@@ -1,0 +1,40 @@
+/* body{
+    background-color: #f7e7ca;
+} */
+.center{
+    text-align: center;
+}
+.play_title{
+    text-align: center;
+}
+.game_title{
+    color: #e99040;
+}
+.error{
+    color: #dd4229;
+}
+.hot{
+    color: #e99040;
+}
+.cold{
+    color: #2277ff;
+}
+.success{
+    color: #b3e59f;
+}
+.card{
+    border: none;
+    background-color:white;
+    color: black;
+}
+.card-subtitle-text{
+    color: white;
+}
+.clue_id{
+    color:#e99040;
+}
+.marginBottom{
+    margin-bottom: 200px;
+}
+
+

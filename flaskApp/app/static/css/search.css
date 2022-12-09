@@ -1,0 +1,39 @@
+body{
+    background-color: #FAF9F6;
+}
+.center{
+    text-align: center;  
+}
+.btn-primary {
+    background-color: #e76d36;
+    border: none;
+
+}
+.filter{
+    justify-content: center;
+    margin-right: -100;
+}
+.color{
+    color:#e76d36;
+    font-weight: 550;
+}
+.marginBottom{
+    margin-bottom: 300px;
+}
+
+.search{
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+@media (max-width:767px) {
+    .search{
+        margin-left: 0%;
+        margin-right: 0%;
+    }
+
+    .marginBottom{
+        margin-bottom: 100px;
+    }
+
+}
